@@ -1,56 +1,53 @@
-import React from 'react';
-import { NavLink } from 'react-router';
-import logo from '../../src/assets/logo.png'
-import useAuth from '../hooks/useAuth';
+
+import { Link, NavLink } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import logo from "../assets/logo.png";
 
 const Navbar = () => {
-    const { user, logOut } = useAuth();
-    const NavItems = <>
-        <li><NavLink to="/">Home</NavLink></li>
-        <li><NavLink to="/petListing">PetListing</NavLink></li>
-        <li><NavLink to="/donation">Donation</NavLink></li>
-
-    </>
-
-    const handleLogout = () => {
-        logOut()
-            .then(result => { console.log(result) })
-            .catch(error => console.log(error));
-    }
+    const navLinks = (
+        <>
+            <NavLink to="/" className="nav-link">
+                Home
+            </NavLink>
+            <NavLink to="/petListing" className="nav-link">
+                Pet Listing
+            </NavLink>
+            <NavLink to="/donation" className="nav-link">
+                Donation
+            </NavLink>
+        </>
+    );
 
     return (
-        <div className="navbar bg-base-200 shadow-lg mt-6">
-            <div className="navbar-start">
-                <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                        {NavItems}
-                    </ul>
-                </div>
-                <div className='flex'>
-                    <img className='w-20px h-[60px]' src={logo} alt="" />
-                    <h2 className='mt-2 text-2xl font-bold'>Pet Adopot</h2>
-                </div>
+        <header className="flex items-center justify-between px-4 py-2 bg-black rounded-2xl mt-6 shadow-md">
+            <Link to="/" className="flex items-center gap-2">
+                <img src={logo} alt="logo" className="h-14 text-white" />
+                <span className="text-xl font-bold text-white">Adoption</span>
+            </Link>
+
+            <nav className="hidden md:flex text-white items-center gap-4">{navLinks}</nav>
+
+            <div className="flex items-center gap-4">
+                <Link to="/login">
+                    <Button>Login</Button>
+                </Link>
+                <Link to="/register">
+                    <Button>Register</Button>
+                </Link>
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" size="icon" className="md:hidden">
+                            <Menu className="h-6 w-6" />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="right">
+                        <nav className="grid gap-4 text-white font-medium">{navLinks}</nav>
+                    </SheetContent>
+                </Sheet>
             </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    {NavItems}
-                </ul>
-            </div>
-            <div className="navbar-end gap-4">
-                <input type="checkbox" value="synthwave" className="toggle theme-controller" />
-                {
-                    user ?
-                        <button onClick={handleLogout} className='btn btn-primary text-black'>Log Out</button>
-                        :
-                        <Link to="/login" className='btn btn-primary text-black'>Login</Link>
-                }
-            </div>
-        </div>
+        </header>
     );
 };
 

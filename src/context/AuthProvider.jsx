@@ -9,8 +9,10 @@ import {
     signOut,
     updateProfile,
 } from 'firebase/auth';
-import { auth } from './firebase/firebase.init';
+
 import { AuthContext } from './AuthContext';
+import { auth } from '../firebase/firebase.init';
+
 
 const googleProvider = new GoogleAuthProvider();
 
