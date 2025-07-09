@@ -8,7 +8,7 @@ const MainlayOut = () => {
     return (
         <div className='min-h-screen w-11/12 mx-auto  '>
 
-            <main className='bg-gray-900'>
+            <main >
                 <header className=''>
                     <Navbar></Navbar>
                 </header>
