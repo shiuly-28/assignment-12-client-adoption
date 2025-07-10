@@ -29,7 +29,7 @@ const slides = [
 ];
 const Banner = () => {
     return (
-        <section className="w-full">
+        <section className="w-full mt-5">
             <Swiper
                 modules={[Autoplay, Pagination]}
                 autoplay={{ delay: 3000 }}

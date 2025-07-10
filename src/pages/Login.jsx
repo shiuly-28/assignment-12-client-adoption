@@ -8,10 +8,14 @@ import { useForm } from "react-hook-form"
 import { Link, useLocation, useNavigate } from "react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebase.init";
-// import loginLottie from '../../src/assets/lottees/login.json';
+import loginLottie from '../assets/login.json';
+import Lottie from "lottie-react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
-    const { register, handleSubmit, formState: { errors }, } = useForm();
+    const { register, handleSubmit, } = useForm();
+    const { signIn, googleSignIn } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
     // const { signIn } = useAuth();
@@ -25,6 +29,15 @@ const Login = () => {
             })
             .catch((error) => {
                 console.error("Login error:", error.message);
+            });
+
+        signIn(email, password)
+            .then((result) => {
+                console.log(result);
+                navigate('/');
+            })
+            .catch((error) => {
+                console.log(error);
             });
     };
     const handleGooglogin = () => {
@@ -40,32 +53,38 @@ const Login = () => {
     return (
         <div className="mt-5 p-5 flex items-center justify-center ">
             {/* Lottie Animation */}
-            {/* <div className="w-full lg:w-1/2 flex justify-center">
+            <div className="w-full lg:w-1/2 flex justify-center">
                 <Lottie className="max-w-xs sm:max-w-md md:max-w-lg" animationData={loginLottie} />
-            </div> */}
+            </div>
             <Card className="w-full max-w-sm p-4">
                 <CardHeader>
-                    <CardTitle className="text-center">Please Login</CardTitle>
+                    <CardTitle className="text-center text-2xl font-bold">Please Login</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSumbmit)} className="space-y-4">
                         <div>
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" placeholder="Enter your email" {...register("email", { required: true })} />
+                            <Input id="email" type="email" className="rounded-3xl mt-3" placeholder="Enter your email" {...register("email", { required: true })} />
                         </div>
                         <div>
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" type="password" placeholder="Enter your password" {...register("password", { required: true })} />
+                            <Input id="password" className="rounded-3xl mt-3" type="password" placeholder="Enter your password" {...register("password", { required: true })} />
                         </div>
-                        <Button type="submit" className="w-full">Login</Button>
+                        <Button type="submit" className="w-full rounded-3xl">Login</Button>
 
                         {/* Google Login */}
-                        <button
+                        <Button
+                            variant="outline"
                             onClick={handleGooglogin}
-                            type="button"
-                            className="btn btn-outline btn-secondary w-full flex items-center justify-center rounded-3xl gap-2"
+                            className="w-full flex items-center justify-center rounded-3xl gap-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white p-2"
                         >
-                            <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <svg
+                                aria-label="Google logo"
+                                width="16"
+                                height="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512"
+                            >
                                 <g>
                                     <path d="m0 0H512V512H0" fill="#fff"></path>
                                     <path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path>
@@ -74,8 +93,8 @@ const Login = () => {
                                     <path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"></path>
                                 </g>
                             </svg>
-                            Login with Google
-                        </button>
+                            Register with Google
+                        </Button>
 
                         {/* Register Link */}
                         <p>

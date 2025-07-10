@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
-import { auth } from '../firebase/firebase.init';
+// import { auth } from '../firebase/firebase.init';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,20 @@ const Register = () => {
             .catch((error) => {
                 console.error("Register error:", error.message);
             });
+
+
     };
+
+    // password validation
+    // const hasUppercase = /[A-Z]/.test(password);
+    // const hasLowercase = /[a-z]/.test(password);
+    // const hasMinLength = password.length >= 6;
+
+    // if (!hasUppercase || !hasLowercase || !hasMinLength) {
+    //     toast.error("Password must have uppercase, lowercase & at least 6 characters");
+    //     return;
+    // }
+
     const handleGoogleLogin = () => {
         googleSignIn()
             .then(() => {
@@ -48,7 +61,7 @@ const Register = () => {
             </div>
             <Card className="w-full max-w-sm p-4">
                 <CardHeader>
-                    <CardTitle className="text-center">Please Register</CardTitle>
+                    <CardTitle className="text-center text-2xl font-bold">Please Register</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSumbmit)} className="space-y-4">
@@ -74,9 +87,10 @@ const Register = () => {
                         <Button type="submit" className="w-full">Register</Button>
 
                         {/* Google Sign In */}
-                        <button
+                        <Button
+                            variant="outline"
                             onClick={handleGoogleLogin}
-                            className='text-lg font-semibold text-center btn btn-outline w-full flex items-center rounded-3xl gap-2'
+                            className="w-full flex items-center justify-center rounded-3xl gap-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white p-2"
                         >
                             <svg
                                 aria-label="Google logo"
@@ -94,7 +108,7 @@ const Register = () => {
                                 </g>
                             </svg>
                             Register with Google
-                        </button>
+                        </Button>
 
                         {/* Login Link */}
                         <p className=''>
