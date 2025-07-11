@@ -15,7 +15,7 @@ import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
     const { register, handleSubmit, } = useForm();
-    const { signIn, googleSignIn } = useContext(AuthContext);
+    const { signInWithGoogle } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
     // const { signIn } = useAuth();
@@ -31,17 +31,17 @@ const Login = () => {
                 console.error("Login error:", error.message);
             });
 
-        signIn(email, password)
-            .then((result) => {
-                console.log(result);
-                navigate('/');
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        // signIn(email, password)
+        //     .then((result) => {
+        //         console.log(result);
+        //         navigate('/');
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
     };
     const handleGooglogin = () => {
-        googleSignIn()
+        signInWithGoogle()
             .then((result) => {
                 console.log(result);
                 navigate('/');
@@ -74,6 +74,7 @@ const Login = () => {
 
                         {/* Google Login */}
                         <Button
+                            type="button"
                             variant="outline"
                             onClick={handleGooglogin}
                             className="w-full flex items-center justify-center rounded-3xl gap-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white p-2"

@@ -37,9 +37,12 @@ const HowItWorks = () => {
                 How It Works
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 shadow-md hover:shadow-lime-600 transition duration-300">
                 {steps.map((step, index) => (
-                    <Card key={index} className="bg-muted/40 hover:shadow-md transition">
+                    <Card
+                        key={index}
+                        className="bg-muted/40 transition-all duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-lg cursor-pointer hover:bg-primary/10 active:scale-[0.98]"
+                    >
                         <CardHeader className="flex items-center gap-3">
                             {step.icon}
                             <CardTitle className="text-lg">{step.title}</CardTitle>
@@ -50,6 +53,7 @@ const HowItWorks = () => {
                     </Card>
                 ))}
             </div>
+
         </section>
     );
 };
