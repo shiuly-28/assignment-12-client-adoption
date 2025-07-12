@@ -9,7 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardLayOut from "../layOut/DashboardLayOut";
 import AddPet from "../Dashboard/AddPet";
 import MyPets from "../Dashboard/MyPets";
-import AdoptDetails from "../pages/AdoptDetails";
+import AdoptDetails from "../pages/PetDetails";
 
 export const router = createBrowserRouter([
     {

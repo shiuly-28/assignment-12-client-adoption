@@ -1,32 +1,36 @@
-import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import useAxios from '../hooks/useAxios';
+
 
 const PetListing = () => {
-    const [pets, setPets] = useState([]);
+    const axios = useAxios()
+    const getPets = async () => {
+        const res = await axios.get('http://localhost:5000/pets')
+        return res
+    }
 
-    useEffect(() => {
-        const fetchPets = async () => {
-            try {
-                const res = await fetch('http://localhost:5000/api/pets');
-                const data = await res.json();
-                setPets(data);
-            } catch (error) {
-                console.error('Failed to fetch pets:', error);
-            }
-        };
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ['pets'],
+        queryFn: getPets,
+    })
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+    if (isError) {
+        return <div>Error: {error.message}</div>
+    }
 
-        fetchPets();
-    }, []);
 
     return (
         <div className="container mx-auto py-8">
             <h1 className="text-3xl font-bold mb-8">Pet Listing</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {pets.length > 0 ? (
-                    pets.map((pet) => (
+                {data?.data.length > 0 ? (
+                    data?.data.map((pet) => (
                         <Card key={pet._id}>
                             <CardHeader>
                                 <img
@@ -42,7 +46,7 @@ const PetListing = () => {
                             </CardContent>
                             <CardFooter>
                                 <Link to={`/adoptDetails/${pet._id}`}>
-                                    <Button className="w-full">Adopt Details</Button></Link>
+                                    <Button className="w-full">veiw Details</Button></Link>
                             </CardFooter>
                         </Card>
                     ))
