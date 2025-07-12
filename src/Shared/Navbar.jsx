@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Moon, Sun } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useTheme } from "../hooks/Theame";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import {
     DropdownMenu,
     DropdownMenuTrigger,

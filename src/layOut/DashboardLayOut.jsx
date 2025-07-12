@@ -30,6 +30,11 @@ const DashboardLayout = () => {
                             Add a Pet
                         </Link>
                     </li>
+                    <li>
+                        <Link to="/dashboard/myPets" className="block hover:text-primary">
+                            MyPets
+                        </Link>
+                    </li>
                 </ul>
             </aside>
 
@@ -62,6 +67,11 @@ const DashboardLayout = () => {
                         <li>
                             <Link to="/dashboard/AddAPet" className="block hover:text-primary">
                                 Add a Pet
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard/myPets" className="block hover:text-primary">
+                                MyPets
                             </Link>
                         </li>
                     </ul>

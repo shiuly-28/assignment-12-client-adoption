@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link } from 'react-router';
 
 const PetListing = () => {
     const [pets, setPets] = useState([]);
@@ -8,11 +9,11 @@ const PetListing = () => {
     useEffect(() => {
         const fetchPets = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/pets'); // তোমার backend URL
+                const res = await fetch('http://localhost:5000/api/pets');
                 const data = await res.json();
                 setPets(data);
-            } catch (err) {
-                console.error('Failed to fetch pets:', err);
+            } catch (error) {
+                console.error('Failed to fetch pets:', error);
             }
         };
 
@@ -35,12 +36,13 @@ const PetListing = () => {
                                 />
                             </CardHeader>
                             <CardContent>
-                                <CardTitle>{pet.name}</CardTitle>
-                                <p className="text-gray-500">{pet.age}</p>
-                                <p className="text-gray-500">{pet.location}</p>
+                                <CardTitle>Name: {pet.name}</CardTitle>
+                                <p className="text-gray-500">Age: {pet.age}</p>
+                                <p className="text-gray-500">Location: {pet.location}</p>
                             </CardContent>
                             <CardFooter>
-                                <Button className="w-full">View Details</Button>
+                                <Link to="/adoptDetails">
+                                    <Button className="w-full">Adopt Details</Button></Link>
                             </CardFooter>
                         </Card>
                     ))

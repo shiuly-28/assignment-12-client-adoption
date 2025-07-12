@@ -8,6 +8,8 @@ import Register from "../pages/Register";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayOut from "../layOut/DashboardLayOut";
 import AddPet from "../Dashboard/AddPet";
+import MyPets from "../Dashboard/MyPets";
+import AdoptDetails from "../pages/AdoptDetails";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +35,10 @@ export const router = createBrowserRouter([
             {
                 path: "register",
                 element: <Register></Register>
+            },
+            {
+                path: "adoptDetails",
+                element: <AdoptDetails></AdoptDetails>
             }
         ]
     },
@@ -44,7 +50,15 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: 'AddAPet',
-                Component: AddPet
+                element: <PrivateRoute>
+                    <AddPet></AddPet>
+                </PrivateRoute>
+            },
+            {
+                path: 'myPets',
+                element: <PrivateRoute>
+                    <MyPets></MyPets>
+                </PrivateRoute>
             }
         ]
     }

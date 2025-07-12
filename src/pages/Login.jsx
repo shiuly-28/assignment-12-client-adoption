@@ -31,14 +31,6 @@ const Login = () => {
                 console.error("Login error:", error.message);
             });
 
-        // signIn(email, password)
-        //     .then((result) => {
-        //         console.log(result);
-        //         navigate('/');
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
     };
     const handleGooglogin = () => {
         signInWithGoogle()
