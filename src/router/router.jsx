@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home";
 import MainlayOut from "../layOut/MainlayOut";
 import PetListing from "../pages/PetListing";
-import Donation from "../pages/Donation";
+import Donation from "../pages/DonationCampaigns";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import PrivateRoute from "./PrivateRoute";
@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
                 element: <Register></Register>
             },
             {
-                path: "adoptDetails",
+                path: "/adoptDetails/:id",
                 element: <AdoptDetails></AdoptDetails>
             }
         ]
