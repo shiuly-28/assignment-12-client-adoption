@@ -27,6 +27,7 @@ const MyPets = () => {
             .catch((err) => console.error("Failed to load pets:", err));
     }, [user]);
 
+
     // Handle delete
     const handleDelete = async (id) => {
         const confirm = window.confirm("Are you sure you want to delete this pet?");
@@ -58,7 +59,9 @@ const MyPets = () => {
         } catch (err) {
             console.error("Adopt update failed:", err);
         }
+
     };
+
 
     // Columns
     const columns = [

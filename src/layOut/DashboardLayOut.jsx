@@ -3,7 +3,7 @@
 import { Link, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, Home, Plus, PawPrint, Heart, PenLine, ClipboardList, Edit3, Users } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const DashboardLayout = () => {
@@ -20,19 +20,49 @@ const DashboardLayout = () => {
                 {/* Sidebar Links */}
                 <ul className="space-y-2">
                     <li>
-                        <Link to="/" className="block hover:text-primary">
-                            Home
+                        <Link to="/" className="flex items-center gap-2 hover:text-primary">
+                            <Home size={18} /> Home
                         </Link>
                     </li>
 
                     <li>
-                        <Link to="/dashboard/AddAPet" className="block hover:text-primary">
-                            Add a Pet
+                        <Link to="/dashboard/AddAPet" className="flex items-center gap-2 hover:text-primary">
+                            <Plus size={18} /> Add a Pet
                         </Link>
                     </li>
                     <li>
-                        <Link to="/dashboard/myPets" className="block hover:text-primary">
-                            MyPets
+                        <Link to="/dashboard/myPets" className="flex items-center gap-2 hover:text-primary">
+                            <PawPrint size={18} /> My Pets
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/myDonation" className="flex items-center gap-2 hover:text-primary">
+                            <Heart size={18} /> My Donation
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/updatePet" className="flex items-center gap-2 hover:text-primary">
+                            <PenLine size={18} /> Update Pet
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/createDonation" className="flex items-center gap-2 hover:text-primary">
+                            <Plus size={18} /> Create Donation
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/myDonationCampaigns" className="flex items-center gap-2 hover:text-primary">
+                            <ClipboardList size={18} /> My Donation Campaigns
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/editDonation" className="flex items-center gap-2 hover:text-primary">
+                            <Edit3 size={18} /> Edit Donation
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/adoption" className="flex items-center gap-2 hover:text-primary">
+                            <Users size={18} /> Adoption Request
                         </Link>
                     </li>
                 </ul>
@@ -59,19 +89,18 @@ const DashboardLayout = () => {
                     {/* Sidebar Links */}
                     <ul className="space-y-2">
                         <li>
-                            <Link to="/" className="block hover:text-primary">
-                                Home
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/dashboard/AddAPet" className="block hover:text-primary">
-                                Add a Pet
+                            <Link to="/" className="flex items-center gap-2 hover:text-primary">
+                                <Home size={18} /> Home
                             </Link>
                         </li>
                         <li>
-                            <Link to="/dashboard/myPets" className="block hover:text-primary">
-                                MyPets
+                            <Link to="/dashboard/AddAPet" className="flex items-center gap-2 hover:text-primary">
+                                <Plus size={18} /> Add a Pet
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard/myPets" className="flex items-center gap-2 hover:text-primary">
+                                <PawPrint size={18} /> My Pets
                             </Link>
                         </li>
                     </ul>

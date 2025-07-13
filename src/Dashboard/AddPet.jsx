@@ -13,7 +13,10 @@ const petCategories = [
     { value: "Dog", label: "Dog" },
     { value: "Rabbit", label: "Rabbit" },
     { value: "Fish", label: "Fish" },
+
+
 ];
+
 
 const AddPet = () => {
     const [imageUrl, setImageUrl] = useState("");
@@ -28,62 +31,60 @@ const AddPet = () => {
             shortDesc: "",
             longDesc: "",
         },
-        validate: values => {
+        validate: (values) => {
             const errors = {};
-            if (!values.name) {
-                errors.name = 'Pet name is required';
-            }
-            if (!values.age) {
-                errors.age = 'Age is required';
-            }
-            if (!values.category) {
-                errors.category = 'Pet category is required';
-            }
-            if (!values.location) {
-                errors.location = 'Location is required';
-            }
-            if (!values.shortDesc) {
-                errors.shortDesc = 'Short description is required';
-            }
-            if (!values.longDesc) {
-                errors.longDesc = 'Long description is required';
-            }
+            if (!values.name) errors.name = "Pet name is required";
+            if (!values.age) errors.age = "Age is required";
+            if (!values.category) errors.category = "Pet category is required";
+            if (!values.location) errors.location = "Location is required";
+            if (!values.shortDesc) errors.shortDesc = "Short description is required";
+            if (!values.longDesc) errors.longDesc = "Long description is required";
             return errors;
         },
         onSubmit: async (values) => {
-
             if (!imageUrl) {
-                alert("Please upload an image first.");
+                Swal.fire({
+                    icon: "warning",
+                    title: "Image Missing!",
+                    text: "Please upload a pet image before submitting.",
+                });
                 return;
             }
 
             try {
                 const petData = {
                     ...values,
-                    category: values.category.value, // extract category value
+                    category: values.category.value,
                     image: imageUrl,
-                    // dateAdded: new Date().toISOString(),
-                    // adopted: false,
                 };
 
-                // console.log(petData);
-
                 const res = await axios.post("http://localhost:5000/pets", petData);
-                console.log(res.data);
-                if (res.data.id) {
+
+                if (res.data.insertedId) {
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
-                        title: "Your work has been saved",
+                        title: "Pet Added Successfully!",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2000,
+                        toast: true,
                     });
-                    alert("Pet Added Successfully!");
                     formik.resetForm();
                     setImageUrl("");
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Failed",
+                        text: "Something went wrong while saving.",
+                    });
                 }
             } catch (error) {
                 console.error(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Server Error",
+                    text: "Failed to add pet. Try again later.",
+                });
             }
         },
     });
@@ -91,23 +92,44 @@ const AddPet = () => {
     const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) {
-            alert("No file selected");
+            Swal.fire({
+                icon: "warning",
+                title: "No File Selected",
+                text: "Please choose an image first.",
+            });
             return;
         }
 
         setUploading(true);
         const formData = new FormData();
         formData.append("image", file);
-        const imgbbApiKey = "27cbf434b2a537332489292a928e4d48";
+
+        const imgbbAPI = import.meta.env.VITE_IMGBB_API;
+        console.log(imgbbAPI);
 
         try {
             const res = await axios.post(
-                `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+                `https://api.imgbb.com/1/upload?key=${imgbbAPI}`,
                 formData
             );
-            setImageUrl(res.data.data.display_url);
+            const uploaded = res.data.data.display_url;
+            console.log("Image URL:", uploaded);
+            setImageUrl(uploaded);
+            Swal.fire({
+                icon: "success",
+                title: "Image uploaded successfully!",
+                toast: true,
+                timer: 1500,
+                position: "top-end",
+                showConfirmButton: false,
+            });
         } catch (error) {
-            console.error("Image upload failed", error);
+            console.error("Image upload error:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Upload Failed",
+                text: "Image upload failed. Try again.",
+            });
         } finally {
             setUploading(false);
         }
@@ -116,10 +138,10 @@ const AddPet = () => {
     return (
         <form
             onSubmit={formik.handleSubmit}
-            className="space-y-4 max-w-3xl mx-auto mt-10"
+            className="space-y-4 max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded shadow"
         >
             {/* Pet Image Upload */}
-            <Input type="file" onChange={handleImageUpload} />
+            <Input type="file" accept="image/*" onChange={handleImageUpload} />
             {uploading && <p className="text-blue-500 text-sm">Uploading image...</p>}
             {imageUrl && (
                 <img
@@ -137,9 +159,9 @@ const AddPet = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.name}
             />
-            {formik.touched.name && formik.errors.name ? (
+            {formik.touched.name && formik.errors.name && (
                 <p className="text-red-500">{formik.errors.name}</p>
-            ) : null}
+            )}
 
             {/* Pet Age */}
             <Input
@@ -150,11 +172,11 @@ const AddPet = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.age}
             />
-            {formik.touched.age && formik.errors.age ? (
+            {formik.touched.age && formik.errors.age && (
                 <p className="text-red-500">{formik.errors.age}</p>
-            ) : null}
+            )}
 
-            {/* Pet Category (react-select) */}
+            {/* Pet Category */}
             <Select
                 name="category"
                 options={petCategories}
@@ -163,10 +185,9 @@ const AddPet = () => {
                 value={formik.values.category}
                 placeholder="Select Category"
             />
-            {formik.touched.category && formik.errors.category ? (
+            {formik.touched.category && formik.errors.category && (
                 <p className="text-red-500">{formik.errors.category}</p>
-            ) : null}
-
+            )}
 
             {/* Location */}
             <Input
@@ -176,9 +197,9 @@ const AddPet = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.location}
             />
-            {formik.touched.location && formik.errors.location ? (
+            {formik.touched.location && formik.errors.location && (
                 <p className="text-red-500">{formik.errors.location}</p>
-            ) : null}
+            )}
 
             {/* Short Description */}
             <Input
@@ -188,11 +209,11 @@ const AddPet = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.shortDesc}
             />
-            {formik.touched.shortDesc && formik.errors.shortDesc ? (
+            {formik.touched.shortDesc && formik.errors.shortDesc && (
                 <p className="text-red-500">{formik.errors.shortDesc}</p>
-            ) : null}
+            )}
 
-            {/* Long Description (React Quill) */}
+            {/* Long Description */}
             <ReactQuill
                 theme="snow"
                 name="longDesc"
@@ -201,12 +222,12 @@ const AddPet = () => {
                 onBlur={() => formik.setFieldTouched("longDesc", true)}
                 placeholder="Write detailed info..."
             />
-            {formik.touched.longDesc && formik.errors.longDesc ? (
+            {formik.touched.longDesc && formik.errors.longDesc && (
                 <p className="text-red-500">{formik.errors.longDesc}</p>
-            ) : null}
+            )}
 
-
-            <Button type="submit" className="w-full" disabled={uploading || !formik.isValid}>
+            {/* Submit Button */}
+            <Button type="submit" className="w-full" disabled={uploading}>
                 {uploading ? "Uploading..." : "Add Pet"}
             </Button>
         </form>
