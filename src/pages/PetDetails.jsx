@@ -1,14 +1,15 @@
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { useForm } from "react-hook-form"
-import { useEffect } from "react"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import axios from 'axios';
 import {
     useQuery
-} from '@tanstack/react-query'
+} from '@tanstack/react-query';
 import { useParams } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
+import handleAdopt from "./handleAdopt";
 
 const PetDetails = () => {
     const { register, handleSubmit, reset, setValue } = useForm()
@@ -34,15 +35,7 @@ const PetDetails = () => {
     }, [pet, user, setValue])
 
     const onSubmit = async (data) => {
-        console.log(data);
-        try {
-            await axios.post("/api/adoptions", data)
-            alert("Adoption request submitted successfully!")
-            reset()
-        } catch (error) {
-            console.error("Adoption error", error)
-            alert("Something went wrong.")
-        }
+        handleAdopt(data, reset);
     }
 
     if (isLoading) {
@@ -74,16 +67,20 @@ const PetDetails = () => {
                             <input type="hidden" {...register("petImage")} />
 
                             {/* User Name (disabled) */}
-                            <div>
-                                <Label>Your Name</Label>
-                                <Input type="text" disabled {...register("userName")} />
-                            </div>
+                            <Input
+                                type="text"
+                                disabled
+                                {...register("userName")}
+                                defaultValue={user?.displayName}
+                            />
 
                             {/* Email (disabled) */}
-                            <div>
-                                <Label>Email</Label>
-                                <Input type="email" disabled {...register("email")} />
-                            </div>
+                            <Input
+                                type="email"
+                                disabled
+                                {...register("email")}
+                                defaultValue={user?.email}
+                            />
 
                             {/* Phone Number */}
                             <div>

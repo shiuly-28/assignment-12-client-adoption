@@ -3,13 +3,13 @@ import {
     useReactTable,
     getCoreRowModel,
     getSortedRowModel,
+    getPaginationRowModel,
     flexRender,
     createColumnHelper,
 } from "@tanstack/react-table";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../hooks/useAuth";
-// import useAuthContext from "@/contexts/AuthProvider";
 
 const columnHelper = createColumnHelper();
 
@@ -18,6 +18,7 @@ const MyPets = () => {
     const [myPets, setMyPets] = useState([]);
     const [sorting, setSorting] = useState([]);
 
+    // Fetch user's pets
     useEffect(() => {
         if (!user?.email) return;
         axios
@@ -26,7 +27,7 @@ const MyPets = () => {
             .catch((err) => console.error("Failed to load pets:", err));
     }, [user]);
 
-    // 🔴 Delete Handler
+    // Handle delete
     const handleDelete = async (id) => {
         const confirm = window.confirm("Are you sure you want to delete this pet?");
         if (!confirm) return;
@@ -35,14 +36,14 @@ const MyPets = () => {
             const res = await axios.delete(`http://localhost:5000/api/pets/${id}`);
             if (res.data.deletedCount > 0) {
                 alert("Pet deleted successfully");
-                setMyPets(prev => prev.filter(p => p._id !== id));
+                setMyPets((prev) => prev.filter((p) => p._id !== id));
             }
         } catch (err) {
             console.error("Delete failed:", err);
         }
     };
 
-    // ✅ Adopt Handler
+    // Handle adopt
     const handleAdopt = async (id) => {
         try {
             const res = await axios.patch(`http://localhost:5000/api/pets/${id}`, {
@@ -50,8 +51,8 @@ const MyPets = () => {
             });
             if (res.data.modifiedCount > 0) {
                 alert("Pet marked as adopted");
-                setMyPets(pets =>
-                    pets.map(p => (p._id === id ? { ...p, adopted: true } : p))
+                setMyPets((pets) =>
+                    pets.map((p) => (p._id === id ? { ...p, adopted: true } : p))
                 );
             }
         } catch (err) {
@@ -59,34 +60,38 @@ const MyPets = () => {
         }
     };
 
-    // 📊 Define Columns
+    // Columns
     const columns = [
         columnHelper.accessor((row, index) => index + 1, {
             id: "serial",
             header: "#",
-            cell: info => info.getValue(),
+            cell: (info) => info.getValue(),
         }),
         columnHelper.accessor("name", {
             header: "Pet Name",
-            cell: info => info.getValue(),
+            cell: (info) => info.getValue(),
         }),
         columnHelper.accessor("category", {
             header: "Category",
-            cell: info => info.getValue(),
+            cell: (info) => info.getValue(),
         }),
         columnHelper.accessor("image", {
             header: "Image",
-            cell: info => (
-                <img src={info.getValue()} alt="pet" className="w-12 h-12 object-cover rounded" />
+            cell: (info) => (
+                <img
+                    src={info.getValue()}
+                    alt="pet"
+                    className="w-12 h-12 object-cover rounded"
+                />
             ),
         }),
         columnHelper.accessor("adopted", {
             header: "Status",
-            cell: info =>
+            cell: (info) =>
                 info.getValue() ? (
-                    <span className="text-green-600">Adopted</span>
+                    <span className="text-green-600 font-medium">Adopted</span>
                 ) : (
-                    <span className="text-yellow-600">Not Adopted</span>
+                    <span className="text-yellow-600 font-medium">Not Adopted</span>
                 ),
         }),
         columnHelper.display({
@@ -103,7 +108,11 @@ const MyPets = () => {
                     >
                         Update
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original._id)}>
+                    <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(row.original._id)}
+                    >
                         Delete
                     </Button>
                     {!row.original.adopted && (
@@ -123,16 +132,24 @@ const MyPets = () => {
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        initialState: {
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        },
     });
 
     return (
         <div className="p-4 overflow-x-auto">
             <h2 className="text-2xl font-bold mb-4">🐾 My Added Pets</h2>
+
             <table className="table w-full border text-left">
                 <thead className="bg-gray-100">
-                    {table.getHeaderGroups().map(headerGroup => (
+                    {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
+                            {headerGroup.headers.map((header) => (
                                 <th
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
@@ -148,10 +165,11 @@ const MyPets = () => {
                         </tr>
                     ))}
                 </thead>
+
                 <tbody>
-                    {table.getRowModel().rows.map(row => (
+                    {table.getRowModel().rows.map((row) => (
                         <tr key={row.id} className="border-b">
-                            {row.getVisibleCells().map(cell => (
+                            {row.getVisibleCells().map((cell) => (
                                 <td key={cell.id} className="p-2">
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
@@ -160,6 +178,32 @@ const MyPets = () => {
                     ))}
                 </tbody>
             </table>
+
+            {/* ✅ Pagination controls (shadcn style) */}
+            {table.getPageCount() > 1 && (
+                <div className="flex items-center justify-between mt-6">
+                    <Button
+                        variant="outline"
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        Previous
+                    </Button>
+
+                    <div>
+                        Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of{" "}
+                        <strong>{table.getPageCount()}</strong>
+                    </div>
+
+                    <Button
+                        variant="outline"
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                    >
+                        Next
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };

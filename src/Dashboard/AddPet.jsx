@@ -68,7 +68,7 @@ const AddPet = () => {
 
                 // console.log(petData);
 
-                const res = await axios.post("http://localhost:5000/api/pets", petData);
+                const res = await axios.post("http://localhost:5000/pets", petData);
                 console.log(res.data);
                 if (res.data.id) {
                     Swal.fire({

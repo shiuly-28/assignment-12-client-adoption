@@ -10,6 +10,12 @@ import DashboardLayOut from "../layOut/DashboardLayOut";
 import AddPet from "../Dashboard/AddPet";
 import MyPets from "../Dashboard/MyPets";
 import AdoptDetails from "../pages/PetDetails";
+import UpdatePet from "../Dashboard/UpdatePet";
+import CreateDonation from "../Dashboard/CreateDonation";
+import MyDonationCapaigns from "../Dashboard/MyDonationCapaigns";
+import EditDonation from "../Dashboard/EditDonation";
+import MyDonation from "../Dashboard/MyDonation";
+import Adoption from "../Dashboard/Adoption";
 
 export const router = createBrowserRouter([
     {
@@ -59,7 +65,36 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <MyPets></MyPets>
                 </PrivateRoute>
+            },
+            {
+                path: 'updatePet',
+                element: <PrivateRoute>
+                    <UpdatePet></UpdatePet>
+                </PrivateRoute>
+            },
+            {
+                path: 'createDonation',
+                element: <PrivateRoute>
+                    <CreateDonation></CreateDonation>
+                </PrivateRoute>
+            },
+            {
+                path: 'myDonationCampaigns',
+                element: <MyDonationCapaigns></MyDonationCapaigns>
+            },
+            {
+                path: "editDonation",
+                element: <EditDonation></EditDonation>
+            },
+            {
+                path: "myDonation",
+                element: <MyDonation></MyDonation>
+            },
+            {
+                path: "adoption",
+                element: <Adoption></Adoption>
             }
+
         ]
     }
 ]);
