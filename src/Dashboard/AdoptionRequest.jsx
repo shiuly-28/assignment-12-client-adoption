@@ -1,0 +1,86 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "../hooks/useAuth";
+
+const AdoptionRequests = () => {
+    const { user } = useAuth();
+    const [requests, setRequests] = useState([]);
+
+    // Load requests sent for pets owned by the logged-in user
+    useEffect(() => {
+        axios
+            .get(`http://localhost:5000/api/adoption-requests?ownerEmail=${user?.email}`)
+            .then((res) => setRequests(res.data))
+            .catch((err) => console.error(err));
+    }, [user]);
+
+    const handleAccept = async (id) => {
+        await axios.patch(`http://localhost:5000/api/adoption-requests/${id}/accept`);
+        setRequests(prev => prev.filter(req => req._id !== id));
+    };
+
+    const handleReject = async (id) => {
+        await axios.delete(`http://localhost:5000/api/adoption-requests/${id}/reject`);
+        setRequests(prev => prev.filter(req => req._id !== id));
+    };
+
+    return (
+        <div className="p-4">
+            <h2 className="text-xl font-bold mb-4">Adoption Requests for Your Pets</h2>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>#</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Phone</TableHead>
+                        <TableHead>Location</TableHead>
+                        <TableHead>Actions</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {requests.length > 0 ? (
+                        requests.map((req, index) => (
+                            <TableRow key={req._id}>
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{req.adopterName}</TableCell>
+                                <TableCell>{req.adopterEmail}</TableCell>
+                                <TableCell>{req.adopterPhone}</TableCell>
+                                <TableCell>{req.adopterLocation}</TableCell>
+                                <TableCell>
+                                    <div className="flex gap-2">
+                                        <Button onClick={() => handleAccept(req._id)} className="bg-green-600 hover:bg-green-700 text-white">
+                                            Accept
+                                        </Button>
+                                        <Button onClick={() => handleReject(req._id)} variant="destructive">
+                                            Reject
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan="6" className="text-center text-gray-500">
+                                No adoption requests found.
+                            </TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+        </div>
+    );
+};
+
+export default AdoptionRequests;
+

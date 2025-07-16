@@ -40,11 +40,7 @@ const DashboardLayout = () => {
                             <Heart size={18} /> My Donation
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/dashboard/updatePet" className="flex items-center gap-2 hover:text-primary">
-                            <PenLine size={18} /> Update Pet
-                        </Link>
-                    </li>
+
                     <li>
                         <Link to="/dashboard/createDonation" className="flex items-center gap-2 hover:text-primary">
                             <Plus size={18} /> Create Donation

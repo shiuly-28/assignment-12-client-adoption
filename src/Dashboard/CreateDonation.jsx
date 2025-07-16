@@ -1,235 +1,126 @@
-
-import Select from "react-select";
-import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.snow.css';
-import axios from "axios";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
+import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/hooks/useAuth";
+import axios from "axios";
 import Swal from "sweetalert2";
-import { useState } from "react";
-import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
-const petCategories = [
-    { value: "Cat", label: "Cat" },
-    { value: "Dog", label: "Dog" },
-    { value: "Rabbit", label: "Rabbit" },
-    { value: "Fish", label: "Fish" },
-];
+const imgbbAPI = import.meta.env.VITE_IMGBB_API;
 
 const CreateDonation = () => {
-    const [imageUrl, setImageUrl] = useState("");
-    const [uploading, setUploading] = useState(false);
+    const { user } = useAuth();
+    const { register, handleSubmit, reset } = useForm();
+    const navigate = useNavigate();
 
-    const formik = useFormik({
-        initialValues: {
-            name: "",
-            age: "",
-            category: null,
-            location: "",
-            shortDesc: "",
-            longDesc: "",
-        },
-        validate: (values) => {
-            const errors = {};
-            if (!values.name) errors.name = "Pet name is required";
-            if (!values.age) errors.age = "Age is required";
-            if (!values.category) errors.category = "Pet category is required";
-            if (!values.location) errors.location = "Location is required";
-            if (!values.shortDesc) errors.shortDesc = "Short description is required";
-            if (!values.longDesc) errors.longDesc = "Long description is required";
-            return errors;
-        },
-        onSubmit: async (values) => {
-            if (!imageUrl) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Image Missing!",
-                    text: "Please upload a pet image before submitting.",
-                });
-                return;
-            }
+    const onSubmit = async (data) => {
+        console.log(data);
+        const imageFile = data.petImage[0];
 
-            try {
-                const petData = {
-                    ...values,
-                    category: values.category.value,
-                    image: imageUrl,
-                };
-                console.log(petData);
-                const res = await axios.post("http://localhost:5000/donations", petData);
-
-                if (res.data.insertedId) {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Pet Added Successfully!",
-                        showConfirmButton: false,
-                        timer: 2000,
-                        toast: true,
-                    });
-                    formik.resetForm();
-                    setImageUrl("");
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Failed",
-                        text: "Something went wrong while saving.",
-                    });
-                }
-            } catch (error) {
-                console.error(error);
-                Swal.fire({
-                    icon: "error",
-                    title: "Server Error",
-                    text: "Failed to add pet. Try again later.",
-                });
-            }
-        },
-    });
-
-    const handleImageUpload = async (event) => {
-        const file = event.target.files[0];
-        if (!file) {
-            Swal.fire({
-                icon: "warning",
-                title: "No File Selected",
-                text: "Please choose an image first.",
-            });
-            return;
-        }
-
-        setUploading(true);
         const formData = new FormData();
-        formData.append("image", file);
-
-        const imgbbAPI = import.meta.env.VITE_IMGBB_API;
-        console.log(imgbbAPI);
+        formData.append("image", imageFile);
 
         try {
-            const res = await axios.post(
+            const uploadRes = await axios.post(
                 `https://api.imgbb.com/1/upload?key=${imgbbAPI}`,
                 formData
             );
-            const uploaded = res.data.data.display_url;
-            console.log("Image URL:", uploaded);
-            setImageUrl(uploaded);
-            Swal.fire({
-                icon: "success",
-                title: "Image uploaded successfully!",
-                toast: true,
-                timer: 1500,
-                position: "top-end",
-                showConfirmButton: false,
-            });
+
+            const imageUrl = uploadRes.data.data.url;
+
+            const donationData = {
+                petImage: imageUrl,
+                maxAmount: parseFloat(data.maxAmount),
+                lastDate: data.lastDate,
+                shortDescription: data.shortDescription,
+                longDescription: data.longDescription,
+                createdAt: new Date(),
+                userEmail: user.email,
+                userName: user.displayName,
+            };
+
+            const res = await axios.post(
+                "http://localhost:5000/donations",
+                donationData
+            );
+
+            if (res.data.insertedId) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Campaign Created!",
+                    text: "Your donation campaign has been created successfully.",
+                    toast: true,
+                    position: "top-end",
+                    timer: 3000,
+                    showConfirmButton: false,
+                });
+
+                reset();
+                navigate("/dashboard/my-campaigns");
+            }
         } catch (error) {
-            console.error("Image upload error:", error);
-            Swal.fire({
-                icon: "error",
-                title: "Upload Failed",
-                text: "Image upload failed. Try again.",
-            });
-        } finally {
-            setUploading(false);
+            console.error("Failed to create donation:", error);
+            Swal.fire("Error!", "Something went wrong.", "error");
         }
     };
 
     return (
-        <form
-            onSubmit={formik.handleSubmit}
-            className="space-y-4 max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded shadow"
-        >
-            {/* Pet Image Upload */}
-            <Input type="file" accept="image/*" onChange={handleImageUpload} />
-            {uploading && <p className="text-blue-500 text-sm">Uploading image...</p>}
-            {imageUrl && (
-                <img
-                    src={imageUrl}
-                    alt="pet"
-                    className="w-32 h-32 object-cover rounded-md"
-                />
-            )}
+        <div className="max-w-2xl mx-auto p-6">
+            <h2 className="text-3xl font-bold mb-6">Create Donation Campaign</h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {/* Pet Picture */}
+                <div>
+                    <Label>Pet Picture</Label>
+                    <Input
+                        type="file"
+                        accept="image/*"
+                        {...register("petImage", { required: true })}
+                    />
+                </div>
 
-            {/* Pet Name */}
-            <Input
-                placeholder="Pet Name"
-                name="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-            />
-            {formik.touched.name && formik.errors.name && (
-                <p className="text-red-500">{formik.errors.name}</p>
-            )}
+                {/* Maximum Donation Amount */}
+                <div>
+                    <Label>Maximum Donation Amount (৳)</Label>
+                    <Input
+                        type="number"
+                        {...register("maxAmount", { required: true })}
+                    />
+                </div>
 
-            {/* Pet Age */}
-            <Input
-                type="number"
-                placeholder="Pet Age"
-                name="age"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.age}
-            />
-            {formik.touched.age && formik.errors.age && (
-                <p className="text-red-500">{formik.errors.age}</p>
-            )}
+                {/* Last Date */}
+                <div>
+                    <Label>Last Date of Donation</Label>
+                    <Input
+                        type="date"
+                        {...register("lastDate", { required: true })}
+                    />
+                </div>
 
-            {/* Pet Category */}
-            <Select
-                name="category"
-                options={petCategories}
-                onChange={(option) => formik.setFieldValue("category", option)}
-                onBlur={() => formik.setFieldTouched("category", true)}
-                value={formik.values.category}
-                placeholder="Select Category"
-            />
-            {formik.touched.category && formik.errors.category && (
-                <p className="text-red-500">{formik.errors.category}</p>
-            )}
+                {/* Short Description */}
+                <div>
+                    <Label>Short Description</Label>
+                    <Input
+                        type="text"
+                        {...register("shortDescription", { required: true })}
+                    />
+                </div>
 
-            {/* Location */}
-            <Input
-                placeholder="Location"
-                name="location"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.location}
-            />
-            {formik.touched.location && formik.errors.location && (
-                <p className="text-red-500">{formik.errors.location}</p>
-            )}
+                {/* Long Description */}
+                <div>
+                    <Label>Long Description</Label>
+                    <Textarea
+                        rows="5"
+                        {...register("longDescription", { required: true })}
+                    />
+                </div>
 
-            {/* Short Description */}
-            <Input
-                placeholder="Short Description"
-                name="shortDesc"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.shortDesc}
-            />
-            {formik.touched.shortDesc && formik.errors.shortDesc && (
-                <p className="text-red-500">{formik.errors.shortDesc}</p>
-            )}
-
-            {/* Long Description */}
-            <ReactQuill
-                theme="snow"
-                name="longDesc"
-                value={formik.values.longDesc}
-                onChange={(value) => formik.setFieldValue("longDesc", value)}
-                onBlur={() => formik.setFieldTouched("longDesc", true)}
-                placeholder="Write detailed info..."
-            />
-            {formik.touched.longDesc && formik.errors.longDesc && (
-                <p className="text-red-500">{formik.errors.longDesc}</p>
-            )}
-
-            {/* Submit Button */}
-            <Button type="submit" className="w-full" disabled={uploading}>
-                {uploading ? "Uploading..." : "submit donation campaign"}
-            </Button>
-        </form>
+                <Button type="submit" className="w-full">
+                    Create Campaign
+                </Button>
+            </form>
+        </div>
     );
 };
 

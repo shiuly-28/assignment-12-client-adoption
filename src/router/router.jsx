@@ -2,20 +2,24 @@ import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home";
 import MainlayOut from "../layOut/MainlayOut";
 import PetListing from "../pages/PetListing";
-import Donation from "../pages/DonationCampaigns";
+
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayOut from "../layOut/DashboardLayOut";
 import AddPet from "../Dashboard/AddPet";
-import MyPets from "../Dashboard/MyPets";
+
 import AdoptDetails from "../pages/PetDetails";
 import UpdatePet from "../Dashboard/UpdatePet";
 import CreateDonation from "../Dashboard/CreateDonation";
-import MyDonationCapaigns from "../Dashboard/MyDonationCapaigns";
+import MyDonationCapaigns from "../Dashboard/MyDonationCampaigns";
 import EditDonation from "../Dashboard/EditDonation";
-import MyDonation from "../Dashboard/MyDonation";
-import Adoption from "../Dashboard/Adoption";
+
+import DonationCampaigns from "../pages/DonationCampaigns";
+import MyPets from "../Dashboard/MyPets";
+import AdoptionRequest from "../Dashboard/AdoptionRequest";
+import MyDonations from "../Dashboard/MyDonations";
+
 
 export const router = createBrowserRouter([
     {
@@ -32,7 +36,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "donation",
-                element: <Donation></Donation>
+                element: <DonationCampaigns></DonationCampaigns>
             },
             {
                 path: "login",
@@ -67,7 +71,7 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
-                path: 'updatePet',
+                path: 'updatePet/:id',
                 element: <PrivateRoute>
                     <UpdatePet></UpdatePet>
                 </PrivateRoute>
@@ -88,11 +92,13 @@ export const router = createBrowserRouter([
             },
             {
                 path: "myDonation",
-                element: <MyDonation></MyDonation>
+                element: <MyDonations></MyDonations>
             },
             {
                 path: "adoption",
-                element: <Adoption></Adoption>
+                element: <PrivateRoute>
+                    <AdoptionRequest></AdoptionRequest>
+                </PrivateRoute>
             }
 
         ]

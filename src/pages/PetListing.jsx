@@ -46,7 +46,7 @@ const PetListing = () => {
                             </CardContent>
                             <CardFooter>
                                 <Link to={`/adoptDetails/${pet._id}`}>
-                                    <Button className="w-full">veiw Details</Button></Link>
+                                    <Button className="w-full">veiwing Details</Button></Link>
                             </CardFooter>
                         </Card>
                     ))

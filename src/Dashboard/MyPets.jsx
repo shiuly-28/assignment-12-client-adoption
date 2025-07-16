@@ -7,63 +7,63 @@ import {
     flexRender,
     createColumnHelper,
 } from "@tanstack/react-table";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure"; // ✅ Custom secure axios
+import { Link } from "react-router-dom"; // ✅ Fixed router import
+import axios from "axios";
 
 const columnHelper = createColumnHelper();
 
 const MyPets = () => {
     const { user } = useAuth();
+    const axiosSecure = useAxiosSecure(); // ✅ Using secure axios
     const [myPets, setMyPets] = useState([]);
     const [sorting, setSorting] = useState([]);
 
-    // Fetch user's pets
+    // ✅ Load pets by user's email
     useEffect(() => {
-        if (!user?.email) return;
-        axios
-            .get(`http://localhost:5000/api/mypets?email=${user.email}`)
-            .then((res) => setMyPets(res.data))
-            .catch((err) => console.error("Failed to load pets:", err));
-    }, [user]);
+        const fetchMyPets = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/mypets?email=${user?.email}`);
+                setMyPets(res.data);
+            } catch (error) {
+                console.error("Failed to fetch pets:", error);
+            }
+        };
+
+        if (user?.email) {
+            fetchMyPets();
+        }
+    }, [user?.email]);
 
 
-    // Handle delete
-    const handleDelete = async (id) => {
+    // ✅ Delete pet
+    const handleDelete = (id) => {
         const confirm = window.confirm("Are you sure you want to delete this pet?");
         if (!confirm) return;
 
-        try {
-            const res = await axios.delete(`http://localhost:5000/api/pets/${id}`);
+        axiosSecure.delete(`/api/pets / ${id}`).then((res) => {
             if (res.data.deletedCount > 0) {
                 alert("Pet deleted successfully");
                 setMyPets((prev) => prev.filter((p) => p._id !== id));
             }
-        } catch (err) {
-            console.error("Delete failed:", err);
-        }
+        });
     };
 
-    // Handle adopt
-    const handleAdopt = async (id) => {
-        try {
-            const res = await axios.patch(`http://localhost:5000/api/pets/${id}`, {
-                adopted: true,
-            });
+    // ✅ Mark as adopted
+    const handleAdopt = (id) => {
+        axiosSecure.patch(`/api/pets / ${id}`, { adopted: true }).then((res) => {
             if (res.data.modifiedCount > 0) {
                 alert("Pet marked as adopted");
                 setMyPets((pets) =>
                     pets.map((p) => (p._id === id ? { ...p, adopted: true } : p))
                 );
             }
-        } catch (err) {
-            console.error("Adopt update failed:", err);
-        }
-
+        });
     };
 
-
-    // Columns
+    // ✅ Table columns
     const columns = [
         columnHelper.accessor((row, index) => index + 1, {
             id: "serial",
@@ -102,15 +102,12 @@ const MyPets = () => {
             header: "Actions",
             cell: ({ row }) => (
                 <div className="flex flex-wrap gap-1">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                            window.location.assign(`/dashboard/update-pet/${row.original._id}`)
-                        }
+                    <Link
+                        to={`/dashboard/updatePet/${row.original._id}`}
+                        className="btn btn-outline btn-sm"
                     >
                         Update
-                    </Button>
+                    </Link>
                     <Button
                         variant="destructive"
                         size="sm"
@@ -123,11 +120,12 @@ const MyPets = () => {
                             Mark Adopted
                         </Button>
                     )}
-                </div>
+                </div >
             ),
         }),
     ];
 
+    // ✅ Table setup
     const table = useReactTable({
         data: myPets,
         columns,
@@ -182,7 +180,6 @@ const MyPets = () => {
                 </tbody>
             </table>
 
-            {/* ✅ Pagination controls (shadcn style) */}
             {table.getPageCount() > 1 && (
                 <div className="flex items-center justify-between mt-6">
                     <Button

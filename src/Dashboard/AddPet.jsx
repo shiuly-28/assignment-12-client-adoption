@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useAuth } from "../hooks/useAuth";
 
 const petCategories = [
     { value: "Cat", label: "Cat" },
@@ -21,7 +22,7 @@ const petCategories = [
 const AddPet = () => {
     const [imageUrl, setImageUrl] = useState("");
     const [uploading, setUploading] = useState(false);
-
+    const { user } = useAuth();
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -56,11 +57,12 @@ const AddPet = () => {
                     ...values,
                     category: values.category.value,
                     image: imageUrl,
+                    ownerEmail: user?.email
                 };
 
                 const res = await axios.post("http://localhost:5000/pets", petData);
-
-                if (res.data.insertedId) {
+                console.log(res.data);
+                if (res.data.id) {
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
