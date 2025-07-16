@@ -11,6 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { Link } from "react-router";
 
 const MyDonationCampaigns = () => {
     const { user } = useAuth();
@@ -76,11 +77,11 @@ const MyDonationCampaigns = () => {
                                         Pause
                                     </Button>
 
-                                    <Button
-                                        onClick={() => (window.location.href = `/editDonation/${item._id}`)}
+                                    <Link
+                                        onClick={() => (window.location.href = `/dashboard/editDonation/${item._id}`)}
                                     >
                                         Edit
-                                    </Button>
+                                    </Link>
 
                                     {/* View Donators modal */}
                                     <Dialog>

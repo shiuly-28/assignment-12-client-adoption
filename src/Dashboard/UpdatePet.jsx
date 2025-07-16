@@ -42,10 +42,10 @@ const UpdatePet = () => {
         try {
             const updatedPet = {
                 name: data.name,
-                age: parseInt(data.age), // নিশ্চিত করো যে number হচ্ছে
+                age: parseInt(data.age),
                 shortDesc: data.shortDesc,
                 longDesc: data.longDesc,
-                category: data.category?.value || data.category, // যদি value না থাকে, তাহলে পুরোটাই string ধরো
+                category: data.category?.value || data.category,
             };
 
             await axios.put(`http://localhost:5000/pets/${id}`, updatedPet);

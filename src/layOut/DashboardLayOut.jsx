@@ -51,11 +51,7 @@ const DashboardLayout = () => {
                             <ClipboardList size={18} /> My Donation Campaigns
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/dashboard/editDonation" className="flex items-center gap-2 hover:text-primary">
-                            <Edit3 size={18} /> Edit Donation
-                        </Link>
-                    </li>
+
                     <li>
                         <Link to="/dashboard/adoption" className="flex items-center gap-2 hover:text-primary">
                             <Users size={18} /> Adoption Request

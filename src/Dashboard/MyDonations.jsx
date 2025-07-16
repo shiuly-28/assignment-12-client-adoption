@@ -34,8 +34,8 @@ const MyDonations = () => {
             .get(`http://localhost:5000/donations?email=${user?.email}`)
             .then((res) => {
                 console.log("API response:", res.data);
-                if (Array.isArray(res.data)) {
-                    setDonations(res.data);
+                if (Array.isArray(res.data.campaigns)) {
+                    setDonations(res.data.campaigns);
                 } else {
                     console.warn("Unexpected data type from API");
                     setDonations([]);
@@ -83,12 +83,13 @@ const MyDonations = () => {
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>
                                     <img
-                                        src={item.petImage}
-                                        alt={item.petName}
+                                        src={item.image
+                                        }
+                                        alt={item.name}
                                         className="w-16 h-16 rounded object-cover"
                                     />
                                 </TableCell>
-                                <TableCell>{item.petName}</TableCell>
+                                <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.amount}</TableCell>
                                 <TableCell>
                                     <AlertDialog>

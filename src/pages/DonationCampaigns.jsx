@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const DonationCampaigns = () => {
     const [campaigns, setCampaigns] = useState([]);
@@ -19,7 +20,7 @@ const DonationCampaigns = () => {
             });
 
             const newData = res.data?.campaigns || [];
-
+            console.log(res.data);
             if (newData.length === 0) {
                 setHasMore(false);
             } else {
@@ -62,11 +63,12 @@ const DonationCampaigns = () => {
                             <p className="text-gray-700"><strong>Target:</strong> ${item.maxAmount}</p>
                             <p className="text-gray-700"><strong>Raised:</strong> ${item.totalDonated || 0}</p>
 
-                            <Link to={`/donationDetails/${item._id}`}>
-                                <button className="mt-3 btn btn-primary w-full">
+
+                            <Button asChild className="mt-3 w-full">
+                                <Link to={`/donationDetails/${item._id}`}>
                                     View Details
-                                </button>
-                            </Link>
+                                </Link>
+                            </Button>
                         </div>
                     ))}
                 </div>
