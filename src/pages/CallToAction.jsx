@@ -4,6 +4,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 const callToActionData = [
     {
@@ -26,30 +27,67 @@ const callToActionData = [
     },
 ];
 
+const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i = 1) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+            delay: i * 0.2,
+            duration: 0.6,
+            ease: "easeOut",
+        },
+    }),
+};
+
 const CallToAction = () => {
     return (
-        <section className="my-12 px-4 max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-10">Every Pet Deserves a Home</h2>
+        <section className="my-12 px-4 max-w-6xl mx-auto ">
+            <motion.h2
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-3xl font-bold text-center mb-10"
+            >
+                Every Pet Deserves a Home
+            </motion.h2>
 
             <div className="space-y-6">
                 {callToActionData.map((item, index) => (
-                    <Card
+                    <motion.div
                         key={index}
-                        className={`flex flex-col md:flex-row overflow-hidden border shadow-sm ${index % 2 === 1 ? "md:flex-row-reverse" : ""
-                            }`}
+                        custom={index}
+                        initial="hidden"
+                        whileInView="visible"
+                        whileHover={{ scale: 1.02, boxShadow: "0 8px 20px rgba(0,0,0,0.15)" }}
+                        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        variants={fadeInUp}
+                        className="rounded-xl"
                     >
-                        <div className="md:w-1/3 w-full h-full">
-                            <img src={item.image} alt={item.title} className="object-cover w-full" />
-                        </div>
-                        <div className="flex-1 p-6">
-                            <CardHeader className="p-0 mb-2">
-                                <CardTitle className="text-xl font-semibold">{item.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="p-0 text-muted-foreground">
-                                <p>{item.description}</p>
-                            </CardContent>
-                        </div>
-                    </Card>
+                        <Card
+                            className={`flex flex-col md:flex-row  transform hover:scale-[1.03] cursor-pointer hover:bg-primary/10  hover:shadow-lime-600 transition duration-300 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
+                                }`}
+                        >
+                            <div className="md:w-1/3 w-full h-full">
+                                <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    className="object-cover w-full h-full"
+                                />
+                            </div>
+                            <div className="flex-1 p-6">
+                                <CardHeader className="p-0 mb-2">
+                                    <CardTitle className="text-xl font-semibold">
+                                        {item.title}
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-0 text-muted-foreground">
+                                    <p>{item.description}</p>
+                                </CardContent>
+                            </div>
+                        </Card>
+                    </motion.div>
                 ))}
             </div>
         </section>

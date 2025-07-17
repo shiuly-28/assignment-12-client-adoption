@@ -28,7 +28,7 @@ const WhyAdopt = () => {
         <section className="my-16 px-4 max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-10 text-foreground">Why Adopt?</h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 shadow-md hover:shadow-lime-600 transition duration-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
                 {reasons.map((item, i) => (
                     <motion.div
                         key={i}
@@ -36,7 +36,7 @@ const WhyAdopt = () => {
                         whileTap={{ scale: 0.97 }}
                         transition={{ type: "spring", stiffness: 200, damping: 15 }}
                     >
-                        <Card className="hover:shadow-md transition overflow-hidden">
+                        <Card className="hover:shadow-md  overflow-hidden  hover:shadow-lime-600 transition duration-300">
                             {/* Image */}
                             <img
                                 src={item.image}

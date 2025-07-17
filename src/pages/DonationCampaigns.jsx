@@ -30,15 +30,15 @@ const DonationCampaigns = () => {
         } catch (err) {
             console.error("Error fetching campaigns:", err);
         }
+
+        console.log(campaigns.data);
     };
 
     useEffect(() => {
         fetchCampaigns();
     }, []);
 
-    useEffect(() => {
-        console.log("Campaigns", campaigns);
-    }, [])
+
 
     return (
         <div className="p-4 container mx-auto">
@@ -55,11 +55,11 @@ const DonationCampaigns = () => {
                     {campaigns.map((item) => (
                         <div key={item._id} className="border rounded-xl shadow-md p-4 bg-white">
                             <img
-                                src={item.petImage}
-                                alt={item.petName}
+                                src={item.image}
+                                alt={item.name}
                                 className="w-full h-48 object-cover rounded-md mb-3"
                             />
-                            <h3 className="text-xl font-semibold mb-1">{item.petName}</h3>
+                            <h3 className="text-xl font-semibold mb-1">{item.name}</h3>
                             <p className="text-gray-700"><strong>Target:</strong> ${item.maxAmount}</p>
                             <p className="text-gray-700"><strong>Raised:</strong> ${item.totalDonated || 0}</p>
 

@@ -34,6 +34,7 @@ const EditDonation = () => {
     }, [donationData, setValue]);
 
     const onSubmit = async (data) => {
+        console.log(data);
         try {
             const res = await axios.patch(`http://localhost:5000/donations/${id}`, data);
             if (res.data.modifiedCount > 0) {

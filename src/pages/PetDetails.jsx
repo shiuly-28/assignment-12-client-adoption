@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/dialog";
 
 import handleAdopt from "../utils/handleAdopt";
+// import AdoptModal from "@/components/AdoptModal";
+
 
 const PetDetails = () => {
     const { register, handleSubmit, reset, setValue } = useForm();

@@ -7,14 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const imgbbAPI = import.meta.env.VITE_IMGBB_API;
 
 const CreateDonation = () => {
     const { user } = useAuth();
-    const navigate = useNavigate();
     const [imageFile, setImageFile] = useState(null);
 
     const formik = useFormik({
@@ -74,7 +72,7 @@ const CreateDonation = () => {
                     });
                     resetForm();
                     setImageFile(null);
-                    navigate("/dashboard/my-campaigns");
+                    console.log(res.data);
                 }
             } catch (error) {
                 console.error("Donation error:", error);

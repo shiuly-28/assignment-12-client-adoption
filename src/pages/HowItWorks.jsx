@@ -37,11 +37,11 @@ const HowItWorks = () => {
                 How It Works
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 shadow-md hover:shadow-lime-600 transition duration-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
                 {steps.map((step, index) => (
                     <Card
                         key={index}
-                        className="bg-muted/40 transition-all duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-lg cursor-pointer hover:bg-primary/10 active:scale-[0.98]"
+                        className="bg-muted/40 ease-in-out transform hover:scale-[1.03] hover:shadow-lg cursor-pointer hover:bg-primary/10 active:scale-[0.98] shadow-md hover:shadow-lime-600 transition duration-300"
                     >
                         <CardHeader className="flex items-center gap-3">
                             {step.icon}

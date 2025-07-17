@@ -19,18 +19,19 @@ const AdoptionRequests = () => {
     // Load requests sent for pets owned by the logged-in user
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/api/adoption-requests?ownerEmail=${user?.email}`)
+            .get(`http://localhost:5000/api/adoption?userEmail=${user?.email}`)
+
             .then((res) => setRequests(res.data))
             .catch((err) => console.error(err));
     }, [user]);
 
     const handleAccept = async (id) => {
-        await axios.patch(`http://localhost:5000/api/adoption-requests/${id}/accept`);
+        await axios.patch(`http://localhost:5000/adoption-requests/${id}/accept`);
         setRequests(prev => prev.filter(req => req._id !== id));
     };
 
     const handleReject = async (id) => {
-        await axios.delete(`http://localhost:5000/api/adoption-requests/${id}/reject`);
+        await axios.delete(`http://localhost:5000/adoption-requests/${id}/reject`);
         setRequests(prev => prev.filter(req => req._id !== id));
     };
 

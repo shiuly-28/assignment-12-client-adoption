@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import Select from "react-select";
 import ReactQuill from "react-quill";
 import Swal from "sweetalert2";
-
+import { Button } from "@/components/ui/button"
 
 const categories = [
     { value: "dog", label: "Dog" },
@@ -92,9 +92,9 @@ const UpdatePet = () => {
                     )}
                 />
 
-                <button type="submit" className="btn btn-primary w-full">
+                <Button type="submit" variant="default" className="w-full">
                     Update Pet
-                </button>
+                </Button>
             </form>
         </div>
     );
