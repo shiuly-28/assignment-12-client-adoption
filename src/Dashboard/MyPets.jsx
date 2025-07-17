@@ -37,30 +37,36 @@ const MyPets = () => {
         }
     }, [user?.email]);
 
-
     // ✅ Delete pet
     const handleDelete = (id) => {
         const confirm = window.confirm("Are you sure you want to delete this pet?");
         if (!confirm) return;
 
-        axiosSecure.delete(`/api/pets / ${id}`).then((res) => {
+        axiosSecure.delete(`/api/pets/${id}`).then((res) => {
             if (res.data.deletedCount > 0) {
                 alert("Pet deleted successfully");
                 setMyPets((prev) => prev.filter((p) => p._id !== id));
             }
+        }).catch(err => {
+            console.error("Delete error:", err);
         });
+        console.log("Deleting pet with ID:", id);
     };
 
     // ✅ Mark as adopted
     const handleAdopt = (id) => {
-        axiosSecure.patch(`/api/pets / ${id}`, { adopted: true }).then((res) => {
+        console.log(id);
+        axiosSecure.patch(`/api/pets/${id}`, { adopted: true }).then((res) => {
             if (res.data.modifiedCount > 0) {
                 alert("Pet marked as adopted");
                 setMyPets((pets) =>
                     pets.map((p) => (p._id === id ? { ...p, adopted: true } : p))
                 );
             }
+        }).catch(err => {
+            console.error("Adopt update error:", err);
         });
+
     };
 
     // ✅ Table columns

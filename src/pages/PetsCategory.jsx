@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 const petCategories = [
     {
         name: "Cats",
-        image: "https://i.ibb.co/MymjKGRt/images.jpg",
+        image: "https://i.ibb.co/dsJ3dFSw/images-2.jpg",
         path: "/category/cats",
     },
     {
         name: "Dogs",
-        image: "https://i.ibb.co/BVndyBb1/images.jpg",
+        image: "https://i.ibb.co/LhHPkXWG/Most-Energetic-Dog-Breeds.webp",
         path: "/category/dogs",
     },
     {
