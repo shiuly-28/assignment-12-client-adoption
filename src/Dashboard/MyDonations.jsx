@@ -50,6 +50,7 @@ const MyDonations = () => {
         //     donations();
         // }
     }, [user]);
+    console.log(donations);
 
     const handleRefund = async () => {
         if (!selectedId) return;
