@@ -15,7 +15,7 @@ const DonationCampaigns = () => {
                 params: {
                     page,
                     limit: 6,
-                    sort: 'desc' // ✅ descending latest
+                    sort: 'desc'
                 }
             });
 
@@ -55,7 +55,8 @@ const DonationCampaigns = () => {
                     {campaigns.map((item) => (
                         <div key={item._id} className="border rounded-xl shadow-md p-4 bg-white">
                             <img
-                                src={item.image}
+                                src={item.petImage
+                                }
                                 alt={item.name}
                                 className="w-full h-48 object-cover rounded-md mb-3"
                             />

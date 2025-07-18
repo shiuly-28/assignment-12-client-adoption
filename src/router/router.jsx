@@ -21,6 +21,7 @@ import AdoptionRequest from "../Dashboard/AdoptionRequest";
 import MyDonations from "../Dashboard/MyDonations";
 import DonationDetails from "../pages/DonationDetails";
 import AskDonation from "../Dashboard/AskDonation";
+import DonatePayment from "../Dashboard/DonatePayment";
 
 
 export const router = createBrowserRouter([
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <MyPets></MyPets>
                 </PrivateRoute>
+            },
+            {
+                path: 'donatePayment/:id',
+                element: <DonatePayment></DonatePayment>
             },
             {
                 path: 'updatePet/:id',

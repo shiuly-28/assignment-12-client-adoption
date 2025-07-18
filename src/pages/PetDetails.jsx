@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useFormik } from "formik";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
@@ -14,13 +14,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-
-import handleAdopt from "../utils/handleAdopt";
-// import AdoptModal from "@/components/AdoptModal";
-
+import Swal from "sweetalert2";
 
 const PetDetails = () => {
-    const { register, handleSubmit, reset, setValue } = useForm();
     const { id } = useParams();
     const { user } = useAuth();
     const [open, setOpen] = useState(false);
@@ -33,21 +29,48 @@ const PetDetails = () => {
         },
     });
 
-    useEffect(() => {
-        if (pet && user) {
-            setValue("petId", pet._id);
-            setValue("petName", pet.name);
-            setValue("petImage", pet.image);
-            setValue("userName", user.displayName);
-            setValue("email", user.email);
-        }
-    }, [pet, user, setValue]);
-
-    const onSubmit = async (data) => {
-        console.log("Submitting adoption data:", data);
-        await handleAdopt(data, reset);
-        setOpen(false); // modal বন্ধ করা
-    };
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            petId: pet?._id || "",
+            petName: pet?.name || "",
+            petImage: pet?.image || "",
+            userName: user?.displayName || "",
+            email: user?.email || "",
+            phone: "",
+            address: "",
+        },
+        validate: (values) => {
+            const errors = {};
+            if (!values.phone) errors.phone = "Phone number is required";
+            if (!values.address) errors.address = "Address is required";
+            return errors;
+        },
+        onSubmit: async (values, { resetForm }) => {
+            console.log("Submitting adoption data:", values);
+            try {
+                const response = await axios.post("http://localhost:5000/api/adoptions", values);
+                if (response.data.insertedId) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text: "Adoption request submitted successfully.",
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+                    resetForm();
+                    setOpen(false);
+                }
+            } catch (error) {
+                console.error("Adoption request failed:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong. Please try again.",
+                });
+            }
+        },
+    });
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error loading pet details.</div>;
@@ -72,7 +95,7 @@ const PetDetails = () => {
                     </p>
                     <p className="text-gray-700 mb-4">{pet?.longDescription}</p>
 
-                    {/* ✅ Adopt Button opens modal */}
+                    {/* Adopt Modal */}
                     <Dialog open={open} onOpenChange={setOpen}>
                         <DialogTrigger asChild>
                             <Button className="w-full">Adopt</Button>
@@ -82,31 +105,31 @@ const PetDetails = () => {
                                 <DialogTitle>Adopt {pet?.name}</DialogTitle>
                             </DialogHeader>
 
-                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-                                {/* Hidden Fields */}
-                                <input type="hidden" {...register("petId")} />
-                                <input type="hidden" {...register("petName")} />
-                                <input type="hidden" {...register("petImage")} />
+                            <form onSubmit={formik.handleSubmit} className="space-y-4 mt-4">
+                                {/* Hidden fields for form data */}
+                                <input type="hidden" name="petId" value={formik.values.petId} />
+                                <input type="hidden" name="petName" value={formik.values.petName} />
+                                <input type="hidden" name="petImage" value={formik.values.petImage} />
+                                <input type="hidden" name="userName" value={formik.values.userName} />
+                                <input type="hidden" name="email" value={formik.values.email} />
 
-                                {/* Pet Name (Disabled) */}
+                                {/* Pet Name */}
                                 <div>
                                     <Label>Pet Name</Label>
                                     <Input value={pet?.name} disabled />
                                 </div>
 
-                                {/* Pet Image (Disabled Preview) */}
+                                {/* Pet Image */}
                                 <div>
                                     <Label>Pet Image</Label>
                                     <img src={pet?.image} alt="Pet" className="w-24 rounded" />
                                 </div>
 
-                                {/* User Name (Disabled) */}
+                                {/* User Info */}
                                 <div>
                                     <Label>Your Name</Label>
                                     <Input value={user?.displayName} disabled />
                                 </div>
-
-                                {/* Email (Disabled) */}
                                 <div>
                                     <Label>Email</Label>
                                     <Input value={user?.email} disabled />
@@ -116,20 +139,28 @@ const PetDetails = () => {
                                 <div>
                                     <Label>Phone Number</Label>
                                     <Input
-                                        type="text"
+                                        name="phone"
+                                        value={formik.values.phone}
+                                        onChange={formik.handleChange}
                                         placeholder="Enter your phone number"
-                                        {...register("phone", { required: true })}
                                     />
+                                    {formik.errors.phone && (
+                                        <p className="text-red-500 text-sm">{formik.errors.phone}</p>
+                                    )}
                                 </div>
 
                                 {/* Address */}
                                 <div>
                                     <Label>Address</Label>
                                     <Input
-                                        type="text"
+                                        name="address"
+                                        value={formik.values.address}
+                                        onChange={formik.handleChange}
                                         placeholder="Enter your address"
-                                        {...register("address", { required: true })}
                                     />
+                                    {formik.errors.address && (
+                                        <p className="text-red-500 text-sm">{formik.errors.address}</p>
+                                    )}
                                 </div>
 
                                 <Button type="submit" className="w-full">

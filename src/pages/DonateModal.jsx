@@ -1,14 +1,20 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router";
 
 const DonateModal = ({ campaignId }) => {
     const [amount, setAmount] = useState("");
 
     const handleSubmit = (e) => {
+        // const navigatre = useNavigate();
         e.preventDefault();
         alert(`You donated $${amount} to campaign ID: ${campaignId}`);
         setAmount("");
-        // এখানে তুমি payment integration করতে পারো (Stripe, PayPal ইত্যাদি)
+
     };
+
+    const handleDonate = (id) => {
+        Navigate(`/dashboard/donatePayment/${id}`)
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -26,6 +32,7 @@ const DonateModal = ({ campaignId }) => {
             </label>
 
             <button
+                onClick={() => handleDonate(DonateModal._id)}
                 type="submit"
                 className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
             >
