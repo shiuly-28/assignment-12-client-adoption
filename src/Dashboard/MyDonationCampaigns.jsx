@@ -58,7 +58,7 @@ const MyDonationCampaigns = () => {
                     <tbody>
                         {campaigns.map((item) => (
                             <tr key={item._id} className="border-b">
-                                <td className="p-3">{item.name}</td>
+                                <td className="p-3">{item.petName}</td>
                                 <td className="p-3">${item.maxAmount}</td>
                                 <td className="p-3 w-1/3">
                                     <Progress

@@ -84,13 +84,13 @@ const MyDonations = () => {
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>
                                     <img
-                                        src={item.image
+                                        src={item.petImage
                                         }
-                                        alt={item.name}
+                                        alt={item.petName}
                                         className="w-16 h-16 rounded object-cover"
                                     />
                                 </TableCell>
-                                <TableCell>{item.name}</TableCell>
+                                <TableCell>{item.petName}</TableCell>
                                 <TableCell>{item.amount}</TableCell>
                                 <TableCell>
                                     <AlertDialog>

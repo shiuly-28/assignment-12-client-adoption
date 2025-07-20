@@ -45,6 +45,7 @@ const CreateDonation = () => {
                 const imageUrl = uploadRes.data.data.url;
 
                 const donationData = {
+                    petName: values.petName, // ✅ NEW
                     petImage: imageUrl,
                     maxAmount: parseFloat(values.maxAmount),
                     lastDate: values.lastDate,
@@ -53,6 +54,7 @@ const CreateDonation = () => {
                     createdAt: new Date(),
                     userEmail: user.email,
                     userName: user.displayName,
+                    amount: 0
                 };
 
                 const res = await axios.post(
@@ -85,6 +87,20 @@ const CreateDonation = () => {
         <div className="max-w-2xl mx-auto p-6">
             <h2 className="text-3xl font-bold mb-6">Create Donation Campaign</h2>
             <form onSubmit={formik.handleSubmit} className="space-y-4">
+                {/* Pet Name */}
+                <div>
+                    <Label>Pet Name</Label>
+                    <Input
+                        type="text"
+                        name="petName"
+                        value={formik.values.petName}
+                        onChange={formik.handleChange}
+                    />
+                    {formik.touched.petName && formik.errors.petName && (
+                        <p className="text-red-500">{formik.errors.petName}</p>
+                    )}
+                </div>
+
                 {/* Pet Image */}
                 <div>
                     <Label>Pet Picture</Label>

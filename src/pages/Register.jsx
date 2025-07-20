@@ -13,7 +13,8 @@ import useAxios from "../hooks/useAxios";
 import { updateProfile } from "firebase/auth";
 
 const Register = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    console.log(errors);
     const location = useLocation();
     const navigate = useNavigate();
     const axiosInstance = useAxios();
@@ -22,6 +23,7 @@ const Register = () => {
 
     // Form Submission
     const onSubmit = async (data) => {
+        console.log(data);
         try {
             const result = await createUser(data.email, data.password);
             const user = result.user;
@@ -98,19 +100,19 @@ const Register = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div>
                             <Label htmlFor="name">Name</Label>
-                            <Input id="name" type="text" placeholder="Enter your name" {...register("name", { required: true })} />
+                            <input id="name" type="text" className='rounded-3xl border p-2 w-full' placeholder="Enter your name" {...register("name", { required: true })} />
                         </div>
                         <div>
                             <Label htmlFor="photo">Photo URL</Label>
-                            <Input id="photo" type="url" placeholder="Enter your photo URL" {...register("photo", { required: true })} />
+                            <input id="photo" type="url" className='rounded-3xl border p-2 w-full' placeholder="Enter your photo URL" {...register("photo", { required: true })} />
                         </div>
                         <div>
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" placeholder="Enter your email" {...register("email", { required: true })} />
+                            <input id="email" type="email" className='rounded-3xl border p-2 w-full' placeholder="Enter your email" {...register("email", { required: true })} />
                         </div>
                         <div>
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" type="password" placeholder="Enter your password" {...register("password", { required: true })} />
+                            <input id="password" type="password" className='rounded-3xl border p-2 w-full' placeholder="Enter your password" {...register("password", { required: true })} />
                         </div>
                         <Button type="submit" className="w-full">Register</Button>
 

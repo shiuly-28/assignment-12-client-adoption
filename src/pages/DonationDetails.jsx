@@ -33,7 +33,7 @@ const DonationDetails = () => {
             <h2 className="text-3xl font-bold mb-4 text-center">{campaign.name} Donation Campaign</h2>
 
             <div className="grid md:grid-cols-2 gap-8">
-                <img src={campaign.image
+                <img src={campaign.petImage
                 } alt={campaign.name} className="w-full h-64 object-cover rounded" />
                 <div>
                     <p className="mb-2"><strong>Target:</strong> ${campaign.maxAmount}</p>

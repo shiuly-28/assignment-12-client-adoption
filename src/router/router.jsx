@@ -77,10 +77,7 @@ export const router = createBrowserRouter([
                     <MyPets></MyPets>
                 </PrivateRoute>
             },
-            {
-                path: 'donatePayment/:id',
-                element: <DonatePayment></DonatePayment>
-            },
+
             {
                 path: 'updatePet/:id',
                 element: <PrivateRoute>
@@ -112,6 +109,10 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
+                path: 'donatePayment/:id',
+                element: <DonatePayment></DonatePayment>
+            },
+            {
                 path: "askDonation",
                 element: <AskDonation></AskDonation>
             },
@@ -121,7 +122,6 @@ export const router = createBrowserRouter([
                     <AdoptionRequest></AdoptionRequest>
                 </PrivateRoute>
             },
-
 
         ]
     }

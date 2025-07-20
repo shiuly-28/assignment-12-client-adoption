@@ -56,11 +56,11 @@ const Login = () => {
                     <form onSubmit={handleSubmit(onSumbmit)} className="space-y-4">
                         <div>
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" className="rounded-3xl mt-3" placeholder="Enter your email" {...register("email", { required: true })} />
+                            <input id="email" type="email" className="rounded-3xl border p-2 w-full mt-3" placeholder="Enter your email" {...register("email", { required: true })} />
                         </div>
                         <div>
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" className="rounded-3xl mt-3" type="password" placeholder="Enter your password" {...register("password", { required: true })} />
+                            <input id="password" className="rounded-3xl border p-2 w-full mt-3" type="password" placeholder="Enter your password" {...register("password", { required: true })} />
                         </div>
                         <Button type="submit" className="w-full rounded-3xl">Login</Button>
 

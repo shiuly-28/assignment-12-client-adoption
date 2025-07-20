@@ -23,15 +23,17 @@ const AdoptionRequests = () => {
 
             .then((res) => setRequests(res.data))
             .catch((err) => console.error(err));
+
+        console.log(user);
     }, [user]);
 
     const handleAccept = async (id) => {
-        await axios.patch(`http://localhost:5000/adoption-requests/${id}/accept`);
+        await axios.patch(`http://localhost:5000/api/adoption-requests/${id}/accept`);
         setRequests(prev => prev.filter(req => req._id !== id));
     };
 
     const handleReject = async (id) => {
-        await axios.delete(`http://localhost:5000/adoption-requests/${id}/reject`);
+        await axios.delete(`http://localhost:5000/api/adoption-requests/${id}/reject`);
         setRequests(prev => prev.filter(req => req._id !== id));
     };
 
@@ -54,10 +56,10 @@ const AdoptionRequests = () => {
                         requests.map((req, index) => (
                             <TableRow key={req._id}>
                                 <TableCell>{index + 1}</TableCell>
-                                <TableCell>{req.adopterName}</TableCell>
-                                <TableCell>{req.adopterEmail}</TableCell>
-                                <TableCell>{req.adopterPhone}</TableCell>
-                                <TableCell>{req.adopterLocation}</TableCell>
+                                <TableCell>{req.name}</TableCell>
+                                <TableCell>{req.email}</TableCell>
+                                <TableCell>{req.phone}</TableCell>
+                                <TableCell>{req.location}</TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
                                         <Button onClick={() => handleAccept(req._id)} className="bg-green-600 hover:bg-green-700 text-white">
