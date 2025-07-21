@@ -35,23 +35,24 @@ const CheckoutForm = () => {
         const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
             payment_method: paymentMethod.id,
         });
-
+        console.log(paymentIntent);
         if (confirmError) {
             toast.error(confirmError.message);
             return;
         }
 
         if (paymentIntent.status === 'succeeded') {
-            await axiosSecoure.patch(`/users/subscribe / ${user.email}`);
+            await axiosSecoure.patch(`/users/subscribe/${user.email}`);
             toast.success('Subscription Activated!');
-            navigate('/dashboard/my-profile');
+            // navigate('/dashboard/my-profile');
         }
+
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <CardElement className="p-4 bg-white text-black rounded-md mb-4" />
-            <button className="btn bg-lime-600 text-white" type="submit">Pay $5</button>
+            <button className="btn bg-lime-600 w-full text-center p-2 rounded-xl text-white" type="submit">Pay $5</button>
         </form>
     );
 };

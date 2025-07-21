@@ -62,7 +62,7 @@ const DonationDetails = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {recommended.map((item) => (
                         <div key={item._id} className="border rounded-lg p-4 shadow">
-                            <img src={item.image} alt={item.name} className="w-full h-40 object-cover rounded mb-3" />
+                            <img src={item.petImage} alt={item.name} className="w-full h-40 object-cover rounded mb-3" />
                             <h4 className="font-semibold text-lg">{item.name}</h4>
                             <p>Target: ${item.maxAmount}</p>
                             <p>Raised: ${item.totalDonated || 0}</p>

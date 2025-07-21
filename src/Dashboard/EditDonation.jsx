@@ -1,88 +1,125 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import Swal from "sweetalert2";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
 const EditDonation = () => {
-    const { id } = useParams();
+    const { id } = useParams(); // URL থেকে ID নিচ্ছি
     const navigate = useNavigate();
-    const { register, handleSubmit, setValue } = useForm();
 
-    // fetch single donation campaign by ID
-    const { data: donationData, isLoading } = useQuery({
-        queryKey: ["donation", id],
-        queryFn: async () => {
-            const res = await axios.get(`http://localhost:5000/donations/${id}`);
-            return res.data;
-        },
+    const [donation, setDonation] = useState(null);
+    const [formData, setFormData] = useState({
+        petName: "",
+        amount: "",
+        maxAmount: "",
+        lastDate: "",
+        shortDescription: "",
+        longDescription: "",
     });
 
+    // 🔄 Existing data fetch
     useEffect(() => {
-        if (donationData) {
-            // populate form fields
-            setValue("petName", donationData.petName);
-            setValue("maxAmount", donationData.maxAmount);
-            setValue("shortDescription", donationData.shortDescription);
-            setValue("longDescription", donationData.longDescription);
-        }
-    }, [donationData, setValue]);
-
-    const onSubmit = async (data) => {
-        console.log(data);
-        try {
-            const res = await axios.patch(`http://localhost:5000/donations/${id}`, data);
-            if (res.data.modifiedCount > 0) {
-                Swal.fire({
-                    icon: "success",
-                    title: "Updated!",
-                    text: "Donation campaign updated successfully!",
+        axios
+            .get(`http://localhost:5000/api/donations/${id}`)
+            .then((res) => {
+                setDonation(res.data);
+                setFormData({
+                    petName: res.data.petName,
+                    amount: res.data.amount,
+                    maxAmount: res.data.maxAmount,
+                    lastDate: res.data.lastDate?.slice(0, 10),
+                    shortDescription: res.data.shortDescription,
+                    longDescription: res.data.longDescription,
                 });
-                navigate("/myDonations"); // redirect to my campaigns page
-            }
-        } catch (err) {
-            console.error("Update failed", err);
+            })
+            .catch((error) => {
+                console.error("Failed to fetch donation:", error);
+                alert("Donation data load করতে সমস্যা হচ্ছে।");
+            });
+    }, [id]);
+
+    // 🔄 input change handle
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    // ✅ update submit handle
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put(`http://localhost:5000/api/donations/${id}`, formData);
+            alert("Donation updated successfully!");
+            navigate("/dashboard/all-donations");
+        } catch (error) {
+            console.error("Update failed", error);
+            alert("Update করতে সমস্যা হচ্ছে।");
         }
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (!donation) return <p>Loading donation info...</p>;
 
     return (
-        <div className="max-w-2xl mx-auto py-10 px-4">
-            <h2 className="text-2xl font-bold mb-6 text-center">✏️ Edit Donation Campaign</h2>
-
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div>
-                    <Label>Pet Name</Label>
-                    <Input type="text" {...register("petName", { required: true })} />
-                </div>
-
-                <div>
-                    <Label>Max Donation Amount ($)</Label>
-                    <Input type="number" {...register("maxAmount", { required: true })} />
-                </div>
-
-                <div>
-                    <Label>Short Description</Label>
-                    <Textarea rows="2" {...register("shortDescription", { required: true })} />
-                </div>
-
-                <div>
-                    <Label>Long Description</Label>
-                    <Textarea rows="4" {...register("longDescription", { required: true })} />
-                </div>
-
-                <Button type="submit" className="w-full">
-                    Update Campaign
-                </Button>
+        <div className="max-w-xl mx-auto mt-10 p-5 border rounded shadow bg-white">
+            <h2 className="text-2xl font-semibold mb-4">Edit Donation</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                    type="text"
+                    name="petName"
+                    value={formData.petName}
+                    onChange={handleChange}
+                    placeholder="Pet Name"
+                    className="input border p-2 rounded w-full"
+                    required
+                />
+                <input
+                    type="number"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleChange}
+                    placeholder="Amount Collected"
+                    className="input border p-2 rounded  w-full"
+                    required
+                />
+                <input
+                    type="number"
+                    name="maxAmount"
+                    value={formData.maxAmount}
+                    onChange={handleChange}
+                    placeholder="Target Amount"
+                    className="input border p-2 rounded  w-full"
+                    required
+                />
+                <input
+                    type="date"
+                    name="lastDate"
+                    value={formData.lastDate}
+                    onChange={handleChange}
+                    className="input border p-2 rounded  w-full"
+                    required
+                />
+                <textarea
+                    name="shortDescription"
+                    value={formData.shortDescription}
+                    onChange={handleChange}
+                    placeholder="Short Description"
+                    className=" border p-2 rounded  w-full"
+                    required
+                />
+                <textarea
+                    name="longDescription"
+                    value={formData.longDescription}
+                    onChange={handleChange}
+                    placeholder="Long Description"
+                    className=" border rounded  p-2 w-full"
+                    required
+                />
+                <button type="submit" className="btn bg-lime-400 border p-2 rounded w-full">
+                    Update Donation
+                </button>
             </form>
         </div>
     );
 };
 
 export default EditDonation;
+
+

@@ -31,7 +31,7 @@ const MyDonationCampaigns = () => {
 
     // Handle Pause
     const handlePause = async (id) => {
-        await axios.patch(`http://localhost:5000/donations/pause/${id}`);
+        await axios.patch(`http://localhost:5000/donations/toggle-pause/${id}`);
         refetch();
     };
 
@@ -71,10 +71,10 @@ const MyDonationCampaigns = () => {
                                 </td>
                                 <td className="p-3 space-x-2">
                                     <Button
-                                        variant="destructive"
+                                        variant={item.paused ? "default" : "destructive"}
                                         onClick={() => handlePause(item._id)}
                                     >
-                                        Pause
+                                        {item.paused ? "Unpause" : "Pause"}
                                     </Button>
 
                                     <Link

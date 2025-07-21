@@ -22,6 +22,7 @@ import MyDonations from "../Dashboard/MyDonations";
 import DonationDetails from "../pages/DonationDetails";
 import AskDonation from "../Dashboard/AskDonation";
 import DonatePayment from "../Dashboard/DonatePayment";
+import AllUsers from "../Dashboard/Admin/AllUsers";
 
 
 export const router = createBrowserRouter([
@@ -122,6 +123,11 @@ export const router = createBrowserRouter([
                     <AdoptionRequest></AdoptionRequest>
                 </PrivateRoute>
             },
+
+            {
+                path: "allUsers",
+                element: <AllUsers></AllUsers>
+            }
 
         ]
     }
