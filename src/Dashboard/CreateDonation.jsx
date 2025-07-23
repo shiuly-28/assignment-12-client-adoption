@@ -4,10 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/hooks/useAuth";
+
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import useAuth from "../hooks/useAuth";
 
 const imgbbAPI = import.meta.env.VITE_IMGBB_API;
 

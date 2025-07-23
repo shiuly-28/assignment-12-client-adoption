@@ -10,7 +10,8 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
+
 
 const AdoptionRequests = () => {
     const { user } = useAuth();
@@ -57,7 +58,7 @@ const AdoptionRequests = () => {
                             <TableRow key={req._id}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{req.name}</TableCell>
-                                <TableCell>{req.email}</TableCell>
+                                <TableCell>{req.ownerEmail}</TableCell>
                                 <TableCell>{req.phone}</TableCell>
                                 <TableCell>{req.location}</TableCell>
                                 <TableCell>

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -11,22 +11,21 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Link } from "react-router";
-import useAuth from "../hooks/useAuth";
+import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
-const MyDonationCampaigns = () => {
+const AllDonations = () => {
     const { user } = useAuth();
+    const queryClient = useQueryClient();
     const [donors, setDonors] = useState([]);
     const [selectedPet, setSelectedPet] = useState(null);
 
-    // Fetch my campaigns
-    const { data: campaigns = [], refetch } = useQuery({
-        queryKey: ["myCampaigns", user?.email],
+    // Fetch all result
+    const { data: result = [], refetch } = useQuery({
+        queryKey: ["allCampaigns"],
         queryFn: async () => {
-            const res = await axios.get("http://localhost:5000/donations", {
-                params: { email: user?.email },
-            });
-            return res.data?.campaigns || [];
+            const res = await axios.get("http://localhost:5000/donations/all");
+            return res.data || [];
         },
     });
 
@@ -42,9 +41,23 @@ const MyDonationCampaigns = () => {
         setDonors(res.data);
     };
 
+    // Handle Delete
+    const mutation = useMutation({
+        mutationFn: (id) => {
+            return axios.delete(`http://localhost:5000/donations/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries("allCampaigns");
+        },
+    });
+
+    const handleDelete = (id) => {
+        mutation.mutate(id);
+    };
+
     return (
         <div className="container mx-auto p-6">
-            <h2 className="text-2xl font-bold mb-6 text-center">📋 My Donation Campaigns</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">📋 All Donation Campaigns</h2>
 
             <div className="overflow-x-auto">
                 <table className="table w-full border">
@@ -57,7 +70,7 @@ const MyDonationCampaigns = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {campaigns.map((item) => (
+                        {result.map((item) => (
                             <tr key={item._id} className="border-b">
                                 <td className="p-3">{item.petName}</td>
                                 <td className="p-3">${item.maxAmount}</td>
@@ -79,10 +92,17 @@ const MyDonationCampaigns = () => {
                                     </Button>
 
                                     <Link
-                                        onClick={() => (window.location.href = `/dashboard/editDonation/${item._id}`)}
+                                        to={`/dashboard/editDonation/${item._id}`}
                                     >
-                                        Edit
+                                        <Button>Edit</Button>
                                     </Link>
+
+                                    <Button
+                                        variant="destructive"
+                                        onClick={() => handleDelete(item._id)}
+                                    >
+                                        Delete
+                                    </Button>
 
                                     {/* View Donators modal */}
                                     <Dialog>
@@ -125,4 +145,4 @@ const MyDonationCampaigns = () => {
     );
 };
 
-export default MyDonationCampaigns;
+export default AllDonations;

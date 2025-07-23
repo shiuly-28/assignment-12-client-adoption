@@ -20,9 +20,15 @@ import MyPets from "../Dashboard/MyPets";
 import AdoptionRequest from "../Dashboard/AdoptionRequest";
 import MyDonations from "../Dashboard/MyDonations";
 import DonationDetails from "../pages/DonationDetails";
-import AskDonation from "../Dashboard/AskDonation";
+
 import DonatePayment from "../Dashboard/DonatePayment";
 import AllUsers from "../Dashboard/Admin/AllUsers";
+import DashBoardHome from "../Dashboard/DashBoardHome";
+import AdminRoute from "../hooks/AdminRoute";
+
+import Forbiden from "../pages/Forbiden/Forbiden";
+import AllPets from "../Dashboard/Admin/AllPets";
+import AllDonations from "../Dashboard/Admin/AllDonations";
 
 
 export const router = createBrowserRouter([
@@ -73,6 +79,11 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
+                path: 'dashBoardHome',
+                element: <DashBoardHome></DashBoardHome>
+            },
+
+            {
                 path: 'myPets',
                 element: <PrivateRoute>
                     <MyPets></MyPets>
@@ -113,22 +124,28 @@ export const router = createBrowserRouter([
                 path: 'donatePayment/:id',
                 element: <DonatePayment></DonatePayment>
             },
-            {
-                path: "askDonation",
-                element: <AskDonation></AskDonation>
-            },
+
             {
                 path: "adoption",
-                element: <PrivateRoute>
-                    <AdoptionRequest></AdoptionRequest>
-                </PrivateRoute>
+                element: <AdoptionRequest></AdoptionRequest>
+            },
+            {
+                path: 'fobiden',
+                element: <Forbiden></Forbiden>
             },
 
             {
-                path: "allUsers",
-                element: <AllUsers></AllUsers>
-            }
-
+                path: "all-users",
+                element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
+            },
+            {
+                path: "all-pets",
+                element: <AdminRoute><AllPets /></AdminRoute>
+            },
+            {
+                path: "all-donations",
+                element: <AdminRoute><AllDonations /></AdminRoute>
+            },
         ]
     }
 ]);

@@ -11,9 +11,11 @@ import { toast } from 'react-toastify';
 import { AuthContext } from "../context/AuthContext";
 import useAxios from "../hooks/useAxios";
 import { updateProfile } from "firebase/auth";
+import useUserRole from '../hooks/userUseRole';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { refetch } = useUserRole()
     console.log(errors);
     const location = useLocation();
     const navigate = useNavigate();
@@ -44,6 +46,7 @@ const Register = () => {
 
             const userRes = await axiosInstance.post('/users', userinfo);
             console.log(userRes.data);
+            refetch()
 
             if (userRes.data.inserted) {
                 toast.success("Registration successful!");

@@ -20,7 +20,8 @@ import {
     AlertDialogCancel,
     AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { useAuth } from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
+
 
 const MyDonations = () => {
     const { user } = useAuth();

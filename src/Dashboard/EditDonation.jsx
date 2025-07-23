@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const EditDonation = () => {
-    const { id } = useParams(); // URL থেকে ID নিচ্ছি
-    const navigate = useNavigate();
+    const { id } = useParams();
+    // const navigate = useNavigate();
 
     const [donation, setDonation] = useState(null);
     const [formData, setFormData] = useState({
@@ -33,7 +33,7 @@ const EditDonation = () => {
             })
             .catch((error) => {
                 console.error("Failed to fetch donation:", error);
-                alert("Donation data load করতে সমস্যা হচ্ছে।");
+                alert("Donation data load ");
             });
     }, [id]);
 
@@ -48,10 +48,10 @@ const EditDonation = () => {
         try {
             await axios.put(`http://localhost:5000/api/donations/${id}`, formData);
             alert("Donation updated successfully!");
-            navigate("/dashboard/all-donations");
+            // navigate("/dashboard/all-donations");
         } catch (error) {
             console.error("Update failed", error);
-            alert("Update করতে সমস্যা হচ্ছে।");
+            alert("Update Error");
         }
     };
 

@@ -1,37 +1,14 @@
 // src/layouts/DashboardLayout.jsx
 
 import { Link, Outlet } from "react-router-dom";
-import { useContext } from "react";
-
-import useAdmin from "@/hooks/useAdmin"; // custom hook to check if user is admin
-
-import {
-    Button,
-} from "@/components/ui/button";
-import {
-    Sheet,
-    SheetTrigger,
-    SheetContent,
-} from "@/components/ui/sheet";
-import {
-    Menu,
-    Home,
-    Plus,
-    PawPrint,
-    Heart,
-    ClipboardList,
-    Users,
-    UserCog,
-    DollarSign,
-} from "lucide-react";
-
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import { Menu, Home, Plus, PawPrint, Heart, PenLine, ClipboardList, Edit3, Users } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { AuthContext } from "../context/AuthContext";
+import useUserRole from "../hooks/userUseRole";
 
 const DashboardLayout = () => {
-    const { user } = useContext(AuthContext);
-    const [isAdmin] = useAdmin(); // true or false
-
+    const { role, roleLoading } = useUserRole();
     return (
         <div className="min-h-screen flex">
             {/* Desktop Sidebar */}
@@ -50,44 +27,50 @@ const DashboardLayout = () => {
                         </Link>
                     </li>
 
-                    {!isAdmin ? (
+                    <li>
+                        <Link to="/dashboard/AddAPet" className="flex items-center gap-2 hover:text-primary">
+                            <Plus size={18} /> Add a Pet
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/myPets" className="flex items-center gap-2 hover:text-primary">
+                            <PawPrint size={18} /> My Pets
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/createDonation" className="flex items-center gap-2 hover:text-primary">
+                            <Plus size={18} /> Create Donation
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/myDonation" className="flex items-center gap-2 hover:text-primary">
+                            <Heart size={18} /> My Donation
+                        </Link>
+                    </li>
+
+
+                    <li>
+                        <Link to="/dashboard/myDonationCampaigns" className="flex items-center gap-2 hover:text-primary">
+                            <ClipboardList size={18} /> My Donation Campaigns
+                        </Link>
+                    </li>
+
+
+                    {!roleLoading && role !== 'admin' &&
                         <>
-                            <li>
-                                <Link to="/dashboard/AddAPet" className="flex items-center gap-2 hover:text-primary">
-                                    <Plus size={18} /> Add a Pet
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/dashboard/myPets" className="flex items-center gap-2 hover:text-primary">
-                                    <PawPrint size={18} /> My Pets
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/dashboard/createDonation" className="flex items-center gap-2 hover:text-primary">
-                                    <Plus size={18} /> Create Donation
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/dashboard/myDonation" className="flex items-center gap-2 hover:text-primary">
-                                    <Heart size={18} /> My Donation
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/dashboard/myDonationCampaigns" className="flex items-center gap-2 hover:text-primary">
-                                    <ClipboardList size={18} /> My Donation Campaigns
-                                </Link>
-                            </li>
                             <li>
                                 <Link to="/dashboard/adoption" className="flex items-center gap-2 hover:text-primary">
                                     <Users size={18} /> Adoption Request
                                 </Link>
                             </li>
+
                         </>
-                    ) : (
+                    }
+                    {!roleLoading && role === 'admin' &&
                         <>
                             <li>
-                                <Link to="/dashboard/manage-users" className="flex items-center gap-2 hover:text-primary">
-                                    <UserCog size={18} /> Manage Users
+                                <Link to="/dashboard/all-users" className="flex items-center gap-2 hover:text-primary">
+                                    <Users size={18} /> All Users
                                 </Link>
                             </li>
                             <li>
@@ -96,17 +79,12 @@ const DashboardLayout = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/dashboard/all-campaigns" className="flex items-center gap-2 hover:text-primary">
-                                    <ClipboardList size={18} /> All Campaigns
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/dashboard/all-donations" className="flex items-center gap-2 hover:text-primary">
-                                    <DollarSign size={18} /> All Donations
+                                    <Heart size={18} /> All Donations
                                 </Link>
                             </li>
                         </>
-                    )}
+                    }
                 </ul>
             </aside>
 
@@ -127,7 +105,6 @@ const DashboardLayout = () => {
                         <img src={logo} alt="logo" className="h-10" />
                         <span className="text-lg font-bold">Adoption</span>
                     </Link>
-                    {/* Same Sidebar as above (you can optionally copy sidebar links here too) */}
                 </SheetContent>
             </Sheet>
 

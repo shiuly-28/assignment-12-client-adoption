@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-const initialTestimonials = [
+const testimonials = [
     {
         name: "Shamima Akter",
         photo: "https://i.ibb.co/gBCmCcY/download.jpg",
@@ -13,18 +12,21 @@ const initialTestimonials = [
         photo: "https://i.ibb.co/XxqfyfwZ/images.jpg",
         text: "Thanks to PetAdopt, I found my best friend Max — a playful labrador. Highly recommend adopting instead of buying!",
     },
+    {
+        name: "Nasrin Sultana",
+        photo: "https://i.ibb.co/rSNdJ1P/download.jpg",
+        text: "Adopting from PetAdopt was the best decision ever. My kitten Mimi is the most adorable companion!",
+    },
+    {
+        name: "Tanvir Hasan",
+        photo: "https://i.ibb.co/CpHxg8jT/images.jpg",
+        text: "I never thought adopting a dog could be this easy. PetAdopt guided me through the whole journey!",
+    },
 ];
 
 const Testimonials = () => {
-    const [testimonials, setTestimonials] = useState(initialTestimonials);
-
-    const handleSwipe = (index, direction) => {
-        const updated = testimonials.filter((_, i) => i !== index);
-        setTestimonials(updated);
-    };
-
     return (
-        <section className="my-20 px-4 max-w-5xl mx-auto">
+        <section className="my-20 px-4 max-w-6xl mx-auto overflow-hidden">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -34,45 +36,35 @@ const Testimonials = () => {
                 Happy Adoption Stories
             </motion.h2>
 
-            <div className="grid md:grid-cols-2 gap-6">
-                <AnimatePresence>
-                    {testimonials.map((t, i) => (
-                        <motion.div
-                            key={t.name}
-                            drag="x"
-                            dragConstraints={{ left: 0, right: 0 }}
-                            onDragEnd={(e, info) => {
-                                if (info.offset.x > 150) {
-                                    handleSwipe(i, "right");
-                                } else if (info.offset.x < -150) {
-                                    handleSwipe(i, "left");
-                                }
-                            }}
-                            whileHover={{ scale: 1.03 }}
-                            whileTap={{ scale: 0.97 }}
-                            initial={{ opacity: 0, x: 100 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -100 }}
-                            transition={{ duration: 0.4 }}
-                            className="rounded-xl cursor-grab active:cursor-grabbing"
-                        >
-                            <Card className="p-4 bg-muted/40  hover:shadow-lime-600 transition duration-300">
-                                <CardHeader className="flex items-center gap-4  ">
-                                    <img
-                                        src={t.photo}
-                                        alt={t.name}
-                                        className="w-14 h-14 rounded-full object-cover border"
-                                    />
-                                    <h4 className="text-lg font-semibold">{t.name}</h4>
-                                </CardHeader>
-                                <CardContent className="text-muted-foreground text-sm mt-2">
-                                    <p>{t.text}</p>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    ))}
-                </AnimatePresence>
-            </div>
+            {/* Marquee Wrapper */}
+            <motion.div
+                className="flex gap-6 w-max"
+                animate={{ x: ["0%", "-100%"] }}
+                transition={{
+                    repeat: Infinity,
+                    duration: 20,
+                    ease: "linear",
+                }}
+            >
+                {[...testimonials, ...testimonials].map((t, i) => (
+                    <Card
+                        key={i}
+                        className="min-w-[300px] max-w-sm p-4 bg-muted/40 mx-2 shadow-md hover:shadow-lime-600 transition duration-300"
+                    >
+                        <CardHeader className="flex items-center gap-4">
+                            <img
+                                src={t.photo}
+                                alt={t.name}
+                                className="w-14 h-14 rounded-full object-cover border"
+                            />
+                            <h4 className="text-lg font-semibold">{t.name}</h4>
+                        </CardHeader>
+                        <CardContent className="text-muted-foreground text-sm mt-2">
+                            <p>{t.text}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </motion.div>
         </section>
     );
 };

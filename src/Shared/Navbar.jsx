@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Moon, Sun } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useTheme } from "../hooks/Theame";
-import { useAuth } from "../hooks/useAuth";
+
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -13,11 +13,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
     const { theme, setTheme } = useTheme();
     const { user, logOut } = useAuth();
-
+    console.log(user);
     const navLinks = (
         <>
             <NavLink

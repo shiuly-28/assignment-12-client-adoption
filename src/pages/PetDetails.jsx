@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
-import { useAuth } from "@/hooks/useAuth";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -15,6 +15,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import Swal from "sweetalert2";
+import useAuth from "../hooks/useAuth";
 
 const PetDetails = () => {
     const { id } = useParams();
@@ -29,16 +30,19 @@ const PetDetails = () => {
         },
     });
 
+    const adoptionRecquest = () => {
+        alert("adoption reques")
+    }
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            petId: pet?._id || "",
-            petName: pet?.name || "",
-            petImage: pet?.image || "",
-            userName: user?.displayName || "",
-            email: user?.email || "",
+            pet,
+            userEmail: user?.email,
+
             phone: "",
             address: "",
+
         },
         validate: (values) => {
             const errors = {};
@@ -46,10 +50,13 @@ const PetDetails = () => {
             if (!values.address) errors.address = "Address is required";
             return errors;
         },
+
+
         onSubmit: async (values, { resetForm }) => {
-            console.log("Submitting adoption data:", values);
+            // console.log("Submitting adoption data:", values);
             try {
-                const response = await axios.post("http://localhost:5000/api/adoptions", values);
+                const response = await axios.post("http://localhost:5000/adoptionRequests", values);
+                console.log(response);
                 if (response.data.insertedId) {
                     Swal.fire({
                         icon: "success",

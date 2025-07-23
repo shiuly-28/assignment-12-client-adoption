@@ -3,12 +3,12 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion"; // 👈 Import motion
 
 const DonationCampaigns = () => {
     const [campaigns, setCampaigns] = useState([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-
 
     useEffect(() => {
         loadInitialCampaigns();
@@ -19,7 +19,7 @@ const DonationCampaigns = () => {
             const res = await axios.get(`http://localhost:5000/donations`, {
                 params: {
                     page: 1,
-                    limit: 6,
+                    // limit: 6,
                     sort: 'desc'
                 }
             });
@@ -32,7 +32,6 @@ const DonationCampaigns = () => {
             console.error("Error fetching campaigns:", err);
         }
     };
-
 
     const loadMoreCampaigns = async () => {
         try {
@@ -59,7 +58,7 @@ const DonationCampaigns = () => {
     return (
         <div className="p-4 container mx-auto">
             <h2 className="text-2xl font-bold text-center mb-6">🐾 All Donation Campaigns</h2>
-            <h1>Items: {campaigns.length}</h1>
+
 
             <InfiniteScroll
                 dataLength={campaigns.length}
@@ -70,7 +69,14 @@ const DonationCampaigns = () => {
             >
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {campaigns.map((item) => (
-                        <div key={item._id} className="border rounded-xl shadow-md p-4 bg-white">
+                        <motion.div
+                            key={item._id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            whileHover={{ scale: 1.03, boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" }}
+                            transition={{ duration: 0.3 }}
+                            className="border rounded-xl shadow-md p-4 bg-white"
+                        >
                             <img
                                 src={item.petImage}
                                 alt={item.name}
@@ -84,7 +90,7 @@ const DonationCampaigns = () => {
                                     View Details
                                 </Link>
                             </Button>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </InfiniteScroll>

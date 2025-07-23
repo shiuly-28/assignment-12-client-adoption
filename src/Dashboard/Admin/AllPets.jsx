@@ -9,34 +9,29 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 
-import useAxiosSecure from "../hooks/useAxiosSecure"; // ✅ Custom secure axios
+import useAxiosSecure from "../../hooks/useAxiosSecure"; // ✅ Custom secure axios
 import { Link } from "react-router-dom"; // ✅ Fixed router import
 import axios from "axios";
-import useAuth from "../hooks/useAuth";
 
 const columnHelper = createColumnHelper();
 
-const MyPets = () => {
-    const { user } = useAuth();
+const AllPets = () => {
     const axiosSecure = useAxiosSecure(); // ✅ Using secure axios
-    const [myPets, setMyPets] = useState([]);
+    const [allPets, setAllPets] = useState([]);
     const [sorting, setSorting] = useState([]);
 
-    // ✅ Load pets by user's email
+    // ✅ Load all pets
     useEffect(() => {
-        const fetchMyPets = async () => {
+        const fetchAllPets = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/mypets?email=${user?.email}`);
-                setMyPets(res.data);
+                const res = await axios.get(`http://localhost:5000/api/pets`);
+                setAllPets(res.data);
             } catch (error) {
                 console.error("Failed to fetch pets:", error);
             }
         };
-
-        if (user?.email) {
-            fetchMyPets();
-        }
-    }, [user?.email]);
+        fetchAllPets();
+    }, []);
 
     // ✅ Delete pet
     const handleDelete = (id) => {
@@ -46,29 +41,28 @@ const MyPets = () => {
         axiosSecure.delete(`/api/pets/${id}`).then((res) => {
             if (res.data.deletedCount > 0) {
                 alert("Pet deleted successfully");
-                setMyPets((prev) => prev.filter((p) => p._id !== id));
+                setAllPets((prev) => prev.filter((p) => p._id !== id));
             }
         }).catch(err => {
             console.error("Delete error:", err);
         });
-        console.log("Deleting pet with ID:", id);
     };
 
     // ✅ Mark as adopted
     const handleAdopt = (id) => {
-        console.log(id);
         axiosSecure.patch(`/api/pets/${id}`, { adopted: true }).then((res) => {
             if (res.data.modifiedCount > 0) {
                 alert("Pet marked as adopted");
-                setMyPets((pets) =>
+                setAllPets((pets) =>
                     pets.map((p) => (p._id === id ? { ...p, adopted: true } : p))
                 );
             }
         }).catch(err => {
             console.error("Adopt update error:", err);
         });
-
     };
+    
+    
 
     // ✅ Table columns
     const columns = [
@@ -122,11 +116,9 @@ const MyPets = () => {
                     >
                         Delete
                     </Button>
-                    {!row.original.adopted && (
-                        <Button size="sm" onClick={() => handleAdopt(row.original._id)}>
-                            Mark Adopted
-                        </Button>
-                    )}
+                    <Button size="sm" onClick={() => handleAdopt(row.original._id)} disabled={row.original.adopted}>
+                        Mark Adopted
+                    </Button>
                 </div >
             ),
         }),
@@ -134,7 +126,7 @@ const MyPets = () => {
 
     // ✅ Table setup
     const table = useReactTable({
-        data: myPets,
+        data: allPets,
         columns,
         state: { sorting },
         onSortingChange: setSorting,
@@ -151,7 +143,7 @@ const MyPets = () => {
 
     return (
         <div className="p-4 overflow-x-auto">
-            <h2 className="text-2xl font-bold mb-4">🐾 My Added Pets</h2>
+            <h2 className="text-2xl font-bold mb-4">🐾 All Pets</h2>
 
             <table className="table w-full border text-left">
                 <thead className="bg-gray-100">
@@ -215,4 +207,4 @@ const MyPets = () => {
     );
 };
 
-export default MyPets;
+export default AllPets;

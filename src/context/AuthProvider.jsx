@@ -12,6 +12,7 @@ import {
 
 import { AuthContext } from './AuthContext';
 import { auth } from '../firebase/firebase.init';
+// import useUserRole from '../hooks/userUseRole';
 
 
 const googleProvider = new GoogleAuthProvider();
@@ -19,6 +20,8 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    // const { role } = useUserRole()
+    // console.log(role);
 
     // Create User
     const createUser = (email, password) => {
