@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router';
-
-import toast from "react-hot-toast";
-
+import Swal from 'sweetalert2'; // ✅ import sweetalert2
 import useAxiosSecure from '../hooks/useAxiosSecure';
 import useAuth from '../hooks/useAuth';
 
@@ -11,49 +9,83 @@ const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const { user } = useAuth();
-    const axiosSecoure = useAxiosSecure();
+    const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(false);
+    const [paymentSuccess, setPaymentSuccess] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        const res = await axiosSecoure.post('/payment/create-payment-intent', { amount: 5 }); // $5
-        const clientSecret = res.data.clientSecret;
+        try {
+            const res = await axiosSecure.post('/payment/create-payment-intent', { amount: 5 });
+            const clientSecret = res.data.clientSecret;
 
-        const card = elements.getElement(CardElement);
-        if (!card) {
-            toast.error("Card element not found");
-            return;
+            const card = elements.getElement(CardElement);
+            if (!card) {
+                Swal.fire('Error', 'Card element not found', 'error');
+                setLoading(false);
+                return;
+            }
+
+            const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card });
+            if (error) {
+                Swal.fire('Payment Error', error.message, 'error');
+                setLoading(false);
+                return;
+            }
+
+            const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: paymentMethod.id,
+            });
+
+            if (confirmError) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your payment is successfull",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                setLoading(false);
+                return;
+            }
+
+            if (paymentIntent.status === 'succeeded') {
+                await axiosSecure.patch(`/users/subscribe/${user.email}`);
+                setPaymentSuccess(true);
+
+                // ✅ Show success alert using SweetAlert2
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your payment is successfull",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                // Optional: Navigate to profile/dashboard
+                // navigate('/dashboard/my-profile');
+            }
+        } catch (err) {
+            Swal.fire('Error', 'Something went wrong', 'error');
+        } finally {
+            setLoading(false);
         }
-
-        const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card });
-
-        if (error) {
-            toast.error(error.message);
-            return;
-        }
-
-        const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: paymentMethod.id,
-        });
-        console.log(paymentIntent);
-        if (confirmError) {
-            toast.error(confirmError.message);
-            return;
-        }
-
-        if (paymentIntent.status === 'succeeded') {
-            await axiosSecoure.patch(`/users/subscribe/${user.email}`);
-            toast.success('Subscription Activated!');
-            // navigate('/dashboard/my-profile');
-        }
-
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <CardElement className="p-4 bg-white text-black rounded-md mb-4" />
-            <button className="btn bg-lime-600 w-full text-center p-2 rounded-xl text-white" type="submit">Pay $5</button>
+            <button
+                className={`btn w-full p-2 rounded-xl text-white ${paymentSuccess ? 'bg-green-500' : 'bg-lime-600'}`}
+                type="submit"
+                disabled={loading || paymentSuccess}
+            >
+                {paymentSuccess ? "Paid ✅" : loading ? "Processing..." : "Pay $5"}
+            </button>
         </form>
     );
 };

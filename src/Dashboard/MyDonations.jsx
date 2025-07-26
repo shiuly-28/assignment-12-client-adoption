@@ -21,6 +21,7 @@ import {
     AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 
 const MyDonations = () => {
@@ -56,7 +57,7 @@ const MyDonations = () => {
     const handleRefund = async () => {
         if (!selectedId) return;
         try {
-            await axios.delete(`http://localhost:5000/api/refund/${selectedId}`);
+            await useAxiosSecure.delete(`http://localhost:5000/api/refund/${selectedId}`);
             setDonations((prev) => prev.filter((d) => d._id !== selectedId));
             setSelectedId(null);
         } catch (error) {

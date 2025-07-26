@@ -49,6 +49,7 @@
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
+    "use-debounce": "^10.0.5",
     "yup": "^1.6.1"
   },
   "devDependencies": {

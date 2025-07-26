@@ -121,17 +121,13 @@ const AllDonations = () => {
                                                 <DialogTitle>Donors of {selectedPet}</DialogTitle>
                                             </DialogHeader>
                                             <ul className="mt-4 space-y-2">
-                                                {donors.length ? (
-                                                    donors.map((donor, idx) => (
-                                                        <li key={idx} className="border p-2 rounded">
-                                                            <p><strong>Name:</strong> {donor.name}</p>
-                                                            <p><strong>Email:</strong> {donor.email}</p>
-                                                            <p><strong>Amount:</strong> ${donor.amount}</p>
-                                                        </li>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-gray-500">No donors yet.</p>
-                                                )}
+
+                                                <li className="border p-2 rounded">
+                                                    <p><strong>Name:</strong> {donors.petName}</p>
+                                                    <p><strong>Email:</strong> {donors.userEmail}</p>
+                                                    <p><strong>Amount:</strong> ${donors.amount}</p>
+                                                </li>
+
                                             </ul>
                                         </DialogContent>
                                     </Dialog>

@@ -9,31 +9,31 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 
-import useAxiosSecure from "../../hooks/useAxiosSecure"; // ✅ Custom secure axios
-import { Link } from "react-router-dom"; // ✅ Fixed router import
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const columnHelper = createColumnHelper();
 
 const AllPets = () => {
-    const axiosSecure = useAxiosSecure(); // ✅ Using secure axios
+    const axiosSecure = useAxiosSecure();
     const [allPets, setAllPets] = useState([]);
     const [sorting, setSorting] = useState([]);
 
-    // ✅ Load all pets
+
     useEffect(() => {
         const fetchAllPets = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/pets`);
-                setAllPets(res.data);
+                const res = await axios.get(`http://localhost:5000/pets`);
+                setAllPets(res.data.pets);
             } catch (error) {
                 console.error("Failed to fetch pets:", error);
             }
         };
         fetchAllPets();
     }, []);
+    console.log(allPets);
 
-    // ✅ Delete pet
     const handleDelete = (id) => {
         const confirm = window.confirm("Are you sure you want to delete this pet?");
         if (!confirm) return;
@@ -61,8 +61,8 @@ const AllPets = () => {
             console.error("Adopt update error:", err);
         });
     };
-    
-    
+
+
 
     // ✅ Table columns
     const columns = [

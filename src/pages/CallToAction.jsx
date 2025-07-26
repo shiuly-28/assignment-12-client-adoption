@@ -10,19 +10,19 @@ const callToActionData = [
     {
         title: "Adoption Begins with Compassion",
         description:
-            "A simple moment—a glance between hopeful eyes and a hug—can start the beginning of something life-changing. Through adoption, we bring love, care, and shelter to pets who truly deserve a second chance. Make a difference today by opening your heart and home.",
+            "A simple moment — a glance between two people and a dog — can be the beginning of something life-changing. That gentle nudge of a nose, that hopeful look from behind the fence, speaks of days spent waiting for someone to care. Compassion is what turns that moment into a new beginning. When you choose to adopt, you're giving more than shelter. You're giving warmth, attention, laughter, late-night walks, and quiet cuddles. You're saying, “You matter.” And in return, you receive a kind of loyalty and love that’s pure, uncomplicated, and endlessly thankful. Compassion doesn’t end at the shelter door — it comes home with you, wagging its tail and forever grateful",
         image: "https://i.ibb.co/6cbcmPbS/download.jpg",
     },
     {
         title: "More Than a Pet — A Bond for Life",
         description:
-            "Pets aren't just companions; they're family. When you adopt, you gain not just a friend, but a lifelong bond. Each wag, purr, and nuzzle reminds us that love doesn't speak one language — it just needs a little kindness and a home.",
+            "The soft rustle of fur against your shirt, the warmth of a quiet purr — these aren’t just small comforts. They’re the signs of a bond forming that words can’t fully describe. When you adopt a pet, you’re not just bringing an animal into your home — you’re opening your life to a companion who listens in silence, comforts without judgment, and remains by your side through every season. That rescued cat you hold in your arms may have come from uncertainty, but in your embrace, it finds peace, safety, and belonging. This is more than ownership. It’s partnership. It’s the promise that no matter what life brings, you won’t have to face it alone — because now you have each other.",
         image: "https://i.ibb.co/JwkdFjmb/images.jpg",
     },
     {
         title: "Don't Shop. Adopt Hope.",
         description:
-            "Millions of pets are waiting in shelters. Some have faced trauma, some are abandoned, but all are full of hope. Don’t buy when you can adopt and give hope a home. Join our movement to change lives — one adoption at a time.",
+            "A simple moment — a glance between two people and a dog — can be the beginning of something life-changing. That gentle nudge of a nose, that hopeful look from behind the fence, speaks of days spent waiting for someone to care. Compassion is what turns that moment into a new beginning. When you choose to adopt, you're giving more than shelter. You're giving warmth, attention, laughter, late-night walks, and quiet cuddles. You're saying, “You matter.” And in return, you receive a kind of loyalty and love that’s pure, uncomplicated, and endlessly thankful. Compassion doesn’t end at the shelter door — it comes home with you, wagging its tail and forever grateful.",
         image: "https://i.ibb.co/XZpFrgVm/images.jpg",
     },
 ];
@@ -42,7 +42,7 @@ const fadeInUp = {
 
 const CallToAction = () => {
     return (
-        <section className="my-12 px-4 max-w-6xl mx-auto ">
+        <section className="my-12 px-4  w-11/12 mx-auto ">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -73,7 +73,7 @@ const CallToAction = () => {
                                 <img
                                     src={item.image}
                                     alt={item.title}
-                                    className="object-cover w-full h-full"
+                                    className="object-cover w-full p-5 h-full "
                                 />
                             </div>
                             <div className="flex-1 p-6">

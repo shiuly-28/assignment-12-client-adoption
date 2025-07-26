@@ -36,12 +36,14 @@ const DonationDetails = () => {
                 <img src={campaign.petImage
                 } alt={campaign.name} className="w-full h-64 object-cover rounded" />
                 <div>
-                    <p className="mb-2"><strong>Target:</strong> ${campaign.maxAmount}</p>
-                    <p className="mb-2"><strong>Raised:</strong> ${campaign.totalDonated || 0}</p>
-                    <p className="mb-2"><strong>Last Date:</strong> {campaign.lastDate}</p>
-                    <p className="mb-4">{campaign.longDescription}</p>
+                    <p className="p-1"><strong className="text-gray-700">🧾Added by: </strong >{campaign.userEmail}</p>
+                    <p className="p-1"><strong className="text-gray-700">📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
+                    <p className="p-1"><strong className="text-gray-700">📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
 
-                    {/* ✅ Donate Now Modal */}
+                    <p className="mb-2"><strong className="text-gray-700">Posted:</strong> {campaign.lastDate}</p>
+                    <p className="mb-4"><strong className="text-gray-700"></strong>{campaign.longDescription}</p>
+
+                    {/*  Donate Now Modal */}
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button className="w-full">Donate Now</Button>
@@ -56,16 +58,18 @@ const DonationDetails = () => {
                 </div>
             </div>
 
-            {/* ✅ Recommended Campaigns */}
+            {/* Recommended Campaigns */}
             <div className="mt-12">
                 <h3 className="text-2xl font-semibold mb-4">Recommended Donation Campaigns</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {recommended.map((item) => (
                         <div key={item._id} className="border rounded-lg p-4 shadow">
-                            <img src={item.petImage} alt={item.name} className="w-full h-40 object-cover rounded mb-3" />
-                            <h4 className="font-semibold text-lg">{item.name}</h4>
-                            <p>Target: ${item.maxAmount}</p>
-                            <p>Raised: ${item.totalDonated || 0}</p>
+                            <img src={item.petImage} alt={item.
+                                petName} className="w-full h-40 object-cover rounded mb-3" />
+                            <h4 className="font-bold text-2xl p-3">{item.
+                                petName}</h4>
+                            <p className="p-1"><strong className="text-gray-700">📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
+                            <p className="p-1"><strong className="text-gray-700">📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
                             <Button className="mt-2 w-full" asChild>
                                 <a href={`/donationDetails/${item._id}`}>View Details</a>
                             </Button>

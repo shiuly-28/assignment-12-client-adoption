@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const DonateModal = ({ campaignId }) => {
-    const [amount, setAmount] = useState(""); // ❗এই লাইনে ভুল ছিল
+    const [amount, setAmount] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate(`/dashboard/donatePayment/${campaignId}?amount=${amount}`); // ✅ amount পাঠাও query param এ
+        navigate(`/dashboard/donatePayment/${campaignId}?amount=${amount}`);
     };
 
     return (

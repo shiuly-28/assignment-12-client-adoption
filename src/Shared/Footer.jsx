@@ -16,16 +16,16 @@ const Footer = () => {
                         <h3 className="font-semibold mb-2 text-white">Links</h3>
                         <ul className="space-y-1">
                             <li><a href="/" className="hover:underline">Home</a></li>
-                            <li><a href="/pets" className="hover:underline">Pet Listing</a></li>
-                            <li><a href="/campaigns" className="hover:underline">Donations</a></li>
-                            <li><a href="/contact" className="hover:underline">Contact</a></li>
+                            <li><a href="/petListing" className="hover:underline">Pet Listing</a></li>
+                            <li><a href="/donation" className="hover:underline">Donations</a></li>
+                            <li><a href="/myPets" className="hover:underline">MyPets</a></li>
                         </ul>
                     </div>
 
                     <div>
                         <h3 className="font-semibold mb-2 text-white">Contact</h3>
-                        <p>Email: info@petadopt.com</p>
-                        <p>Phone: +880 1234-567890</p>
+                        <p>Email: shulybd1245@gmail.com</p>
+                        <p>Phone: +880 1757321528</p>
                     </div>
                 </div>
 

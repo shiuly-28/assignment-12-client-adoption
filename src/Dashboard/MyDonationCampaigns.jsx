@@ -16,10 +16,9 @@ import useAuth from "../hooks/useAuth";
 
 const MyDonationCampaigns = () => {
     const { user } = useAuth();
-    const [donors, setDonors] = useState([]);
+    const [donors, setDonors] = useState({});
     const [selectedPet, setSelectedPet] = useState(null);
 
-    // Fetch my campaigns
     const { data: campaigns = [], refetch } = useQuery({
         queryKey: ["myCampaigns", user?.email],
         queryFn: async () => {
@@ -30,16 +29,20 @@ const MyDonationCampaigns = () => {
         },
     });
 
-    // Handle Pause
     const handlePause = async (id) => {
         await axios.patch(`http://localhost:5000/donations/toggle-pause/${id}`);
         refetch();
     };
 
-    // Handle View Donators
     const fetchDonors = async (id) => {
-        const res = await axios.get(`http://localhost:5000/donations/donors/${id}`);
-        setDonors(res.data);
+        try {
+            const res = await axios.get(`http://localhost:5000/donations/donors/${id}`);
+            console.log(res);
+            setDonors(res.data || {});
+        } catch (error) {
+            console.error("Failed to fetch donors", error);
+            setDonors({}); // fallback
+        }
     };
 
     return (
@@ -79,42 +82,46 @@ const MyDonationCampaigns = () => {
                                     </Button>
 
                                     <Link
-                                        onClick={() => (window.location.href = `/dashboard/editDonation/${item._id}`)}
+                                        onClick={() =>
+                                            (window.location.href = `/dashboard/editDonation/${item._id}`)
+                                        }
                                     >
                                         Edit
                                     </Link>
 
-                                    {/* View Donators modal */}
+                                    {/* ✅ Donor Modal */}
                                     <Dialog>
                                         <DialogTrigger asChild>
                                             <Button
                                                 onClick={() => {
                                                     setSelectedPet(item.petName);
-                                                    fetchDonors(item._id);
+                                                    fetchDonors(item._id); // fetch before open
                                                 }}
                                             >
-                                                View Donators
+                                                View Donator
                                             </Button>
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
-                                                <DialogTitle>Donors of {selectedPet}</DialogTitle>
+                                                <DialogTitle>Donator of {selectedPet}</DialogTitle>
                                             </DialogHeader>
-                                            <ul className="mt-4 space-y-2">
-                                                {donors.length ? (
-                                                    donors.map((donor, idx) => (
-                                                        <li key={idx} className="border p-2 rounded">
-                                                            <p><strong>Name:</strong> {donor.name}</p>
-                                                            <p><strong>Email:</strong> {donor.email}</p>
-                                                            <p><strong>Amount:</strong> ${donor.amount}</p>
-                                                        </li>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-gray-500">No donors yet.</p>
-                                                )}
-                                            </ul>
+
+
+                                            <div className="mt-4 border p-3 rounded bg-gray-50 space-y-1">
+                                                <p>
+                                                    <strong>Name:</strong> {donors.petNameame}
+                                                </p>
+                                                <p>
+                                                    <strong>Email:</strong> {donors.userEmail}
+                                                </p>
+                                                <p>
+                                                    <strong>Amount:</strong> ${donors.amount}
+                                                </p>
+                                            </div>
+
                                         </DialogContent>
                                     </Dialog>
+
                                 </td>
                             </tr>
                         ))}

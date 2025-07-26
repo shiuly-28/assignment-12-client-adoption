@@ -7,7 +7,9 @@ import { motion } from 'framer-motion';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useDebounce } from 'use-debounce';
+import { FaGem, FaLocationDot } from "react-icons/fa6";
 
 const PetSkeletonCard = () => (
     <Card className="h-full flex flex-col justify-between">
@@ -29,9 +31,11 @@ const PAGE_SIZE = 6;
 
 const PetListing = () => {
     const axios = useAxios();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearchQuery] = useDebounce(searchQuery, 500); // Debounce for 500ms
 
     const fetchPets = async ({ pageParam = 1 }) => {
-        const res = await axios.get(`/pets?page=${pageParam}&limit=${PAGE_SIZE}`);
+        const res = await axios.get(`/pets?page=${pageParam}&limit=${PAGE_SIZE}&search=${debouncedSearchQuery}`);
         return res.data;
     };
 
@@ -43,13 +47,18 @@ const PetListing = () => {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
+        refetch,
     } = useInfiniteQuery({
-        queryKey: ['pets'],
+        queryKey: ['pets', debouncedSearchQuery],
         queryFn: fetchPets,
         getNextPageParam: (lastPage) => {
             return lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined;
         },
     });
+
+    useEffect(() => {
+        refetch();
+    }, [debouncedSearchQuery, refetch]);
 
     const { ref, inView } = useInView();
 
@@ -61,7 +70,18 @@ const PetListing = () => {
 
     return (
         <div className="container mx-auto py-8">
-            <h1 className="text-3xl font-bold mb-8 text-center">🐾 Pet Listing</h1>
+            <h1 className="text-4xl font-bold mb-4 text-center">🐾 Available Pets</h1>
+            <p className='text-center text-gray-500'>Find your perfect furry (or feathery) companion</p>
+            <hr />
+            <div className="mb-6 mt-5">
+                <input
+                    type="text"
+                    placeholder="🔍 Search pets by name or location..."
+                    className="w-100 p-3 border  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {isLoading ? (
@@ -99,14 +119,16 @@ const PetListing = () => {
                                         />
                                     </CardHeader>
                                     <CardContent>
-                                        <CardTitle>Name: {pet.name}</CardTitle>
-                                        <p className="text-gray-500">Age: {pet.age}</p>
-                                        <p className="text-gray-500">Location: {pet.location}</p>
+                                        <CardTitle className="font-bold text-2xl p-2">Name: {pet.name}</CardTitle>
+                                        <div className='p-2'>
+                                            <p className="text-gray-500 flex"><FaGem /><span className='font-bold'>Age: </span> {pet.age}</p>
+                                            <p className="text-gray-500 flex"><FaLocationDot /><span className='font-bold'>Location: </span> {pet.location}</p>
+                                        </div>
                                     </CardContent>
                                     <CardFooter>
                                         <Button asChild className="w-full">
                                             <Link to={`/adoptDetails/${pet._id}`}>
-                                                Viewing Details
+                                                View Details
                                             </Link>
                                         </Button>
                                     </CardFooter>

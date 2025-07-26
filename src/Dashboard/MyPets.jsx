@@ -9,24 +9,24 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 
-import useAxiosSecure from "../hooks/useAxiosSecure"; // ✅ Custom secure axios
-import { Link } from "react-router-dom"; // ✅ Fixed router import
-import axios from "axios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
+
 import useAuth from "../hooks/useAuth";
 
 const columnHelper = createColumnHelper();
 
 const MyPets = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxiosSecure(); // ✅ Using secure axios
+    const axiosSecure = useAxiosSecure();
     const [myPets, setMyPets] = useState([]);
     const [sorting, setSorting] = useState([]);
 
-    // ✅ Load pets by user's email
+    //  Load pets by user's email
     useEffect(() => {
         const fetchMyPets = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/mypets?email=${user?.email}`);
+                const res = await axiosSecure.get(`/mypets?email=${user?.email}`);
                 setMyPets(res.data);
             } catch (error) {
                 console.error("Failed to fetch pets:", error);

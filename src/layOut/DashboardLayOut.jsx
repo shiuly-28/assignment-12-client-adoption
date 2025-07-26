@@ -54,20 +54,13 @@ const DashboardLayout = () => {
                             <ClipboardList size={18} /> My Donation Campaigns
                         </Link>
                     </li>
-
-
-                    {!roleLoading && role !== 'admin' &&
+                    {!roleLoading && role === 'admin' &&
                         <>
                             <li>
                                 <Link to="/dashboard/adoption" className="flex items-center gap-2 hover:text-primary">
                                     <Users size={18} /> Adoption Request
                                 </Link>
                             </li>
-
-                        </>
-                    }
-                    {!roleLoading && role === 'admin' &&
-                        <>
                             <li>
                                 <Link to="/dashboard/all-users" className="flex items-center gap-2 hover:text-primary">
                                     <Users size={18} /> All Users

@@ -48,9 +48,9 @@ const Banner = () => {
                                     {slide.title}
                                 </h2>
                                 <p className="mb-4 text-sm md:text-lg">
-                                    Discover loving pets waiting for you
+                                    Adoption is a compassionate and life-changing process where a person or family legally takes responsibility for raising a child or pet that is not biologically their own.
                                 </p>
-                                <Button variant="secondary">Explore Now</Button>
+
                             </div>
                         </div>
                     </SwiperSlide>

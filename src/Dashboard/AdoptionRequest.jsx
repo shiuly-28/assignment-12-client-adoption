@@ -11,31 +11,47 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 
 const AdoptionRequests = () => {
     const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
     const [requests, setRequests] = useState([]);
 
     // Load requests sent for pets owned by the logged-in user
     useEffect(() => {
-        axios
-            .get(`http://localhost:5000/api/adoption?userEmail=${user?.email}`)
-
-            .then((res) => setRequests(res.data))
-            .catch((err) => console.error(err));
-
-        console.log(user);
+        if (user?.email) {
+            axiosSecure.get(`/api/adoption`)
+                .then((res) => setRequests(res.data))
+                .catch((err) => console.error(err));
+        }
     }, [user]);
-
+    console.log(user);
     const handleAccept = async (id) => {
         await axios.patch(`http://localhost:5000/api/adoption-requests/${id}/accept`);
         setRequests(prev => prev.filter(req => req._id !== id));
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Accept is succesfully",
+            showConfirmButton: false,
+            timer: 1500
+        });
     };
 
     const handleReject = async (id) => {
-        await axios.delete(`http://localhost:5000/api/adoption-requests/${id}/reject`);
+        await axios.patch(`http://localhost:5000/api/adoption-requests/${id}/reject`);
         setRequests(prev => prev.filter(req => req._id !== id));
+        Swal
+            .fire({
+                position: "top-end",
+                icon: "success",
+                title: "Reject is successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
     };
 
     return (
@@ -45,10 +61,13 @@ const AdoptionRequests = () => {
                 <TableHeader>
                     <TableRow>
                         <TableHead>#</TableHead>
-                        <TableHead>Name</TableHead>
+                        <TableHead>Pet Image</TableHead>
+                        <TableHead>Pet Name</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Phone</TableHead>
                         <TableHead>Location</TableHead>
+
+
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -57,10 +76,22 @@ const AdoptionRequests = () => {
                         requests.map((req, index) => (
                             <TableRow key={req._id}>
                                 <TableCell>{index + 1}</TableCell>
-                                <TableCell>{req.name}</TableCell>
-                                <TableCell>{req.ownerEmail}</TableCell>
-                                <TableCell>{req.phone}</TableCell>
-                                <TableCell>{req.location}</TableCell>
+                                <TableCell>
+                                    <img src={req.petImage} alt={req.
+                                        petName} className="w-16 h-16 object-cover rounded-md" />
+                                </TableCell>
+                                <TableCell>{req.
+                                    petName}</TableCell>
+
+                                <TableCell>{req.
+                                    adopterEmail}</TableCell>
+                                <TableCell>{req.
+
+                                    phoneNumber}</TableCell>
+                                <TableCell>{req.
+                                    address}</TableCell>
+
+
                                 <TableCell>
                                     <div className="flex gap-2">
                                         <Button onClick={() => handleAccept(req._id)} className="bg-green-600 hover:bg-green-700 text-white">
