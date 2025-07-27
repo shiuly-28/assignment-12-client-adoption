@@ -48,7 +48,7 @@ const Login = () => {
             <div className="w-full lg:w-1/2 flex justify-center">
                 <Lottie className="max-w-xs sm:max-w-md md:max-w-lg" animationData={loginLottie} />
             </div>
-            <Card className="w-full max-w-sm p-4">
+            <Card className="bg-gray-900 p-8 rounded-xl shadow-lg hover:shadow-lime-600 transition duration-300 text-white w-full max-w-md mx-auto">
                 <CardHeader>
                     <CardTitle className="text-center text-2xl font-bold">Please Login</CardTitle>
                 </CardHeader>

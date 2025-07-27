@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { useParams, useLocation } from "react-router-dom";
 
-const stripePromise = loadStripe("pk_test_51RfsGI2eSwuFfp7py87idWp5TJSAfxsq9rdxgS7An586DQPUkvBykspMXRKcZccK0w51zAATHywb3aGvfYlEciNh00S6LBkb5j");
+const stripePromise = loadStripe(import.meta.env.VITE_payment_Key);
 
 const DonatePayment = () => {
     const { id } = useParams(); // campaignId
