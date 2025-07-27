@@ -30,7 +30,7 @@ const AdoptionRequests = () => {
     }, [user]);
     console.log(user);
     const handleAccept = async (id) => {
-        await axios.patch(`http://localhost:5000/api/adoption-requests/${id}/accept`);
+        await axiosSecure.patch(`/api/adoption-requests/${id}/accept`);
         setRequests(prev => prev.filter(req => req._id !== id));
         Swal.fire({
             position: "top-end",
@@ -42,7 +42,7 @@ const AdoptionRequests = () => {
     };
 
     const handleReject = async (id) => {
-        await axios.patch(`http://localhost:5000/api/adoption-requests/${id}/reject`);
+        await axiosSecure.patch(`/api/adoption-requests/${id}/reject`);
         setRequests(prev => prev.filter(req => req._id !== id));
         Swal
             .fire({

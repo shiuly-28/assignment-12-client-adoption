@@ -13,16 +13,18 @@ import {
 } from "@/components/ui/dialog";
 import { Link } from "react-router";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const MyDonationCampaigns = () => {
     const { user } = useAuth();
     const [donors, setDonors] = useState({});
     const [selectedPet, setSelectedPet] = useState(null);
+    const axiosSecure = useAxiosSecure();
 
     const { data: campaigns = [], refetch } = useQuery({
         queryKey: ["myCampaigns", user?.email],
         queryFn: async () => {
-            const res = await axios.get("http://localhost:5000/donations", {
+            const res = await axiosSecure.get("/donations", {
                 params: { email: user?.email },
             });
             return res.data?.campaigns || [];
@@ -30,13 +32,13 @@ const MyDonationCampaigns = () => {
     });
 
     const handlePause = async (id) => {
-        await axios.patch(`http://localhost:5000/donations/toggle-pause/${id}`);
+        await axiosSecure.patch(`/donations/toggle-pause/${id}`);
         refetch();
     };
 
     const fetchDonors = async (id) => {
         try {
-            const res = await axios.get(`http://localhost:5000/donations/donors/${id}`);
+            const res = await axiosSecure.get(`/donations/donors/${id}`);
             console.log(res);
             setDonors(res.data || {});
         } catch (error) {

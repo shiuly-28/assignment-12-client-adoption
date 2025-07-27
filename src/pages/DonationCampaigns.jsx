@@ -37,7 +37,7 @@ const fetchDonationCampaigns = async ({ pageParam = 1, search = '' }) => {
 
 const DonationCampaigns = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [debouncedSearchQuery] = useDebounce(searchQuery, 500); // Debounce for 500ms
+    const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
     const {
         data,

@@ -13,38 +13,40 @@ import {
 } from "@/components/ui/dialog";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AllDonations = () => {
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const [donors, setDonors] = useState([]);
     const [selectedPet, setSelectedPet] = useState(null);
-
+    const axiosSecure = useAxiosSecure();
     // Fetch all result
     const { data: result = [], refetch } = useQuery({
         queryKey: ["allCampaigns"],
         queryFn: async () => {
-            const res = await axios.get("http://localhost:5000/donations/all");
+            const res = await axiosSecure.get("donations/all");
             return res.data || [];
         },
     });
 
     // Handle Pause
     const handlePause = async (id) => {
-        await axios.patch(`http://localhost:5000/donations/toggle-pause/${id}`);
+        await useAxiosSecure.patch(`/donations/toggle-pause/${id}`);
         refetch();
+        console.log(id);
     };
 
     // Handle View Donators
     const fetchDonors = async (id) => {
-        const res = await axios.get(`http://localhost:5000/donations/donors/${id}`);
+        const res = await useAxiosSecure.get(`/donations/donors/${id}`);
         setDonors(res.data);
     };
 
     // Handle Delete
     const mutation = useMutation({
         mutationFn: (id) => {
-            return axios.delete(`http://localhost:5000/donations/${id}`);
+            return useAxiosSecure.delete(`/donations/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries("allCampaigns");

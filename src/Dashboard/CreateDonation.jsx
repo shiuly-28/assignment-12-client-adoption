@@ -9,12 +9,14 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const imgbbAPI = import.meta.env.VITE_IMGBB_API;
 
 const CreateDonation = () => {
     const { user } = useAuth();
     const [imageFile, setImageFile] = useState(null);
+    const axiosSecure = useAxiosSecure();
 
     const formik = useFormik({
         initialValues: {
@@ -58,8 +60,8 @@ const CreateDonation = () => {
                     amount: 0
                 };
 
-                const res = await axios.post(
-                    "http://localhost:5000/donations",
+                const res = await axiosSecure.post(
+                    "/donations",
                     donationData
                 );
 

@@ -28,12 +28,13 @@ const MyDonations = () => {
     const { user } = useAuth();
     const [donations, setDonations] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
+    const axiosSecure = useAxiosSecure();
 
     useEffect(() => {
         if (!user?.email) return;
 
-        axios
-            .get(`http://localhost:5000/donations?email=${user?.email}`)
+        axiosSecure
+            .get(`/donations?email=${user?.email}`)
             .then((res) => {
                 console.log("API response:", res.data);
                 if (Array.isArray(res.data.campaigns)) {
@@ -57,7 +58,7 @@ const MyDonations = () => {
     const handleRefund = async () => {
         if (!selectedId) return;
         try {
-            await useAxiosSecure.delete(`http://localhost:5000/api/refund/${selectedId}`);
+            await useAxiosSecure.delete(`/api/refund/${selectedId}`);
             setDonations((prev) => prev.filter((d) => d._id !== selectedId));
             setSelectedId(null);
         } catch (error) {

@@ -24,7 +24,7 @@ const AllPets = () => {
     useEffect(() => {
         const fetchAllPets = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/pets`);
+                const res = await axiosSecure.get(`/pets`);
                 setAllPets(res.data.pets);
             } catch (error) {
                 console.error("Failed to fetch pets:", error);

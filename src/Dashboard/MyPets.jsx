@@ -54,7 +54,7 @@ const MyPets = () => {
         console.log("Deleting pet with ID:", id);
     };
 
-    // ✅ Mark as adopted
+    // Mark as adopted
     const handleAdopt = (id) => {
         console.log(id);
         axiosSecure.patch(`/api/pets/${id}`, { adopted: true }).then((res) => {
@@ -70,7 +70,7 @@ const MyPets = () => {
 
     };
 
-    // ✅ Table columns
+    // Table columns
     const columns = [
         columnHelper.accessor((row, index) => index + 1, {
             id: "serial",
