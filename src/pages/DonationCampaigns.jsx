@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDebounce } from 'use-debounce';
 import axios from "axios";
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { AuthContext } from "../context/AuthContext";
+import useAuth from "../hooks/useAuth";
 
 const PAGE_SIZE = 6;
 
@@ -24,6 +26,8 @@ const CampaignSkeletonCard = () => (
 
 // API fetcher
 const fetchDonationCampaigns = async ({ pageParam = 1, search = '' }) => {
+
+
     const res = await axios.get(`http://localhost:5000/donations`, {
         params: {
             page: pageParam,
@@ -58,6 +62,8 @@ const DonationCampaigns = () => {
             return undefined;
         }
     });
+
+    const { darkMode } = useAuth(AuthContext);
 
     useEffect(() => {
         refetch();
@@ -116,11 +122,11 @@ const DonationCampaigns = () => {
                                 alt={item.name}
                                 className="w-full h-48 object-cover rounded-md mb-3"
                             />
-                            <h3 className="text-2xl font-bold mb-3 ">{item.petName}</h3>
+                            <h3 className={`${darkMode ? "text-white " : "text-black "}text-3xl font-bold mb-2`}>{item.petName}</h3>
 
                             <p className="text-gray-700"><strong>📋Max Donation Amount:</strong> {item.maxAmount}$</p>
                             <p className="text-gray-700"><strong>📍Donation Raised:</strong> {item.totalDonated || 0}$</p>
-                            <Button asChild className="mt-3 w-full">
+                            <Button asChild className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "} w-full mt-4`}>
                                 <Link to={`/donationDetails/${item._id}`}>
                                     View Details
                                 </Link>

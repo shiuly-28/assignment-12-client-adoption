@@ -13,6 +13,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
+import { AuthContext } from "../context/AuthContext";
 
 const columnHelper = createColumnHelper();
 
@@ -21,6 +22,7 @@ const MyPets = () => {
     const axiosSecure = useAxiosSecure();
     const [myPets, setMyPets] = useState([]);
     const [sorting, setSorting] = useState([]);
+    const { darkMode } = useAuth(AuthContext);
 
     //  Load pets by user's email
     useEffect(() => {
@@ -123,7 +125,7 @@ const MyPets = () => {
                         Delete
                     </Button>
                     {!row.original.adopted && (
-                        <Button size="sm" onClick={() => handleAdopt(row.original._id)}>
+                        <Button size="sm" className={`${darkMode ? "text-white " : "text-black bg-amber-500"} `} onClick={() => handleAdopt(row.original._id)}>
                             Mark Adopted
                         </Button>
                     )}
@@ -154,7 +156,7 @@ const MyPets = () => {
             <h2 className="text-2xl font-bold mb-4">🐾 My Added Pets</h2>
 
             <table className="table w-full border text-left">
-                <thead className="bg-gray-100">
+                <thead className="bg-black text-white">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (

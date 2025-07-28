@@ -5,9 +5,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useAuth from "../../hooks/useAuth";
+import { AuthContext } from "../../context/AuthContext";
 
 // Props: pet = current pet object, user = logged in user info
 const AdoptModal = ({ pet, user }) => {
+    const { darkMode } = useAuth(AuthContext);
     console.log(pet);
     const formik = useFormik({
         initialValues: {
@@ -56,7 +59,7 @@ const AdoptModal = ({ pet, user }) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="w-full">Adopt Now</Button>
+                <Button className={`${darkMode ? "text-white " : "text-black bg-amber-600 "} w-full`}>Adopt Now</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -83,7 +86,7 @@ const AdoptModal = ({ pet, user }) => {
                         <Label>Your Address</Label>
                         <Input {...formik.getFieldProps("adopterLocation")} required placeholder="Your full address" />
                     </div>
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className={`${darkMode ? "text-white " : "text-black bg-amber-700 "} w-full`}>
                         Submit Request
                     </Button>
                 </form>

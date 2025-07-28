@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import Lottie from 'lottie-react';
 import animationData from '../assets/register.json';
 
+
 import Swal from 'sweetalert2';
 // import SocialLogin from '../../components/SocialLogin/SocialLogin';
 import { FaUserCircle } from 'react-icons/fa';
@@ -30,15 +31,14 @@ const Register = () => {
         if (!image) return;
 
         const formData = new FormData();
-        formData.append('file', image);
-        formData.append('upload_preset', import.meta.env.VITE_IMGBB_API);
+        formData.append('image', image);
         setUploading(true);
 
         const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API}`;
 
         axios.post(imageUploadUrl, formData)
             .then(res => {
-                setProfilePic(res.data.secure_url);
+                setProfilePic(res.data.data.url);
             })
             .catch(err => {
                 console.error("Image Upload Failed:", err);
@@ -48,6 +48,7 @@ const Register = () => {
                 setUploading(false);
             });
     };
+
 
     const onSubmit = (data) => {
         createUser(data.email, data.password)
@@ -86,15 +87,15 @@ const Register = () => {
                 <meta name="description" content="Welcome to AppOrbit - Discover top tech products." />
             </Helmet> */}
             {/* Form Section */}
-            <div className="bg-gray-900 p-8 rounded-xl shadow-lg hover:shadow-lime-600 transition duration-300 text-white w-full max-w-md mx-auto">
-                <h2 className="text-2xl font-bold mb-6 text-lime-400 text-center">Create Your AdoptDonation Account</h2>
+            <div className="bg-gray-200 p-8 rounded-xl shadow-lg hover:shadow-amber-600 transition duration-300 text-white w-full max-w-md mx-auto">
+                <h2 className="text-2xl font-bold mb-6 text-amber-600 text-center">Create Your AdoptDonation Account</h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                     {/* Profile Upload */}
                     <div className="flex justify-center mb-4">
                         <label
                             htmlFor="profilePic"
-                            className="cursor-pointer relative w-18 h-18 md:w-24 md:h-24 rounded-full border-4 border-lime-400 flex items-center justify-center overflow-hidden"
+                            className="cursor-pointer relative w-18 h-18 md:w-24 md:h-24 rounded-full border-4 border-amber-600 flex items-center justify-center overflow-hidden"
                             title="Upload Profile Picture"
                         >
                             {profilePic ? (
@@ -115,7 +116,7 @@ const Register = () => {
                             />
                         </label>
                     </div>
-                    {uploading && <p className="text-center text-sm text-lime-300">Uploading image...</p>}
+                    {uploading && <p className="text-center text-sm text-amber-600">Uploading image...</p>}
 
                     {/* Name */}
                     <div>
@@ -157,7 +158,7 @@ const Register = () => {
                     <button
                         type="submit"
                         disabled={uploading}
-                        className="w-full py-3 bg-lime-500 hover:bg-lime-600 rounded-md text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full py-3 bg-amber-600 hover:bg-orange-800 rounded-md text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {uploading ? 'Uploading Image...' : 'Register'}
                     </button>
@@ -165,7 +166,7 @@ const Register = () => {
 
                 <p className="text-center text-sm mt-4 text-gray-400">
                     Already have an account?{" "}
-                    <Link to="/login" className="text-lime-400 hover:underline">Login</Link>
+                    <Link to="/login" className="text-amber-600 hover:underline">Login</Link>
                 </p>
 
                 <div className="divider my-6">or</div>
@@ -175,7 +176,7 @@ const Register = () => {
 
             {/* Lottie Animation */}
             <div className="hidden md:block">
-                <Lottie animationData={animationData} loop className="w-full h-full" />
+                <Lottie animationData={animationData} loop className="w-150 h-150" />
             </div>
         </div>
     );

@@ -20,6 +20,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [darkMode, setDarkMode] = useState();
     // const { role } = useUserRole()
     // console.log(role);
 
@@ -71,6 +72,8 @@ const AuthProvider = ({ children }) => {
         loading,
         signInWithGoogle,
         updateUserProfile,
+        darkMode,
+        setDarkMode,
         logOut,
     };
 

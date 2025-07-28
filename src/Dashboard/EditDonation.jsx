@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import { AuthContext } from "../context/AuthContext";
 
 const EditDonation = () => {
     const { id } = useParams();
@@ -15,7 +17,7 @@ const EditDonation = () => {
         shortDescription: "",
         longDescription: "",
     });
-
+    const { darkMode } = useAuth(AuthContext)
     // 🔄 Existing data fetch
     useEffect(() => {
         axios
@@ -59,8 +61,8 @@ const EditDonation = () => {
 
     return (
         <div className="max-w-xl mx-auto mt-10 p-5 border rounded shadow bg-white">
-            <h2 className="text-2xl font-semibold mb-4">Edit Donation</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <h2 className="text-2xl font-bold text-black text-center mb-4">Edit Donation</h2>
+            <form onSubmit={handleSubmit} className="space-y-4 max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded shadow">
                 <input
                     type="text"
                     name="petName"
@@ -112,7 +114,7 @@ const EditDonation = () => {
                     className=" border rounded  p-2 w-full"
                     required
                 />
-                <button type="submit" className="btn bg-lime-400 border p-2 rounded w-full">
+                <button type="submit" className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "} w-full mt-4 p-3 rounded`}>
                     Update Donation
                 </button>
             </form>

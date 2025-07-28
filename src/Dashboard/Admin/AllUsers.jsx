@@ -2,11 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, createColumnHelper } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
+// import useAuth from "../../hooks/useAuth";
+import { AuthContext } from "../../context/AuthContext";
 
 const columnHelper = createColumnHelper();
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
+    // const { darkMode } = useAuth(AuthContext);
     const { data: users = [], refetch } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
@@ -76,7 +79,7 @@ const AllUsers = () => {
             <h2 className="text-2xl font-bold mb-4">All Users</h2>
 
             <table className="table w-full border text-left">
-                <thead className="bg-gray-100">
+                <thead className="bg-black text-white">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (

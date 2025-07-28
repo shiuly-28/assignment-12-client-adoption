@@ -42,7 +42,7 @@ const fadeInUp = {
 
 const CallToAction = () => {
     return (
-        <section className="my-12 px-4  w-11/12 mx-auto ">
+        <section className="my-12 px-4 max-w-7xl  w-11/12 mx-auto ">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

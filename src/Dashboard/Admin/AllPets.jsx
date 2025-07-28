@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
+import { AuthContext } from "../../context/AuthContext";
 
 const columnHelper = createColumnHelper();
 
@@ -19,7 +21,7 @@ const AllPets = () => {
     const axiosSecure = useAxiosSecure();
     const [allPets, setAllPets] = useState([]);
     const [sorting, setSorting] = useState([]);
-
+    const { darkMode } = useAuth(AuthContext);
 
     useEffect(() => {
         const fetchAllPets = async () => {
@@ -105,7 +107,7 @@ const AllPets = () => {
                 <div className="flex flex-wrap gap-1">
                     <Link
                         to={`/dashboard/updatePet/${row.original._id}`}
-                        className="btn btn-outline btn-sm"
+                        className={`${darkMode ? "text-white " : "text-black  bg-green-500 p-1 rounded-lg"} btn`}
                     >
                         Update
                     </Link>
@@ -116,7 +118,7 @@ const AllPets = () => {
                     >
                         Delete
                     </Button>
-                    <Button size="sm" onClick={() => handleAdopt(row.original._id)} disabled={row.original.adopted}>
+                    <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "} `} size="sm" onClick={() => handleAdopt(row.original._id)} disabled={row.original.adopted}>
                         Mark Adopted
                     </Button>
                 </div >
@@ -146,7 +148,7 @@ const AllPets = () => {
             <h2 className="text-2xl font-bold mb-4">🐾 All Pets</h2>
 
             <table className="table w-full border text-left">
-                <thead className="bg-gray-100">
+                <thead className="bg-black text-white">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (

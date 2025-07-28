@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-
+import Swal from "sweetalert2";
+import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import {
     Table,
     TableBody,
@@ -10,48 +11,62 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import useAuth from "../hooks/useAuth";
-import Swal from "sweetalert2";
-import useAxiosSecure from "../hooks/useAxiosSecure";
-
 
 const AdoptionRequests = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const [requests, setRequests] = useState([]);
 
-    // Load requests sent for pets owned by the logged-in user
+    // Load adoption requests
     useEffect(() => {
         if (user?.email) {
-            axiosSecure.get(`/api/adoption`)
+            axiosSecure
+                .get(`/api/adoption`)
                 .then((res) => setRequests(res.data))
                 .catch((err) => console.error(err));
         }
-    }, [user]);
-    console.log(user);
-    const handleAccept = async (id) => {
-        await axiosSecure.patch(`/api/adoption-requests/${id}/accept`);
-        setRequests(prev => prev.filter(req => req._id !== id));
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Accept is succesfully",
-            showConfirmButton: false,
-            timer: 1500
-        });
-    };
+    }, [user, axiosSecure]);
 
-    const handleReject = async (id) => {
-        await axiosSecure.patch(`/api/adoption-requests/${id}/reject`);
-        setRequests(prev => prev.filter(req => req._id !== id));
-        Swal
-            .fire({
+    // Accept handler
+    const handleAccept = async (id) => {
+        try {
+            await axiosSecure.patch(`/api/adoption-requests/${id}/accept`);
+            setRequests((prev) =>
+                prev.map((req) =>
+                    req._id === id ? { ...req, status: "accepted" } : req
+                )
+            );
+            Swal.fire({
                 position: "top-end",
                 icon: "success",
-                title: "Reject is successfully",
+                title: "Request Accepted",
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
             });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Reject handler
+    const handleReject = async (id) => {
+        try {
+            await axiosSecure.patch(`/api/adoption-requests/${id}/reject`);
+            setRequests((prev) =>
+                prev.map((req) =>
+                    req._id === id ? { ...req, status: "rejected" } : req
+                )
+            );
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Request Rejected",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -66,8 +81,7 @@ const AdoptionRequests = () => {
                         <TableHead>Email</TableHead>
                         <TableHead>Phone</TableHead>
                         <TableHead>Location</TableHead>
-
-
+                        <TableHead>Status</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -77,27 +91,33 @@ const AdoptionRequests = () => {
                             <TableRow key={req._id}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>
-                                    <img src={req.petImage} alt={req.
-                                        petName} className="w-16 h-16 object-cover rounded-md" />
+                                    <img
+                                        src={req.petImage}
+                                        alt={req.petName}
+                                        className="w-16 h-16 object-cover rounded-md"
+                                    />
                                 </TableCell>
-                                <TableCell>{req.
-                                    petName}</TableCell>
-
-                                <TableCell>{req.
-                                    adopterEmail}</TableCell>
-                                <TableCell>{req.
-
-                                    phoneNumber}</TableCell>
-                                <TableCell>{req.
-                                    address}</TableCell>
-
-
+                                <TableCell>{req.petName}</TableCell>
+                                <TableCell>{req.adopterEmail}</TableCell>
+                                <TableCell>{req.phoneNumber}</TableCell>
+                                <TableCell>{req.address}</TableCell>
+                                <TableCell className="capitalize font-medium">
+                                    {req.status || "pending"}
+                                </TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
-                                        <Button onClick={() => handleAccept(req._id)} className="bg-green-600 hover:bg-green-700 text-white">
+                                        <Button
+                                            onClick={() => handleAccept(req._id)}
+                                            className="bg-green-600 hover:bg-green-700 text-white"
+                                            disabled={req.status === "accepted"}
+                                        >
                                             Accept
                                         </Button>
-                                        <Button onClick={() => handleReject(req._id)} variant="destructive">
+                                        <Button
+                                            onClick={() => handleReject(req._id)}
+                                            variant="destructive"
+                                            disabled={req.status === "rejected"}
+                                        >
                                             Reject
                                         </Button>
                                     </div>
@@ -106,7 +126,7 @@ const AdoptionRequests = () => {
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan="6" className="text-center text-gray-500">
+                            <TableCell colSpan="8" className="text-center text-gray-500">
                                 No adoption requests found.
                             </TableCell>
                         </TableRow>
@@ -118,4 +138,3 @@ const AdoptionRequests = () => {
 };
 
 export default AdoptionRequests;
-

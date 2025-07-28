@@ -32,7 +32,7 @@ const steps = [
 
 const HowItWorks = () => {
     return (
-        <section className="my-20 px-4 max-w-6xl mx-auto">
+        <section className="my-20 px-4 max-w-7xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12 text-foreground">
                 How It Works
             </h2>

@@ -9,6 +9,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { AuthContext } from "../context/AuthContext";
 
 
 const petCategories = [
@@ -26,6 +27,7 @@ const AddPet = () => {
     const [uploading, setUploading] = useState(false);
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const { darkMode } = useAuth(AuthContext);
 
     const formik = useFormik({
         initialValues: {
@@ -142,101 +144,105 @@ const AddPet = () => {
     };
 
     return (
-        <form
-            onSubmit={formik.handleSubmit}
-            className="space-y-4 max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded shadow"
-        >
-            {/* Pet Image Upload */}
-            <Input type="file" accept="image/*" onChange={handleImageUpload} />
-            {uploading && <p className="text-blue-500 text-sm">Uploading image...</p>}
-            {imageUrl && (
-                <img
-                    src={imageUrl}
-                    alt="pet"
-                    className="w-32 h-32 object-cover rounded-md"
+
+        <div>
+            <h1 className="text-3xl font-bold text-center mb-4">Add Pet Form</h1>
+            <form
+                onSubmit={formik.handleSubmit}
+                className="space-y-4 max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded shadow"
+            >
+                {/* Pet Image Upload */}
+                <Input type="file" accept="image/*" onChange={handleImageUpload} />
+                {uploading && <p className="text-blue-500 text-sm">Uploading image...</p>}
+                {imageUrl && (
+                    <img
+                        src={imageUrl}
+                        alt="pet"
+                        className="w-32 h-32 object-cover rounded-md"
+                    />
+                )}
+
+                {/* Pet Name */}
+                <Input
+                    placeholder="Pet Name"
+                    name="name"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.name}
                 />
-            )}
+                {formik.touched.name && formik.errors.name && (
+                    <p className="text-red-500">{formik.errors.name}</p>
+                )}
 
-            {/* Pet Name */}
-            <Input
-                placeholder="Pet Name"
-                name="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-            />
-            {formik.touched.name && formik.errors.name && (
-                <p className="text-red-500">{formik.errors.name}</p>
-            )}
+                {/* Pet Age */}
+                <Input
+                    type="number"
+                    placeholder="Pet Age"
+                    name="age"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.age}
+                />
+                {formik.touched.age && formik.errors.age && (
+                    <p className="text-red-500">{formik.errors.age}</p>
+                )}
 
-            {/* Pet Age */}
-            <Input
-                type="number"
-                placeholder="Pet Age"
-                name="age"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.age}
-            />
-            {formik.touched.age && formik.errors.age && (
-                <p className="text-red-500">{formik.errors.age}</p>
-            )}
+                {/* Pet Category */}
+                <Select
+                    name="category"
+                    options={petCategories}
+                    onChange={(option) => formik.setFieldValue("category", option)}
+                    onBlur={() => formik.setFieldTouched("category", true)}
+                    value={formik.values.category}
+                    placeholder="Select Category"
+                />
+                {formik.touched.category && formik.errors.category && (
+                    <p className="text-red-500">{formik.errors.category}</p>
+                )}
 
-            {/* Pet Category */}
-            <Select
-                name="category"
-                options={petCategories}
-                onChange={(option) => formik.setFieldValue("category", option)}
-                onBlur={() => formik.setFieldTouched("category", true)}
-                value={formik.values.category}
-                placeholder="Select Category"
-            />
-            {formik.touched.category && formik.errors.category && (
-                <p className="text-red-500">{formik.errors.category}</p>
-            )}
+                {/* Location */}
+                <Input
+                    placeholder="Location"
+                    name="location"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.location}
+                />
+                {formik.touched.location && formik.errors.location && (
+                    <p className="text-red-500">{formik.errors.location}</p>
+                )}
 
-            {/* Location */}
-            <Input
-                placeholder="Location"
-                name="location"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.location}
-            />
-            {formik.touched.location && formik.errors.location && (
-                <p className="text-red-500">{formik.errors.location}</p>
-            )}
+                {/* Short Description */}
+                <Input
+                    placeholder="Short Description"
+                    name="shortDesc"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.shortDesc}
+                />
+                {formik.touched.shortDesc && formik.errors.shortDesc && (
+                    <p className="text-red-500">{formik.errors.shortDesc}</p>
+                )}
 
-            {/* Short Description */}
-            <Input
-                placeholder="Short Description"
-                name="shortDesc"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.shortDesc}
-            />
-            {formik.touched.shortDesc && formik.errors.shortDesc && (
-                <p className="text-red-500">{formik.errors.shortDesc}</p>
-            )}
+                {/* Long Description */}
+                <ReactQuill
+                    theme="snow"
+                    name="longDesc"
+                    value={formik.values.longDesc}
+                    onChange={(value) => formik.setFieldValue("longDesc", value)}
+                    onBlur={() => formik.setFieldTouched("longDesc", true)}
+                    placeholder="Write detailed info..."
+                />
+                {formik.touched.longDesc && formik.errors.longDesc && (
+                    <p className="text-red-500">{formik.errors.longDesc}</p>
+                )}
 
-            {/* Long Description */}
-            <ReactQuill
-                theme="snow"
-                name="longDesc"
-                value={formik.values.longDesc}
-                onChange={(value) => formik.setFieldValue("longDesc", value)}
-                onBlur={() => formik.setFieldTouched("longDesc", true)}
-                placeholder="Write detailed info..."
-            />
-            {formik.touched.longDesc && formik.errors.longDesc && (
-                <p className="text-red-500">{formik.errors.longDesc}</p>
-            )}
-
-            {/* Submit Button */}
-            <Button type="submit" className="w-full" disabled={uploading}>
-                {uploading ? "Uploading..." : "Add Pet"}
-            </Button>
-        </form>
+                {/* Submit Button */}
+                <Button type="submit" className={`${darkMode ? "text-white " : "text-black bg-amber-600 "} w-full`} disabled={uploading}>
+                    {uploading ? "Uploading..." : "Add Pet"}
+                </Button>
+            </form>
+        </div>
     );
 };
 

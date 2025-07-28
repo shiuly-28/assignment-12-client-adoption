@@ -36,7 +36,7 @@ const petCategories = [
 
 const PetsCategory = () => {
     return (
-        <section className="my-12 px-4  mx-auto bg-muted/40 dark:bg-muted rounded-xl shadow-inner py-10">
+        <section className="my-12 px-4 max-w-7xl w-11/12 mx-auto bg-muted/40 dark:bg-muted rounded-xl shadow-inner py-10">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

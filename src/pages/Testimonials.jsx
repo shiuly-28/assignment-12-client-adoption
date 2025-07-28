@@ -26,7 +26,7 @@ const testimonials = [
 
 const Testimonials = () => {
     return (
-        <section className="my-20 px-4 max-w-6xl mx-auto overflow-hidden">
+        <section className="my-20 px-4 max-w-7xl mx-auto overflow-hidden">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

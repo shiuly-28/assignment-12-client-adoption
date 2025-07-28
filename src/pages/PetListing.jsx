@@ -10,6 +10,8 @@ import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { FaGem, FaLocationDot } from "react-icons/fa6";
+import useAuth from "../hooks/useAuth";
+import { AuthContext } from '../context/AuthContext';
 
 const PetSkeletonCard = () => (
     <Card className="h-full flex flex-col justify-between">
@@ -32,7 +34,8 @@ const PAGE_SIZE = 6;
 const PetListing = () => {
     const axios = useAxios();
     const [searchQuery, setSearchQuery] = useState('');
-    const [debouncedSearchQuery] = useDebounce(searchQuery, 500); // Debounce for 500ms
+    const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+
 
     const fetchPets = async ({ pageParam = 1 }) => {
         const res = await axios.get(`/pets?page=${pageParam}&limit=${PAGE_SIZE}&search=${debouncedSearchQuery}`);
@@ -55,6 +58,8 @@ const PetListing = () => {
             return lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined;
         },
     });
+
+    const { darkMode } = useAuth(AuthContext);
 
     useEffect(() => {
         refetch();
@@ -126,7 +131,7 @@ const PetListing = () => {
                                         </div>
                                     </CardContent>
                                     <CardFooter>
-                                        <Button asChild className="w-full">
+                                        <Button asChild className={`${darkMode ? "text-white " : "text-black bg-amber-500 "} w-full mt-2`}>
                                             <Link to={`/adoptDetails/${pet._id}`}>
                                                 View Details
                                             </Link>

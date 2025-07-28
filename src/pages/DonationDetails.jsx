@@ -4,11 +4,14 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import DonateModal from "./DonateModal"; // 👉 Stripe Modal Component
+import useAuth from "../hooks/useAuth";
+import { AuthContext } from "../context/AuthContext";
 
 const DonationDetails = () => {
     const { id } = useParams();
     const [campaign, setCampaign] = useState();
     const [recommended, setRecommended] = useState([]);
+    const { darkMode } = useAuth(AuthContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,17 +39,17 @@ const DonationDetails = () => {
                 <img src={campaign.petImage
                 } alt={campaign.name} className="w-full h-64 object-cover rounded" />
                 <div>
-                    <p className="p-1"><strong className="text-gray-700">🧾Added by: </strong >{campaign.userEmail}</p>
-                    <p className="p-1"><strong className="text-gray-700">📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
-                    <p className="p-1"><strong className="text-gray-700">📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
+                    <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>🧾Added by: </strong >{campaign.userEmail}</p>
+                    <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
+                    <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
 
-                    <p className="mb-2"><strong className="text-gray-700">Posted:</strong> {campaign.lastDate}</p>
-                    <p className="mb-4"><strong className="text-gray-700"></strong>{campaign.longDescription}</p>
+                    <p className="mb-2"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>Posted:</strong> {campaign.lastDate}</p>
+                    <p className="mb-4"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}></strong>{campaign.longDescription}</p>
 
                     {/*  Donate Now Modal */}
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button className="w-full">Donate Now</Button>
+                            <Button className={`${darkMode ? "text-white " : "text-black bg-amber-500"} w-full`}>Donate Now</Button>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
@@ -68,9 +71,9 @@ const DonationDetails = () => {
                                 petName} className="w-full h-40 object-cover rounded mb-3" />
                             <h4 className="font-bold text-2xl p-3">{item.
                                 petName}</h4>
-                            <p className="p-1"><strong className="text-gray-700">📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
-                            <p className="p-1"><strong className="text-gray-700">📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
-                            <Button className="mt-2 w-full" asChild>
+                            <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
+                            <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
+                            <Button className={`${darkMode ? "text-white " : "text-black bg-amber-500"} w-full mt-2`} asChild>
                                 <a href={`/donationDetails/${item._id}`}>View Details</a>
                             </Button>
                         </div>

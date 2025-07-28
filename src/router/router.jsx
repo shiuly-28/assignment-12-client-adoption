@@ -73,6 +73,10 @@ export const router = createBrowserRouter([
         </PrivateRoute>,
         children: [
             {
+                index: true,
+                element: <DashBoardHome></DashBoardHome>
+            },
+            {
                 path: 'AddAPet',
                 element: <PrivateRoute>
                     <AddPet></AddPet>

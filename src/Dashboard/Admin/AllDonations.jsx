@@ -14,13 +14,15 @@ import {
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { AuthContext } from "../../context/AuthContext";
 
 const AllDonations = () => {
-    const { user } = useAuth();
+
     const queryClient = useQueryClient();
     const [donors, setDonors] = useState([]);
     const [selectedPet, setSelectedPet] = useState(null);
     const axiosSecure = useAxiosSecure();
+    const { darkMode } = useAuth(AuthContext);
     // Fetch all result
     const { data: result = [], refetch } = useQuery({
         queryKey: ["allCampaigns"],
@@ -46,10 +48,10 @@ const AllDonations = () => {
     // Handle Delete
     const mutation = useMutation({
         mutationFn: (id) => {
-            return useAxiosSecure.delete(`/donations/${id}`);
+            return axiosSecure.delete(`/donations/${id}`);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries("allCampaigns");
+            queryClient.invalidateQueries(["allCampaigns"]); // correct key format
         },
     });
 
@@ -59,12 +61,12 @@ const AllDonations = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <h2 className="text-2xl font-bold mb-6 text-center">📋 All Donation Campaigns</h2>
+            <h2 className="text-2xl font-bold  mb-6 text-center">📋 All Donation Campaigns</h2>
 
             <div className="overflow-x-auto">
                 <table className="table w-full border">
                     <thead>
-                        <tr className="bg-gray-100 text-left">
+                        <tr className="bg-black text-white text-left">
                             <th className="p-3">Pet Name</th>
                             <th className="p-3">Max Amount</th>
                             <th className="p-3">Progress</th>
@@ -86,7 +88,7 @@ const AllDonations = () => {
                                     </span>
                                 </td>
                                 <td className="p-3 space-x-2">
-                                    <Button
+                                    <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "} `}
                                         variant={item.paused ? "default" : "destructive"}
                                         onClick={() => handlePause(item._id)}
                                     >
@@ -96,7 +98,7 @@ const AllDonations = () => {
                                     <Link
                                         to={`/dashboard/editDonation/${item._id}`}
                                     >
-                                        <Button>Edit</Button>
+                                        <Button className={`${darkMode ? "text-white " : "text-black  bg-green-500 "}`}>Edit</Button>
                                     </Link>
 
                                     <Button
@@ -109,7 +111,7 @@ const AllDonations = () => {
                                     {/* View Donators modal */}
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <Button
+                                            <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "}`}
                                                 onClick={() => {
                                                     setSelectedPet(item.petName);
                                                     fetchDonors(item._id);

@@ -8,10 +8,11 @@ import { useForm } from "react-hook-form"
 import { Link, useLocation, useNavigate } from "react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebase.init";
-import loginLottie from '../assets/login.json';
+import login1 from '../assets/login1.json';
 import Lottie from "lottie-react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import login2 from '../assets/login2.json';
 
 const Login = () => {
     const { register, handleSubmit, } = useForm();
@@ -46,23 +47,24 @@ const Login = () => {
         <div className="mt-5 p-5 flex items-center justify-center ">
             {/* Lottie Animation */}
             <div className="w-full lg:w-1/2 flex justify-center">
-                <Lottie className="max-w-xs sm:max-w-md md:max-w-lg" animationData={loginLottie} />
+                <Lottie className="max-w-xs sm:max-w-md md:max-w-lg w-full h-full" animationData={login1} />
             </div>
-            <Card className="bg-gray-900 p-8 rounded-xl shadow-lg hover:shadow-lime-600 transition duration-300 text-white w-full max-w-md mx-auto">
+            <Card className="bg-gray-200 p-8 rounded-xl shadow-lg hover:shadow-amber-600 transition duration-300 text-amber-600 w-full max-w-md mx-auto">
                 <CardHeader>
                     <CardTitle className="text-center text-2xl font-bold">Please Login</CardTitle>
+                    <Lottie animationData={login2} loop className=" h-40 justify-center items-center text-center" />
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSumbmit)} className="space-y-4">
                         <div>
-                            <Label htmlFor="email">Email</Label>
-                            <input id="email" type="email" className="rounded-3xl border p-2 w-full mt-3" placeholder="Enter your email" {...register("email", { required: true })} />
+
+                            <input id="email" type="email" className="bg-gray-800 rounded-md border p-2 w-full mt-3" placeholder="Enter your email" {...register("email", { required: true })} />
                         </div>
                         <div>
-                            <Label htmlFor="password">Password</Label>
-                            <input id="password" className="rounded-3xl border p-2 w-full mt-3" type="password" placeholder="Enter your password" {...register("password", { required: true })} />
+
+                            <input id="password" className="bg-gray-800 rounded-md border p-2 w-full mt-3" type="password" placeholder="Enter your password" {...register("password", { required: true })} />
                         </div>
-                        <Button type="submit" className="w-full rounded-3xl">Login</Button>
+                        <Button type="submit" className="w-full text-white bg-amber-800 rounded-3xl">Login</Button>
 
                         {/* Google Login */}
                         <Button

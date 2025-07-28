@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { AuthContext } from "../context/AuthContext";
 
 const imgbbAPI = import.meta.env.VITE_IMGBB_API;
 
@@ -17,6 +18,7 @@ const CreateDonation = () => {
     const { user } = useAuth();
     const [imageFile, setImageFile] = useState(null);
     const axiosSecure = useAxiosSecure();
+    const { darkMode } = useAuth(AuthContext);
 
     const formik = useFormik({
         initialValues: {
@@ -172,7 +174,7 @@ const CreateDonation = () => {
                         )}
                 </div>
 
-                <Button type="submit" className="w-full">
+                <Button type="submit" className={`${darkMode ? "text-white " : "text-black bg-amber-500"} w-full mt-2`} >
                     Create Campaign
                 </Button>
             </form>
