@@ -5,7 +5,7 @@ import useAuth from './useAuth';
 
 
 const api = axios.create({
-    baseURL: `http://localhost:5000`
+    baseURL: `https://assignment-12-server-adopton-hdx0s7emq-sheauly-s-projects.vercel.app`
 })
 
 const useAxiosSecure = () => {

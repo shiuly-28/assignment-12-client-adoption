@@ -34,7 +34,7 @@ const DashboardLayout = () => {
                     </li>
                     <li>
                         <Link to="/dashboard/myPets" className="flex items-center gap-2 hover:text-primary">
-                            <PawPrint size={18} /> My Pets
+                            <PawPrint size={18} />Pets From
                         </Link>
                     </li>
                     <li>
@@ -44,14 +44,14 @@ const DashboardLayout = () => {
                     </li>
                     <li>
                         <Link to="/dashboard/myDonation" className="flex items-center gap-2 hover:text-primary">
-                            <Heart size={18} /> My Donation
+                            <Heart size={18} /> Donation Form
                         </Link>
                     </li>
 
 
                     <li>
                         <Link to="/dashboard/myDonationCampaigns" className="flex items-center gap-2 hover:text-primary">
-                            <ClipboardList size={18} /> My Donation Campaigns
+                            <ClipboardList size={18} />Donation Campaigns
                         </Link>
                     </li>
                     {!roleLoading && role === 'admin' &&

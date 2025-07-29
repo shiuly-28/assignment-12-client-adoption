@@ -6,16 +6,18 @@ import { Button } from "@/components/ui/button";
 import AdoptModal from "../components/ui/AdoptModal";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
+import useAxios from "../hooks/useAxios";
 
 const PetDetails = () => {
     const { id } = useParams();
     const user = useAuth();
     const [open, setOpen] = useState(false);
+    const axios = useAxios();
 
     const { data: pet, error, isLoading } = useQuery({
         queryKey: ["pets", id],
         queryFn: async () => {
-            const res = await axios.get(`http://localhost:5000/pets/${id}`);
+            const res = await axios.get(`/pets/${id}`);
             return res.data;
         },
     });

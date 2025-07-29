@@ -8,14 +8,16 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import useAxios from "../hooks/useAxios";
 
 const DonatorModal = ({ campaignId, triggerLabel = "View Donators" }) => {
     const [donators, setDonators] = useState([]);
     const [open, setOpen] = useState(false);
+    const axios = useAxios();
 
     const fetchDonators = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/donations/${campaignId}/donators`);
+            const res = await axios.get(`/api/donations/${campaignId}/donators`);
             setDonators(res.data);
             setOpen(true);
         } catch (error) {

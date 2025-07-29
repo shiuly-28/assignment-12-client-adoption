@@ -6,20 +6,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import DonateModal from "./DonateModal"; // 👉 Stripe Modal Component
 import useAuth from "../hooks/useAuth";
 import { AuthContext } from "../context/AuthContext";
+import useAxios from "../hooks/useAxios";
 
 const DonationDetails = () => {
     const { id } = useParams();
     const [campaign, setCampaign] = useState();
     const [recommended, setRecommended] = useState([]);
     const { darkMode } = useAuth(AuthContext);
+    const axios = useAxios();
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await axios.get(`http://localhost:5000/donations/${id}`);
+            const res = await axios.get(`/donations/${id}`);
             setCampaign(res.data);
 
             // Recommended campaigns (excluding current one)
-            const rec = await axios.get("http://localhost:5000/donations?limit=3");
+            const rec = await axios.get("/donations?limit=3");
             const filtered = rec.data.campaigns.filter((item) => item._id !== id);
             setRecommended(filtered.slice(0, 3));
         };

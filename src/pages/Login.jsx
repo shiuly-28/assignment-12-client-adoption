@@ -13,6 +13,7 @@ import Lottie from "lottie-react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import login2 from '../assets/login2.json';
+import Swal from "sweetalert2";
 
 const Login = () => {
     const { register, handleSubmit, } = useForm();
@@ -27,6 +28,13 @@ const Login = () => {
             .then((result) => {
                 console.log("Login success:", result.user);
                 navigate(from);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "login page sucessfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             })
             .catch((error) => {
                 console.error("Login error:", error.message);

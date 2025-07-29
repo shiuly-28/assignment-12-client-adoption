@@ -41,7 +41,7 @@ const AllDonations = () => {
 
     // Handle View Donators
     const fetchDonors = async (id) => {
-        const res = await useAxiosSecure.get(`/donations/donors/${id}`);
+        const res = await axiosSecure.get(`/donations/donors/${id}`);
         setDonors(res.data);
     };
 

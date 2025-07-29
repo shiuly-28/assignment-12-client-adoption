@@ -10,10 +10,12 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import useAxios from "../hooks/useAxios";
 
 const AdoptionModal = ({ pet }) => {
     console.log(pet);
     const [open, setOpen] = useState(false);
+    const axios = useAxios();
     const {
         register,
         handleSubmit,
@@ -32,7 +34,7 @@ const AdoptionModal = ({ pet }) => {
         };
 
         try {
-            const res = await axios.post("http://localhost:5000/adoptionRequests", adoptionInfo);
+            const res = await axios.post("/adoptionRequests", adoptionInfo);
             if (res.data.insertedId) {
                 toast.success("Adoption request submitted!");
                 reset();

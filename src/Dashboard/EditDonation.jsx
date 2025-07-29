@@ -3,12 +3,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { AuthContext } from "../context/AuthContext";
+import useAxios from "../hooks/useAxios";
 
 const EditDonation = () => {
     const { id } = useParams();
     // const navigate = useNavigate();
 
     const [donation, setDonation] = useState(null);
+    const axios = useAxios();
     const [formData, setFormData] = useState({
         petName: "",
         amount: "",
@@ -21,7 +23,7 @@ const EditDonation = () => {
     // 🔄 Existing data fetch
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/api/donations/${id}`)
+            .get(`/api/donations/${id}`)
             .then((res) => {
                 setDonation(res.data);
                 setFormData({
@@ -48,7 +50,7 @@ const EditDonation = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:5000/api/donations/${id}`, formData);
+            await axios.put(`/api/donations/${id}`, formData);
             alert("Donation updated successfully!");
             // navigate("/dashboard/all-donations");
         } catch (error) {

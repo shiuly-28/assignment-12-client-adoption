@@ -10,11 +10,14 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { AuthContext } from "../context/AuthContext";
 import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
+
 
 const PAGE_SIZE = 6;
 
 // Skeleton Card
 const CampaignSkeletonCard = () => (
+
     <div className="border rounded-xl shadow-md p-4 bg-white">
         <Skeleton height={192} className="w-full rounded-md mb-3" />
         <Skeleton width={160} height={24} className="mb-2" />
@@ -24,24 +27,10 @@ const CampaignSkeletonCard = () => (
     </div>
 );
 
-// API fetcher
-const fetchDonationCampaigns = async ({ pageParam = 1, search = '' }) => {
-
-
-    const res = await axios.get(`http://localhost:5000/donations`, {
-        params: {
-            page: pageParam,
-            limit: PAGE_SIZE,
-            sort: 'desc',
-            search: search
-        }
-    });
-    return res.data;
-};
-
 const DonationCampaigns = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+    const axios = useAxios();
 
     const {
         data,
@@ -62,6 +51,21 @@ const DonationCampaigns = () => {
             return undefined;
         }
     });
+
+    // API fetcher
+    const fetchDonationCampaigns = async ({ pageParam = 1, search = '' }) => {
+
+
+        const res = await axios.get(`/donations`, {
+            params: {
+                page: pageParam,
+                limit: PAGE_SIZE,
+                sort: 'desc',
+                search: search
+            }
+        });
+        return res.data;
+    };
 
     const { darkMode } = useAuth(AuthContext);
 
@@ -125,7 +129,7 @@ const DonationCampaigns = () => {
                             <h3 className={`${darkMode ? "text-white " : "text-black "}text-3xl font-bold mb-2`}>{item.petName}</h3>
 
                             <p className="text-gray-700"><strong>📋Max Donation Amount:</strong> {item.maxAmount}$</p>
-                            <p className="text-gray-700"><strong>📍Donation Raised:</strong> {item.totalDonated || 0}$</p>
+                            <p className="text-gray-700"><strong>📍Donation Raised:</strong> {item.totalDonated}$</p>
                             <Button asChild className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "} w-full mt-4`}>
                                 <Link to={`/donationDetails/${item._id}`}>
                                     View Details

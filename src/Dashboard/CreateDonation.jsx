@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useState } from "react";
@@ -17,18 +16,23 @@ const imgbbAPI = import.meta.env.VITE_IMGBB_API;
 const CreateDonation = () => {
     const { user } = useAuth();
     const [imageFile, setImageFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null); // ✅ for preview
     const axiosSecure = useAxiosSecure();
     const { darkMode } = useAuth(AuthContext);
 
     const formik = useFormik({
         initialValues: {
+            petName: "",
             maxAmount: "",
+            amount: "",
             lastDate: "",
             shortDescription: "",
             longDescription: "",
         },
         validationSchema: Yup.object({
+            petName: Yup.string().required("Pet name is required"),
             maxAmount: Yup.number().required("Maximum amount is required"),
+            amount: Yup.number().required("Amount is required"),
             lastDate: Yup.string().required("Last date is required"),
             shortDescription: Yup.string().required("Short description is required"),
             longDescription: Yup.string().required("Long description is required"),
@@ -48,24 +52,22 @@ const CreateDonation = () => {
                     formData
                 );
                 const imageUrl = uploadRes.data.data.url;
+                setPreviewUrl(imageUrl); // ✅ show uploaded image
 
                 const donationData = {
-                    petName: values.petName, // ✅ NEW
+                    petName: values.petName,
                     petImage: imageUrl,
-                    maxAmount: parseFloat(values.maxAmount),
                     lastDate: values.lastDate,
                     shortDescription: values.shortDescription,
                     longDescription: values.longDescription,
                     createdAt: new Date(),
                     userEmail: user.email,
                     userName: user.displayName,
-                    amount: 0
+                    maxAmount: parseFloat(values.maxAmount),
+                    amount: parseFloat(values.amount),
                 };
 
-                const res = await axiosSecure.post(
-                    "/donations",
-                    donationData
-                );
+                const res = await axiosSecure.post("/donations", donationData);
 
                 if (res.data.insertedId) {
                     Swal.fire({
@@ -79,7 +81,6 @@ const CreateDonation = () => {
                     });
                     resetForm();
                     setImageFile(null);
-                    console.log(res.data);
                 }
             } catch (error) {
                 console.error("Donation error:", error);
@@ -87,6 +88,18 @@ const CreateDonation = () => {
             }
         },
     });
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewUrl(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div className="max-w-2xl mx-auto p-6">
@@ -112,8 +125,18 @@ const CreateDonation = () => {
                     <Input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => setImageFile(e.target.files[0])}
+                        onChange={handleImageChange}
                     />
+                    {previewUrl && (
+                        <div className="mt-3">
+                            <p className="font-medium mb-1">Image Preview:</p>
+                            <img
+                                src={previewUrl}
+                                alt="Preview"
+                                className="w-40 h-40 object-cover rounded"
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* Max Amount */}
@@ -127,6 +150,20 @@ const CreateDonation = () => {
                     />
                     {formik.touched.maxAmount && formik.errors.maxAmount && (
                         <p className="text-red-500">{formik.errors.maxAmount}</p>
+                    )}
+                </div>
+
+                {/* Amount */}
+                <div>
+                    <Label>Amount (৳)</Label>
+                    <Input
+                        type="number"
+                        name="amount"
+                        value={formik.values.amount}
+                        onChange={formik.handleChange}
+                    />
+                    {formik.touched.amount && formik.errors.amount && (
+                        <p className="text-red-500">{formik.errors.amount}</p>
                     )}
                 </div>
 
@@ -174,7 +211,10 @@ const CreateDonation = () => {
                         )}
                 </div>
 
-                <Button type="submit" className={`${darkMode ? "text-white " : "text-black bg-amber-500"} w-full mt-2`} >
+                <Button
+                    type="submit"
+                    className={`${darkMode ? "text-white" : "text-black bg-amber-500"} w-full mt-2`}
+                >
                     Create Campaign
                 </Button>
             </form>

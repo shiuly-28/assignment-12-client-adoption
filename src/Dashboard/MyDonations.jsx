@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 
 const MyDonations = () => {
@@ -55,14 +56,30 @@ const MyDonations = () => {
     }, [user]);
     console.log(donations);
 
+
     const handleRefund = async () => {
         if (!selectedId) return;
-        try {
-            await useAxiosSecure.delete(`/api/refund/${selectedId}`);
-            setDonations((prev) => prev.filter((d) => d._id !== selectedId));
-            setSelectedId(null);
-        } catch (error) {
-            console.error("Refund failed", error);
+
+        const confirm = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to request a refund.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, refund it!',
+            cancelButtonText: 'Cancel',
+        });
+
+        if (confirm.isConfirmed) {
+            try {
+                await axiosSecure.delete(`/api/refund/${selectedId}`);
+                setDonations((prev) => prev.filter((d) => d._id !== selectedId));
+                setSelectedId(null);
+
+                Swal.fire('Refunded!', 'Your donation has been refunded.', 'success');
+            } catch (error) {
+                console.error('Refund failed', error);
+                Swal.fire('Error', 'Refund failed. Please try again later.', 'error');
+            }
         }
     };
 

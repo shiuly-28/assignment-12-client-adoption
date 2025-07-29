@@ -7,10 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useAuth from "../../hooks/useAuth";
 import { AuthContext } from "../../context/AuthContext";
+import useAxios from "../../hooks/useAxios";
 
 // Props: pet = current pet object, user = logged in user info
 const AdoptModal = ({ pet, user }) => {
     const { darkMode } = useAuth(AuthContext);
+    const axios = useAxios();
     console.log(pet);
     const formik = useFormik({
         initialValues: {
@@ -36,7 +38,7 @@ const AdoptModal = ({ pet, user }) => {
             console.log(adoptionData);
 
             try {
-                const res = await axios.post("http://localhost:5000/api/adoptions", adoptionData);
+                const res = await axios.post("/api/adoptions", adoptionData);
                 if (res.data.insertedId) {
 
                     Swal.fire({

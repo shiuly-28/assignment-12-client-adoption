@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 const handleAdopt = async (data, reset) => {
     try {
-        const res = await axios.post("http://localhost:5000/adoptions", data);
+        const res = await axios.post("/adoptions", data);
 
         if (res.data?.insertedId) {
             Swal.fire({
