@@ -23,14 +23,13 @@ const DashBoardHome = () => {
             icon: <FaListUl className="text-3xl text-white" />,
             title: "Pet Listings",
             desc: "View and manage your posts",
-            path: "/dashboard/petListing",
+
             bg: "bg-gradient-to-r from-blue-500 to-blue-700",
         },
         {
             icon: <FaPlusCircle className="text-3xl text-white" />,
             title: "All Donation",
             desc: "Post a new Donation request",
-            path: "donation",
             bg: "bg-gradient-to-r from-green-500 to-green-700",
         },
         {
@@ -38,7 +37,6 @@ const DashBoardHome = () => {
             title: "My Profile",
             desc: "Edit and manage your info",
             bg: "bg-gradient-to-r from-purple-500 to-purple-700",
-            path: "myPets"
         },
         {
             icon: <FaHeart className="text-3xl text-white" />,
@@ -84,7 +82,7 @@ const DashBoardHome = () => {
                 {cards.map((card, index) => (
                     <motion.div
                         key={index}
-                        className={`flex items-start gap-4 p-5 shadow-md rounded-2xl text-white hover:shadow-amber-600  transition duration-400 cursor-pointer ${card.bg}`}
+                        className={`flex items-start gap-4 p-5 shadow-md rounded-2xl text-white cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300 ${card.bg}`}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         initial={{ opacity: 0, y: 30 }}

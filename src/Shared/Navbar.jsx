@@ -65,7 +65,7 @@ const Navbar = () => {
     };
 
     return (
-        <header className="w-full bg-background border border-border rounded-xl shadow-sm px-4 py-3 mt-6">
+        <header className="w-full bg-background border border-border rounded shadow-sm px-4 py-3 mt-6">
             <div className=" mx-auto flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2">

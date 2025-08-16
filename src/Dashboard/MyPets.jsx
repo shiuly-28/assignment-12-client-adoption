@@ -153,7 +153,7 @@ const MyPets = () => {
 
     return (
         <div className="p-4 overflow-x-auto">
-            <h2 className="text-2xl font-bold mb-4">🐾 My Added Pets</h2>
+            <h2 className="text-2xl font-bold mb-4">🐾 Added Pets</h2>
 
             <table className="table w-full border text-left">
                 <thead className="bg-black text-white">

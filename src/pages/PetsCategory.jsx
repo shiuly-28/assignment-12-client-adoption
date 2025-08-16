@@ -48,7 +48,7 @@ const PetsCategory = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                 {petCategories.map((cat, index) => (
-                    <motion.div
+                    <motion.div className="cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300"
                         key={cat.name}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}

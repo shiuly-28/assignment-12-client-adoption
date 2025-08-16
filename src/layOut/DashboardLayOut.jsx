@@ -34,7 +34,7 @@ const DashboardLayout = () => {
                     </li>
                     <li>
                         <Link to="/dashboard/myPets" className="flex items-center gap-2 hover:text-primary">
-                            <PawPrint size={18} />Pets From
+                            <PawPrint size={18} />My Pets
                         </Link>
                     </li>
                     <li>
@@ -44,23 +44,24 @@ const DashboardLayout = () => {
                     </li>
                     <li>
                         <Link to="/dashboard/myDonation" className="flex items-center gap-2 hover:text-primary">
-                            <Heart size={18} /> Donation Form
+                            <Heart size={18} />My Donation
                         </Link>
                     </li>
 
 
                     <li>
                         <Link to="/dashboard/myDonationCampaigns" className="flex items-center gap-2 hover:text-primary">
-                            <ClipboardList size={18} />Donation Campaigns
+                            <ClipboardList size={18} />My Donation Campaigns
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard/adoption" className="flex items-center gap-2 hover:text-primary">
+                            <Users size={18} /> Adoption Request
                         </Link>
                     </li>
                     {!roleLoading && role === 'admin' &&
                         <>
-                            <li>
-                                <Link to="/dashboard/adoption" className="flex items-center gap-2 hover:text-primary">
-                                    <Users size={18} /> Adoption Request
-                                </Link>
-                            </li>
+
                             <li>
                                 <Link to="/dashboard/all-users" className="flex items-center gap-2 hover:text-primary">
                                     <Users size={18} /> All Users

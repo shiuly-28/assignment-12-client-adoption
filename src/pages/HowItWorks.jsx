@@ -41,7 +41,7 @@ const HowItWorks = () => {
                 {steps.map((step, index) => (
                     <Card
                         key={index}
-                        className="bg-muted/40 ease-in-out transform hover:scale-[1.03] hover:shadow-lg cursor-pointer hover:bg-primary/10 active:scale-[0.98] shadow-md hover:shadow-lime-600 transition duration-300"
+                        className="bg-muted/40 ease-in-out transform hover:scale-[1.03]  active:scale-[0.98] shadow-md cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300"
                     >
                         <CardHeader className="flex items-center gap-3">
                             {step.icon}

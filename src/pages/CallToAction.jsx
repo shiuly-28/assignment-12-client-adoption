@@ -19,12 +19,7 @@ const callToActionData = [
             "The soft rustle of fur against your shirt, the warmth of a quiet purr — these aren’t just small comforts. They’re the signs of a bond forming that words can’t fully describe. When you adopt a pet, you’re not just bringing an animal into your home — you’re opening your life to a companion who listens in silence, comforts without judgment, and remains by your side through every season. That rescued cat you hold in your arms may have come from uncertainty, but in your embrace, it finds peace, safety, and belonging. This is more than ownership. It’s partnership. It’s the promise that no matter what life brings, you won’t have to face it alone — because now you have each other.",
         image: "https://i.ibb.co/JwkdFjmb/images.jpg",
     },
-    {
-        title: "Don't Shop. Adopt Hope.",
-        description:
-            "A simple moment — a glance between two people and a dog — can be the beginning of something life-changing. That gentle nudge of a nose, that hopeful look from behind the fence, speaks of days spent waiting for someone to care. Compassion is what turns that moment into a new beginning. When you choose to adopt, you're giving more than shelter. You're giving warmth, attention, laughter, late-night walks, and quiet cuddles. You're saying, “You matter.” And in return, you receive a kind of loyalty and love that’s pure, uncomplicated, and endlessly thankful. Compassion doesn’t end at the shelter door — it comes home with you, wagging its tail and forever grateful.",
-        image: "https://i.ibb.co/XZpFrgVm/images.jpg",
-    },
+
 ];
 
 const fadeInUp = {
@@ -66,7 +61,7 @@ const CallToAction = () => {
                         className="rounded-xl"
                     >
                         <Card
-                            className={`flex flex-col md:flex-row  transform hover:scale-[1.03] cursor-pointer hover:bg-primary/10  hover:shadow-lime-600 transition duration-300 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
+                            className={`flex flex-col md:flex-row  transform hover:scale-[1.03] cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
                                 }`}
                         >
                             <div className="md:w-1/3 w-full h-full">

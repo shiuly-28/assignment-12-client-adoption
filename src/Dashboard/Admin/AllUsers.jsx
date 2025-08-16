@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 // import useAuth from "../../hooks/useAuth";
 import { AuthContext } from "../../context/AuthContext";
 
-const columnHelper = createColumnHelper();
+const columnRole = createColumnHelper();
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -27,20 +27,20 @@ const AllUsers = () => {
     };
 
     const columns = [
-        columnHelper.accessor((row, index) => index + 1, {
+        columnRole.accessor((row, index) => index + 1, {
             id: "serial",
             header: "#",
             cell: (info) => info.getValue(),
         }),
-        columnHelper.accessor("name", {
+        columnRole.accessor("name", {
             header: "Name",
             cell: (info) => info.getValue(),
         }),
-        columnHelper.accessor("email", {
+        columnRole.accessor("email", {
             header: "Email",
             cell: (info) => info.getValue(),
         }),
-        columnHelper.accessor("photo", {
+        columnRole.accessor("image", {
             header: "Profile Picture",
             cell: (info) => (
                 <img
@@ -50,11 +50,11 @@ const AllUsers = () => {
                 />
             ),
         }),
-        columnHelper.accessor("role", {
+        columnRole.accessor("role", {
             header: "Role",
             cell: (info) => info.getValue(),
         }),
-        columnHelper.display({
+        columnRole.display({
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (

@@ -6,18 +6,18 @@ import Footer from '../Shared/Footer';
 
 const MainlayOut = () => {
     return (
-        <div className=' w-11/12 mx-auto  '>
+        <div className=''>
+            <header className=''>
+                <Navbar></Navbar>
+            </header>
+            <main className='w-11/12 mx-auto'>
 
-            <main className=''>
-                <header className=''>
-                    <Navbar></Navbar>
-                </header>
                 <Outlet></Outlet>
-                <footer>
-                    <Footer></Footer>
-                </footer>
-            </main>
 
+            </main>
+            <footer>
+                <Footer></Footer>
+            </footer>
         </div>
     );
 };

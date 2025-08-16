@@ -49,7 +49,7 @@ const Testimonials = () => {
                 {[...testimonials, ...testimonials].map((t, i) => (
                     <Card
                         key={i}
-                        className="min-w-[300px] max-w-sm p-4 bg-muted/40 mx-2 shadow-md hover:shadow-lime-600 transition duration-300"
+                        className="min-w-[300px] max-w-sm p-4 bg-muted/40 mx-2 shadow-md cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300"
                     >
                         <CardHeader className="flex items-center gap-4">
                             <img

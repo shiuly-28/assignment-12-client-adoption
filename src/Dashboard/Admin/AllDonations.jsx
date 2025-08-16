@@ -33,11 +33,17 @@ const AllDonations = () => {
     });
 
     // Handle Pause
+
+
     const handlePause = async (id) => {
-        await useAxiosSecure.patch(`/donations/toggle-pause/${id}`);
-        refetch();
-        console.log(id);
+        try {
+            await axiosSecure.patch(`/donations/toggle-pause/${id}`); // ✅ এখানে useAxiosSecure.patch না
+            refetch();
+        } catch (error) {
+            console.error("Pause failed", error);
+        }
     };
+
 
     // Handle View Donators
     const fetchDonors = async (id) => {

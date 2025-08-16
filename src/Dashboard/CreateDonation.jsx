@@ -154,6 +154,19 @@ const CreateDonation = () => {
                 </div>
 
                 {/* Amount */}
+                {/* <div>
+                    <Label>Amount (৳)</Label>
+                    <Input
+                        type="number"
+                        name="amount"
+                        value={formik.values.amount}
+                        onChange={formik.handleChange}
+                    />
+                    {formik.touched.amount && formik.errors.amount && (
+                        <p className="text-red-500">{formik.errors.amount}</p>
+                    )}
+                </div> */}
+                {/* Riased */}
                 <div>
                     <Label>Amount (৳)</Label>
                     <Input

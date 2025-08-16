@@ -41,9 +41,10 @@ const DonationDetails = () => {
                 <img src={campaign.petImage
                 } alt={campaign.name} className="w-full h-64 object-cover rounded" />
                 <div>
+                    <p className="p-1  text-3xl font-bold"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}></strong >{campaign.petName}</p>
                     <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>🧾Added by: </strong >{campaign.userEmail}</p>
                     <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
-                    <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
+                    <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📍Donation Amount:</strong> {campaign.totalDonated || 0}$</p>
 
                     <p className="mb-2"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>Posted:</strong> {campaign.lastDate}</p>
                     <p className="mb-4"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}></strong>{campaign.longDescription}</p>
