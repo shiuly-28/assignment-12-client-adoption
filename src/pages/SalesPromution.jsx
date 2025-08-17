@@ -35,7 +35,7 @@ const SalesPromotion = () => {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <div className=" text-block py-20 text-center">
+            <div className="text-block py-20 text-center">
                 <motion.h1
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -58,24 +58,32 @@ const SalesPromotion = () => {
                             key={item.id}
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.4, ease: "easeInOut" }}
                         >
-                            <Card className="rounded-xl shadow-lg overflow-hidden">
-                                <img
+                            <Card className="rounded-xl shadow-lg overflow-hidden hover:shadow-[0_0_20px_3px_lime] transition duration-300">
+                                {/* Image hover effect */}
+                                <motion.img
                                     src={item.img}
                                     alt={item.title}
                                     className="w-full h-56 object-cover"
+                                    whileHover={{ scale: 1.1 }}
+                                    transition={{ duration: 0.4 }}
                                 />
+
                                 <CardContent className="flex flex-col flex-grow">
                                     <h3 className="text-lg font-semibold">{item.title}</h3>
                                     <p className="text-sm text-muted-foreground mt-2">{item.desc}</p>
                                 </CardContent>
+
                                 <CardFooter className="flex justify-end">
-                                    <Link to={`/campaign/${item.id}`}>
-                                        <Button variant="default" size="sm">
-                                            See More
-                                        </Button>
-                                    </Link>
+                                    <motion.div whileHover={{ scale: 1.1 }}>
+                                        <Link to={`/campaign/${item.id}`}>
+                                            <Button variant="default" size="sm">
+                                                See More
+                                            </Button>
+                                        </Link>
+                                    </motion.div>
                                 </CardFooter>
                             </Card>
                         </motion.div>

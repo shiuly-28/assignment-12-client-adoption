@@ -61,7 +61,7 @@ const CallToAction = () => {
                         className="rounded-xl"
                     >
                         <Card
-                            className={`flex flex-col md:flex-row  transform hover:scale-[1.03] cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
+                            className={`flex flex-col md:flex-row  transform hover:scale-[1.03] cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_20px_3px_lime] transition duration-300 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
                                 }`}
                         >
                             <div className="md:w-1/3 w-full h-full">

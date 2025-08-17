@@ -36,9 +36,13 @@ const PetListing = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
+    // ✅ Extra states for sort & category
+    const [category, setCategory] = useState('');
 
     const fetchPets = async ({ pageParam = 1 }) => {
-        const res = await axios.get(`/pets?page=${pageParam}&limit=${PAGE_SIZE}&search=${debouncedSearchQuery}`);
+        const res = await axios.get(
+            `/pets?page=${pageParam}&limit=${PAGE_SIZE}&search=${debouncedSearchQuery}&category=${category}`
+        );
         return res.data;
     };
 
@@ -52,7 +56,7 @@ const PetListing = () => {
         isFetchingNextPage,
         refetch,
     } = useInfiniteQuery({
-        queryKey: ['pets', debouncedSearchQuery],
+        queryKey: ['pets', debouncedSearchQuery, category],
         queryFn: fetchPets,
         getNextPageParam: (lastPage) => {
             return lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined;
@@ -63,7 +67,7 @@ const PetListing = () => {
 
     useEffect(() => {
         refetch();
-    }, [debouncedSearchQuery, refetch]);
+    }, [debouncedSearchQuery, category, refetch]);
 
     const { ref, inView } = useInView();
 
@@ -78,16 +82,35 @@ const PetListing = () => {
             <h1 className="text-4xl font-bold mb-4 text-center">🐾 Available Pets</h1>
             <p className='text-center text-gray-500'>Find your perfect furry (or feathery) companion</p>
             <hr />
-            <div className="mb-6 mt-5">
+
+            {/* ✅ Search, Sort & Category Filter */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6 mt-5">
+                {/* Search */}
                 <input
                     type="text"
                     placeholder="🔍 Search pets by name or location..."
-                    className="w-100 p-3 border  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full md:w-1/2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
+
+
+
+                {/* Category Dropdown */}
+                <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="p-3 border border-gray-300 rounded-md"
+                >
+                    <option value="">All Categories</option>
+                    <option value="dog">Dogs</option>
+                    <option value="cat">Cats</option>
+                    <option value="bird">Birds</option>
+                    <option value="rabbit">Rabbits</option>
+                </select>
             </div>
 
+            {/* Pets Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {isLoading ? (
                     Array.from({ length: PAGE_SIZE }).map((_, index) => (
@@ -103,7 +126,7 @@ const PetListing = () => {
                 ) : isError ? (
                     <p className="text-red-500 text-center">Error: {error.message}</p>
                 ) : (
-                    data.pages.flatMap((page, pageIndex) =>
+                    data.pages.flatMap((page) =>
                         page.pets.map((pet, index) => (
                             <motion.div
                                 key={pet._id}
@@ -126,8 +149,8 @@ const PetListing = () => {
                                     <CardContent>
                                         <CardTitle className="font-bold text-2xl p-2">Name: {pet.name}</CardTitle>
                                         <div className='p-2'>
-                                            <p className="text-gray-500 flex"><FaGem /><span className='font-bold'>Age: </span> {pet.age}</p>
-                                            <p className="text-gray-500 flex"><FaLocationDot /><span className='font-bold'>Location: </span> {pet.location}</p>
+                                            <p className="text-gray-500 flex"><FaGem /><span className='font-bold ml-1'>Age:</span> {pet.age}</p>
+                                            <p className="text-gray-500 flex"><FaLocationDot /><span className='font-bold ml-1'>Location:</span> {pet.location}</p>
                                         </div>
                                     </CardContent>
                                     <CardFooter>

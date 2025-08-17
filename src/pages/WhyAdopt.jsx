@@ -36,7 +36,7 @@ const WhyAdopt = () => {
                         whileTap={{ scale: 0.97 }}
                         transition={{ type: "spring", stiffness: 200, damping: 15 }}
                     >
-                        <Card className="hover:shadow-md  overflow-hidden  cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300">
+                        <Card className="overflow-hidden  cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_10px_3px_lime] transition duration-300">
                             {/* Image */}
                             <img
                                 src={item.image}
