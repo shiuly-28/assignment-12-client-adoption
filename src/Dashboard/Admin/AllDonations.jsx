@@ -37,7 +37,7 @@ const AllDonations = () => {
 
     const handlePause = async (id) => {
         try {
-            await axiosSecure.patch(`/donations/toggle-pause/${id}`); // ✅ এখানে useAxiosSecure.patch না
+            await axiosSecure.patch(`/donations/toggle-pause/${id}`);
             refetch();
         } catch (error) {
             console.error("Pause failed", error);

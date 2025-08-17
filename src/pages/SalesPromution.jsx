@@ -78,7 +78,7 @@ const SalesPromotion = () => {
 
                                 <CardFooter className="flex justify-end">
                                     <motion.div whileHover={{ scale: 1.1 }}>
-                                        <Link to={`/campaign/${item.id}`}>
+                                        <Link to={`/campaginDetails/${item.id}`}>
                                             <Button variant="default" size="sm">
                                                 See More
                                             </Button>

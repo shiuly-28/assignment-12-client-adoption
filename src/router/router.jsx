@@ -31,6 +31,7 @@ import AllPets from "../Dashboard/Admin/AllPets";
 import AllDonations from "../Dashboard/Admin/AllDonations";
 import MyProfile from "../Dashboard/MyProfile";
 import Overveiw from "../Dashboard/Overveiw";
+import CampaginDetails from "../pages/CampaginDetails";
 
 
 export const router = createBrowserRouter([
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
             {
                 path: "/adoptDetails/:id",
                 element: <AdoptDetails></AdoptDetails>
+            },
+            {
+                path: '/campaginDetails/:id',
+                element: <CampaginDetails></CampaginDetails>
             }
         ]
     },

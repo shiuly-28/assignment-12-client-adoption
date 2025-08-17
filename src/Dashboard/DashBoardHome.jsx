@@ -54,7 +54,7 @@ const DashboardHome = () => {
                     <Link to="/dashboard/myProfile" className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-gray-800">
                         My Profile
                     </Link>
-                    <Link to="/dashboard/overveiw" className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-gray-800">
+                    <Link to="/dashboard/overveiw" className="bg-[#7D8D86] text-white px-4 py-2 rounded hover:bg-gray-800">
                         Overveiw
                     </Link>
                 </div>

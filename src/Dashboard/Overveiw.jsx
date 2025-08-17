@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 const Overview = () => {
-    // Sample stats (পরবর্তীতে API থেকে ফেচ করা যাবে)
+
     const stats = [
         { title: "Total Orders", value: 124, color: "bg-blue-100", textColor: "text-blue-700" },
         { title: "Total Users", value: "1.2K", color: "bg-green-100", textColor: "text-green-700" },
