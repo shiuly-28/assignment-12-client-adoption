@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { FaGem, FaLocationDot } from "react-icons/fa6";
 import useAuth from "../hooks/useAuth";
-import { AuthContext } from '../context/AuthContext';
 
 const PetSkeletonCard = () => (
     <Card className="h-full flex flex-col justify-between">
@@ -35,14 +34,10 @@ const PetListing = () => {
     const axios = useAxios();
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-
-    // ✅ Extra states for sort & category
     const [category, setCategory] = useState('');
 
     const fetchPets = async ({ pageParam = 1 }) => {
-        const res = await axios.get(
-            `/pets?page=${pageParam}&limit=${PAGE_SIZE}&search=${debouncedSearchQuery}&category=${category}`
-        );
+        const res = await axios.get(`/pets?page=${pageParam}&limit=${PAGE_SIZE}&search=${debouncedSearchQuery}`);
         return res.data;
     };
 
@@ -56,18 +51,16 @@ const PetListing = () => {
         isFetchingNextPage,
         refetch,
     } = useInfiniteQuery({
-        queryKey: ['pets', debouncedSearchQuery, category],
+        queryKey: ['pets', debouncedSearchQuery],
         queryFn: fetchPets,
-        getNextPageParam: (lastPage) => {
-            return lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined;
-        },
+        getNextPageParam: (lastPage) => lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     });
 
-    const { darkMode } = useAuth(AuthContext);
+    const { darkMode } = useAuth();
 
     useEffect(() => {
         refetch();
-    }, [debouncedSearchQuery, category, refetch]);
+    }, [debouncedSearchQuery, refetch]);
 
     const { ref, inView } = useInView();
 
@@ -77,15 +70,19 @@ const PetListing = () => {
         }
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+    // ✅ Frontend filtering by category (case-insensitive)
+    const filteredPets = data?.pages
+        .flatMap(page => page.pets)
+        .filter(pet => category ? pet.category.toLowerCase() === category.toLowerCase() : true);
+
     return (
         <div className="container mx-auto py-8">
             <h1 className="text-4xl font-bold mb-4 text-center">🐾 Available Pets</h1>
             <p className='text-center text-gray-500'>Find your perfect furry (or feathery) companion</p>
             <hr />
 
-            {/* ✅ Search, Sort & Category Filter */}
+            {/* Search & Category Filter */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6 mt-5">
-                {/* Search */}
                 <input
                     type="text"
                     placeholder="🔍 Search pets by name or location..."
@@ -94,19 +91,18 @@ const PetListing = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
 
-
-
-                {/* Category Dropdown */}
                 <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     className="p-3 border border-gray-300 rounded-md"
                 >
                     <option value="">All Categories</option>
-                    <option value="dog">Dogs</option>
-                    <option value="cat">Cats</option>
-                    <option value="bird">Birds</option>
-                    <option value="rabbit">Rabbits</option>
+                    <option value="Dog">Dogs</option>
+                    <option value="Cat">Cats</option>
+                    <option value="Bird">Birds</option>
+                    <option value="Rabbit">Rabbits</option>
+                    <option value="Fish">Fish</option>
+                    <option value="Others">Others</option>
                 </select>
             </div>
 
@@ -125,45 +121,45 @@ const PetListing = () => {
                     ))
                 ) : isError ? (
                     <p className="text-red-500 text-center">Error: {error.message}</p>
+                ) : filteredPets.length === 0 ? (
+                    <p className="text-center text-gray-500">No pets found for this category.</p>
                 ) : (
-                    data.pages.flatMap((page) =>
-                        page.pets.map((pet, index) => (
-                            <motion.div
-                                key={pet._id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.4, delay: index * 0.1 }}
-                                whileHover={{
-                                    scale: 1.03,
-                                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-                                }}
-                            >
-                                <Card className="h-full flex flex-col justify-between">
-                                    <CardHeader>
-                                        <img
-                                            src={pet.image}
-                                            alt={pet.name}
-                                            className="rounded-t-lg w-full h-48 object-cover"
-                                        />
-                                    </CardHeader>
-                                    <CardContent>
-                                        <CardTitle className="font-bold text-2xl p-2">Name: {pet.name}</CardTitle>
-                                        <div className='p-2'>
-                                            <p className="text-gray-500 flex"><FaGem /><span className='font-bold ml-1'>Age:</span> {pet.age}</p>
-                                            <p className="text-gray-500 flex"><FaLocationDot /><span className='font-bold ml-1'>Location:</span> {pet.location}</p>
-                                        </div>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Button asChild className={`${darkMode ? "text-white " : "text-black bg-amber-500 "} w-full mt-2`}>
-                                            <Link to={`/adoptDetails/${pet._id}`}>
-                                                View Details
-                                            </Link>
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </motion.div>
-                        ))
-                    )
+                    filteredPets.map((pet, index) => (
+                        <motion.div
+                            key={pet._id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: index * 0.1 }}
+                            whileHover={{
+                                scale: 1.03,
+                                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+                            }}
+                        >
+                            <Card className="h-full flex flex-col justify-between">
+                                <CardHeader>
+                                    <img
+                                        src={pet.image}
+                                        alt={pet.name}
+                                        className="rounded-t-lg w-full h-48 object-cover"
+                                    />
+                                </CardHeader>
+                                <CardContent>
+                                    <CardTitle className="font-bold text-2xl p-2">Name: {pet.name}</CardTitle>
+                                    <div className='p-2'>
+                                        <p className="text-gray-500 flex"><FaGem /><span className='font-bold ml-1'>Age:</span> {pet.age}</p>
+                                        <p className="text-gray-500 flex"><FaLocationDot /><span className='font-bold ml-1'>Location:</span> {pet.location}</p>
+                                    </div>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button asChild className={`${darkMode ? "text-white " : "text-black bg-amber-500 "} w-full mt-2`}>
+                                        <Link to={`/adoptDetails/${pet._id}`}>
+                                            View Details
+                                        </Link>
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        </motion.div>
+                    ))
                 )}
             </div>
 
