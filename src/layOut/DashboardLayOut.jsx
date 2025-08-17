@@ -26,6 +26,11 @@ const DashboardLayout = () => {
                             <Home size={18} /> Home
                         </Link>
                     </li>
+                    <li>
+                        <Link to="/dashboard/myProfile" className="flex items-center gap-2 hover:text-primary">
+                            <Home size={18} />MyProfile
+                        </Link>
+                    </li>
 
                     <li>
                         <Link to="/dashboard/AddAPet" className="flex items-center gap-2 hover:text-primary">

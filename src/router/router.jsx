@@ -29,6 +29,7 @@ import AdminRoute from "../hooks/AdminRoute";
 import Forbiden from "../pages/Forbiden/Forbiden";
 import AllPets from "../Dashboard/Admin/AllPets";
 import AllDonations from "../Dashboard/Admin/AllDonations";
+import MyProfile from "../Dashboard/MyProfile";
 
 
 export const router = createBrowserRouter([
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <AddPet></AddPet>
                 </PrivateRoute>
+            },
+            {
+                path: 'myProfile',
+                element: <MyProfile></MyProfile>
             },
             {
                 path: 'dashBoardHome',
