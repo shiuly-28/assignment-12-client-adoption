@@ -27,15 +27,15 @@ const DashboardHome = () => {
 
             {/* Stats Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                <div className="bg-indigo-50 p-5 rounded-lg shadow text-center">
+                <div className="bg-[#CADCAE] p-5 rounded-lg shadow text-center">
                     <p className="text-indigo-700 font-semibold">Posts</p>
                     <p className={`${darkMode ? "text-gray-300" : "text-black"}  text-center font-bold text-2xl`}>24</p>
                 </div>
-                <div className="bg-green-50 p-5 rounded-lg shadow text-center">
+                <div className="bg-[#F5BABB] p-5 rounded-lg shadow text-center">
                     <p className="text-green-700 font-semibold">Followers</p>
                     <p className={`${darkMode ? "text-gray-300" : "text-black"}  text-center font-bold text-2xl`}>1.2K</p>
                 </div>
-                <div className="bg-yellow-50 p-5 rounded-lg shadow text-center">
+                <div className="bg-[#568F87] p-5 rounded-lg shadow text-center">
                     <p className="text-yellow-700 font-semibold">Notifications</p>
                     <p className={`${darkMode ? "text-gray-300" : "text-black"} font-bold text-2xl`}>7</p>
                 </div>
@@ -45,14 +45,17 @@ const DashboardHome = () => {
             <div className="bg-white p-5 rounded-lg shadow mt-6">
                 <h2 className={`${darkMode ? "text-gray-300" : "text-black"}font-bold text-2xl`}>Quick Actions</h2>
                 <div className="flex flex-wrap mt-3 gap-3">
-                    <Link to="/dashboard/AddAPet" className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                    <Link to="/dashboard/AddAPet" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-purple-700">
                         AddPet
                     </Link>
-                    <Link to="/dashboard/myPets" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    <Link to="/dashboard/myPets" className="bg-amber-500 text-white px-4 py-2 rounded hover:bg-green-700">
                         MyPet
                     </Link>
-                    <Link to="/dashboard/myProfile" className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">
+                    <Link to="/dashboard/myProfile" className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-gray-800">
                         My Profile
+                    </Link>
+                    <Link to="/dashboard/overveiw" className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-gray-800">
+                        Overveiw
                     </Link>
                 </div>
             </div>

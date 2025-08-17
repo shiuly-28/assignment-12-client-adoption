@@ -30,6 +30,7 @@ import Forbiden from "../pages/Forbiden/Forbiden";
 import AllPets from "../Dashboard/Admin/AllPets";
 import AllDonations from "../Dashboard/Admin/AllDonations";
 import MyProfile from "../Dashboard/MyProfile";
+import Overveiw from "../Dashboard/Overveiw";
 
 
 export const router = createBrowserRouter([
@@ -90,6 +91,10 @@ export const router = createBrowserRouter([
             {
                 path: 'dashBoardHome',
                 element: <DashBoardHome></DashBoardHome>
+            },
+            {
+                path: 'overveiw',
+                element: <Overveiw></Overveiw>
             },
 
             {
