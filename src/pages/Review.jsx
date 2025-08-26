@@ -1,91 +1,172 @@
 import React from "react";
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    PieChart,
+    Pie,
+    Cell,
+} from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Star } from "lucide-react";
 import { motion } from "framer-motion";
 
-const reviews = [
-    {
-        id: 1,
-        name: "Sarah Johnson",
-        feedback:
-            "Adopting my cat from here was the best decision ever! The process was smooth and the staff were really supportive.",
-        image: "https://i.pravatar.cc/150?img=12",
-        rating: 5,
-    },
-    {
-        id: 2,
-        name: "Michael Smith",
-        feedback:
-            "I adopted a lovely golden retriever. The platform made everything easy and transparent.",
-        image: "https://i.pravatar.cc/150?img=5",
-        rating: 4,
-    },
-    {
-        id: 3,
-        name: "Emily Davis",
-        feedback:
-            "Great initiative! It feels amazing to give a pet a forever home.",
-        image: "https://i.pravatar.cc/150?img=8",
-        rating: 5,
-    },
+const data = [
+    { name: "Jan", users: 400, orders: 240, revenue: 2400 },
+    { name: "Feb", users: 300, orders: 139, revenue: 2210 },
+    { name: "Mar", users: 200, orders: 980, revenue: 2290 },
+    { name: "Apr", users: 278, orders: 390, revenue: 2000 },
+    { name: "May", users: 189, orders: 480, revenue: 2181 },
+    { name: "Jun", users: 239, orders: 380, revenue: 2500 },
 ];
 
-const Reviews = () => {
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
+
+const Overview = () => {
     return (
-        <section className="py-16 ">
-            <div className="max-w-6xl mx-auto px-4 text-center">
+        <section className="py-10 px-6">
+            <div className="max-w-full mx-auto">
                 <motion.h2
                     initial={{ opacity: 0, y: -30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="text-3xl font-bold mb-10"
+                    className="text-3xl font-bold text-center mb-10"
                 >
-                    What Our Adopters Say
+                    Dashboard Reveiw
                 </motion.h2>
 
-                <div className="grid md:grid-cols-3 gap-6">
-                    {reviews.map((review, index) => (
+                {/* Stats Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    {[
+                        { title: "Total Users", value: "12,345", color: "text-indigo-600" },
+                        { title: "Total Orders", value: "4,567", color: "text-green-600" },
+                        { title: "Total Revenue", value: "$78,900", color: "text-yellow-600" },
+                    ].map((stat, index) => (
                         <motion.div
-                            key={review.id}
-                            initial={{ opacity: 0, y: 50 }}
+                            key={stat.title}
+                            initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.2 }}
-                            whileHover={{ scale: 1.05, rotate: 1 }}
+                            transition={{ duration: 0.6, delay: index * 0.2 }}
+                            whileHover={{ scale: 1.05 }}
                         >
-                            <Card className="shadow-md rounded-2xl hover:shadow-[0_0_20px_3px_lime] transition duration-300">
+                            <Card className="rounded-2xl shadow-md">
                                 <CardHeader>
-                                    <motion.img
-                                        src={review.image}
-                                        alt={review.name}
-                                        className="w-16 h-16 rounded-full mx-auto mb-3"
-                                        whileHover={{ scale: 1.2 }}
-                                        transition={{ duration: 0.3 }}
-                                    />
-                                    <CardTitle className="text-lg">
-                                        {review.name}
-                                    </CardTitle>
+                                    <CardTitle>{stat.title}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-gray-600 mb-4">
-                                        {review.feedback}
-                                    </p>
-                                    <div className="flex justify-center gap-1">
-                                        {Array.from({ length: review.rating }).map((_, i) => (
-                                            <Star
-                                                key={i}
-                                                className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                                            />
-                                        ))}
-                                    </div>
+                                    <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
                                 </CardContent>
                             </Card>
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Charts Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Line Chart */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7 }}
+                        whileHover={{ scale: 1.02 }}
+                    >
+                        <Card className="rounded-2xl shadow-md">
+                            <CardHeader>
+                                <CardTitle>Users & Orders Growth</CardTitle>
+                            </CardHeader>
+                            <CardContent className="h-[350px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={data}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <Line type="monotone" dataKey="users" stroke="#8884d8" />
+                                        <Line type="monotone" dataKey="orders" stroke="#82ca9d" />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+
+                    {/* Bar Chart */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7, delay: 0.2 }}
+                        whileHover={{ scale: 1.02 }}
+                    >
+                        <Card className="rounded-2xl shadow-md">
+                            <CardHeader>
+                                <CardTitle>Revenue by Month</CardTitle>
+                            </CardHeader>
+                            <CardContent className="h-[350px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={data}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <Bar dataKey="revenue" fill="#ffc658" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                </div>
+
+                {/* Pie Chart */}
+                <motion.div
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    whileHover={{ scale: 1.03 }}
+                    className="mt-8"
+                >
+                    <Card className="rounded-2xl shadow-md">
+                        <CardHeader>
+                            <CardTitle>Order Distribution</CardTitle>
+                        </CardHeader>
+                        <CardContent className="h-[350px]">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <PieChart>
+                                    <Pie
+                                        data={data}
+                                        dataKey="orders"
+                                        nameKey="name"
+                                        outerRadius={120}
+                                        fill="#8884d8"
+                                        label
+                                    >
+                                        {data.map((_, index) => (
+                                            <Cell
+                                                key={`cell-${index}`}
+                                                fill={COLORS[index % COLORS.length]}
+                                            />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
+                </motion.div>
             </div>
         </section>
     );
 };
 
-export default Reviews;
+export default Overview;

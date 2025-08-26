@@ -32,6 +32,7 @@ import AllDonations from "../Dashboard/Admin/AllDonations";
 import MyProfile from "../Dashboard/MyProfile";
 import Overveiw from "../Dashboard/Overveiw";
 import CampaginDetails from "../pages/CampaginDetails";
+import ErrorPage from "../pages/ErrorPage";
 
 
 export const router = createBrowserRouter([
@@ -166,5 +167,9 @@ export const router = createBrowserRouter([
                 element: <AdminRoute><AllDonations /></AdminRoute>
             },
         ]
+    },
+    {
+        path: "/*",
+        element: <ErrorPage></ErrorPage>
     }
 ]);

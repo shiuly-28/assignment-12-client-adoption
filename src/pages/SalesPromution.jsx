@@ -10,7 +10,7 @@ const SalesPromotion = () => {
             id: 1,
             title: "50% Off on Selected Items",
             desc: "Enjoy half price on your favorite meals this weekend only!",
-            img: "https://i.ibb.co.com/Cp62zz0c/images-5.jpg",
+            img: "https://i.ibb.co.com/5hnJSQyM/premium-photo-1664908437951-0172ebc228b9.png",
         },
         {
             id: 2,
@@ -28,7 +28,7 @@ const SalesPromotion = () => {
             id: 4,
             title: "Weekend Special",
             desc: "Exclusive weekend meals with 30% discount on all burgers.",
-            img: "https://i.ibb.co.com/4RTgRQ5P/download-3.jpg",
+            img: "https://i.ibb.co.com/DDHLP2Jg/images-13.png",
         },
     ];
 
@@ -79,7 +79,7 @@ const SalesPromotion = () => {
                                 <CardFooter className="flex justify-end">
                                     <motion.div whileHover={{ scale: 1.1 }}>
                                         <Link to={`/campaginDetails/${item.id}`}>
-                                            <Button variant="default" size="sm">
+                                            <Button className="text-white" variant="default" size="sm">
                                                 See More
                                             </Button>
                                         </Link>

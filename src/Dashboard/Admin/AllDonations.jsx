@@ -77,6 +77,7 @@ const AllDonations = () => {
                             <th className="p-3">Max Amount</th>
                             <th className="p-3">Progress</th>
                             <th className="p-3">Actions</th>
+                            <th className="p-3">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,7 +95,7 @@ const AllDonations = () => {
                                     </span>
                                 </td>
                                 <td className="p-3 space-x-2">
-                                    <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "} `}
+                                    <Button className={`${darkMode ? "text-white " : "text-white  bg-amber-500 "} `}
                                         variant={item.paused ? "default" : "destructive"}
                                         onClick={() => handlePause(item._id)}
                                     >
@@ -104,7 +105,7 @@ const AllDonations = () => {
                                     <Link
                                         to={`/dashboard/editDonation/${item._id}`}
                                     >
-                                        <Button className={`${darkMode ? "text-white " : "text-black  bg-green-500 "}`}>Edit</Button>
+                                        <Button className={`${darkMode ? "text-white " : "text-white  bg-green-500 "}`}>Edit</Button>
                                     </Link>
 
                                     <Button
@@ -114,10 +115,11 @@ const AllDonations = () => {
                                         Delete
                                     </Button>
 
+
                                     {/* View Donators modal */}
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "}`}
+                                            <Button className={`${darkMode ? "text-white " : "text-white  bg-amber-500 "}`}
                                                 onClick={() => {
                                                     setSelectedPet(item.petName);
                                                     fetchDonors(item._id);
@@ -125,6 +127,8 @@ const AllDonations = () => {
                                             >
                                                 View Donators
                                             </Button>
+
+
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
@@ -142,6 +146,11 @@ const AllDonations = () => {
                                         </DialogContent>
                                     </Dialog>
                                 </td>
+                                <Link
+
+                                >
+                                    <Button className={`${darkMode ? "text-white " : "text-white  bg-green-500 "}  mt-3`}>Donation</Button>
+                                </Link>
                             </tr>
                         ))}
                     </tbody>

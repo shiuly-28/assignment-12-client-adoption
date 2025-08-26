@@ -57,7 +57,7 @@ const Login = () => {
             <div className="w-full lg:w-1/2 flex justify-center">
                 <Lottie className="max-w-xs sm:max-w-md md:max-w-lg w-full h-full" animationData={login1} />
             </div>
-            <Card className="bg-gray-200 p-8 rounded-xl shadow-lg hover:shadow-amber-600 transition duration-300 text-amber-600 w-full max-w-md mx-auto">
+            <Card className="bg-gray-200 p-8 rounded-xl shadow-lg hover:shadow-amber-600 text-amber-600 w-full max-w-md mx-auto cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_20px_3px_lime] transition duration-300">
                 <CardHeader>
                     <CardTitle className="text-center text-2xl font-bold">Please Login</CardTitle>
                     <Lottie animationData={login2} loop className=" h-40 justify-center items-center text-center" />
@@ -66,7 +66,7 @@ const Login = () => {
                     <form onSubmit={handleSubmit(onSumbmit)} className="space-y-4">
                         <div>
 
-                            <input id="email" type="email" className="bg-gray-800 rounded-md border p-2 w-full mt-3" placeholder="Enter your email" {...register("email", { required: true })} />
+                            <input id="email" type="email" className="bg-gray-800 rounded-md border  p-2 w-full mt-3" placeholder="Enter your email" {...register("email", { required: true })} />
                         </div>
                         <div>
 

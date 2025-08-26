@@ -1,5 +1,6 @@
 // src/components/shared/Footer.jsx
-
+import { Home, PawPrint, HeartHandshake, Dog } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { Separator } from "@/components/ui/separator"
 
 const Footer = () => {
@@ -14,22 +15,48 @@ const Footer = () => {
 
                     <div>
                         <h3 className="font-semibold mb-2 text-white">Links</h3>
-                        <ul className="space-y-1">
-                            <li><a href="/" className="hover:underline">Home</a></li>
-                            <li><a href="/petListing" className="hover:underline">Pet Listing</a></li>
-                            <li><a href="/donation" className="hover:underline">Donations</a></li>
-                            <li><a href="/myPets" className="hover:underline">MyPets</a></li>
+                        <ul className="space-y-2">
+                            <li>
+                                <a href="/" className="flex items-center gap-2 hover:underline">
+                                    <Home size={18} />
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/petListing" className="flex items-center gap-2 hover:underline">
+                                    <PawPrint size={18} />
+                                    Pet Listing
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/donation" className="flex items-center gap-2 hover:underline">
+                                    <HeartHandshake size={18} />
+                                    Donations
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/myPets" className="flex items-center gap-2 hover:underline">
+                                    <Dog size={18} />
+                                    My Pets
+                                </a>
+                            </li>
                         </ul>
                     </div>
 
                     <div>
                         <h3 className="font-semibold mb-2 text-white">Contact</h3>
-                        <p>Email: shulybd1245@gmail.com</p>
-                        <p>Phone: +880 1757321528</p>
+                        <p className="flex items-center gap-2">
+                            <Mail className="w-5 h-5 " />
+                            shulybd1245@gmail.com
+                        </p>
+                        <p className="flex items-center gap-2">
+                            <Phone className="w-5 h-5 " />
+                            +880 1757321528
+                        </p>
                     </div>
                 </div>
 
-                <Separator className="my-6" />
+                <Separator className="my-10 w-screen" />
 
                 <p className="text-center text-xs text-muted-foreground">
                     &copy; {new Date().getFullYear()} PetAdopt Inc. All rights reserved.

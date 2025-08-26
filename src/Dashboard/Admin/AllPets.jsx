@@ -107,7 +107,7 @@ const AllPets = () => {
                 <div className="flex flex-wrap gap-1">
                     <Link
                         to={`/dashboard/updatePet/${row.original._id}`}
-                        className={`${darkMode ? "text-white " : "text-black  bg-green-500 p-1 rounded-lg"} btn`}
+                        className={`${darkMode ? "text-white " : "text-white  bg-green-500 p-1 text-center rounded"} btn`}
                     >
                         Update
                     </Link>
@@ -118,11 +118,22 @@ const AllPets = () => {
                     >
                         Delete
                     </Button>
-                    <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "} `} size="sm" onClick={() => handleAdopt(row.original._id)} disabled={row.original.adopted}>
+                    <Button className={`${darkMode ? "text-white " : "text-white  bg-amber-500 "} `} size="sm" onClick={() => handleAdopt(row.original._id)} disabled={row.original.adopted}>
                         Mark Adopted
                     </Button>
                 </div >
+
             ),
+        }),
+
+        columnHelper.accessor("adopted", {
+            header: "Button",
+            cell: (info) =>
+                info.getValue() ? (
+                    <span className="btn bg-green-500  rounded text-white font-medium p-3">Adopted</span>
+                ) : (
+                    <span className="btn bg-green-500  rounded text-white font-medium p-3">Adopted</span>
+                ),
         }),
     ];
 
@@ -203,8 +214,11 @@ const AllPets = () => {
                     >
                         Next
                     </Button>
+
                 </div>
+
             )}
+
         </div>
     );
 };

@@ -32,7 +32,7 @@ const DashboardNavbar = () => {
     };
 
     return (
-        <div className="flex justify-between items-center px-4 py-3 bg-[#568F87] shadow-md">
+        <div className="flex justify-between items-center px-4 py-3  shadow-md">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
                 <img src={logo} alt="logo" className="h-10 md:h-12" />

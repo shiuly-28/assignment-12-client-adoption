@@ -9,7 +9,7 @@ const DashboardHome = () => {
     const { darkMode } = useContext(AuthContext);
 
     return (
-        <div className="p-6 bg-gray-100 max-w-3xl mx-auto">
+        <div className="p-6 bg-gray-100 max-w-7xl mx-auto ">
             {/* User Info */}
             <div className="bg-white p-5 rounded-lg shadow flex items-center gap-4">
                 <img

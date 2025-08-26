@@ -60,6 +60,7 @@ const MyDonationCampaigns = () => {
                             <th className="p-3">Max Amount</th>
                             <th className="p-3">Progress</th>
                             <th className="p-3">Actions</th>
+                            <th className="p-3">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,7 +78,7 @@ const MyDonationCampaigns = () => {
                                     </span>
                                 </td>
                                 <td className="p-3 space-x-2">
-                                    <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "}`}
+                                    <Button className={`${darkMode ? "text-white " : "text-white  bg-amber-500 "}`}
                                         variant={item.paused ? "default" : "destructive"}
                                         onClick={() => handlePause(item._id)}
                                     >
@@ -95,7 +96,7 @@ const MyDonationCampaigns = () => {
                                     {/* ✅ Donor Modal */}
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <Button className={`${darkMode ? "text-white " : "text-black  bg-amber-500 "}`}
+                                            <Button className={`${darkMode ? "text-white " : "text-white  bg-amber-500 "}`}
                                                 onClick={() => {
                                                     setSelectedPet(item.petName);
                                                     fetchDonors(item._id); // fetch before open
@@ -126,6 +127,7 @@ const MyDonationCampaigns = () => {
                                     </Dialog>
 
                                 </td>
+                                <Button className={`${darkMode ? "text-white " : "text-white  bg-green-500 "}  mt-3`}>Donation</Button>
                             </tr>
                         ))}
                     </tbody>

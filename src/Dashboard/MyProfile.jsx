@@ -9,7 +9,7 @@ const MyProfile = () => {
     }
 
     return (
-        <div className="max-w-3xl mx-auto mt-10 space-y-6 px-4 sm:px-6 lg:px-0">
+        <div className="max-w-7xl mx-auto mt-10 space-y-6 px-4 sm:px-6 lg:px-0">
 
             {/* Profile Header */}
             <div className={`bg-white dark:bg-gray-800 rounded-lg shadow p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6`}>
@@ -53,3 +53,6 @@ const MyProfile = () => {
 };
 
 export default MyProfile;
+
+
+

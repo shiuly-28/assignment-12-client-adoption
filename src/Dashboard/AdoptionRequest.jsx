@@ -16,6 +16,8 @@ const AdoptionRequests = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const [requests, setRequests] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const requestsPerPage = 8;
 
     // Load adoption requests
     useEffect(() => {
@@ -69,12 +71,17 @@ const AdoptionRequests = () => {
         }
     };
 
+    // Pagination logic
+    const totalPages = Math.ceil(requests.length / requestsPerPage);
+    const startIdx = (currentPage - 1) * requestsPerPage;
+    const currentRequests = requests.slice(startIdx, startIdx + requestsPerPage);
+
     return (
         <div className="p-4">
             <h2 className="text-xl font-bold mb-4">Adoption Requests for Your Pets</h2>
             <Table>
-                <TableHeader>
-                    <TableRow>
+                <TableHeader className="bg-gray-300 rounded-2xl">
+                    <TableRow >
                         <TableHead>#</TableHead>
                         <TableHead>Pet Image</TableHead>
                         <TableHead>Pet Name</TableHead>
@@ -86,10 +93,10 @@ const AdoptionRequests = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {requests.length > 0 ? (
-                        requests.map((req, index) => (
+                    {currentRequests.length > 0 ? (
+                        currentRequests.map((req, index) => (
                             <TableRow key={req._id}>
-                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{startIdx + index + 1}</TableCell>
                                 <TableCell>
                                     <img
                                         src={req.petImage}
@@ -133,6 +140,36 @@ const AdoptionRequests = () => {
                     )}
                 </TableBody>
             </Table>
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                    >
+                        Prev
+                    </Button>
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => setCurrentPage(i + 1)}
+                            className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-amber-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                        >
+                            {i + 1}
+                        </button>
+                    ))}
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
+                    >
+                        Next
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };

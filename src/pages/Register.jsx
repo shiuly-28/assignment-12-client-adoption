@@ -87,7 +87,7 @@ const Register = () => {
                 <meta name="description" content="Welcome to AppOrbit - Discover top tech products." />
             </Helmet> */}
             {/* Form Section */}
-            <div className="bg-gray-200 p-8 rounded-xl shadow-lg hover:shadow-amber-600 transition duration-300 text-white w-full max-w-md mx-auto">
+            <div className="bg-gray-200 p-8 rounded-xl shadow-lg hover:shadow-amber-600  text-white w-full max-w-md mx-auto cursor-pointer hover:bg-primary/10 hover:shadow-[0_0_20px_3px_lime] transition duration-300">
                 <h2 className="text-2xl font-bold mb-6 text-amber-600 text-center">Create Your AdoptDonation Account</h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -169,7 +169,7 @@ const Register = () => {
                     <Link to="/login" className="text-amber-600 hover:underline">Login</Link>
                 </p>
 
-                <div className="divider my-6">or</div>
+                <div className="divider my-6 text-black font-medium">or</div>
 
                 {/* <SocialLogin /> */}
             </div>

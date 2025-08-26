@@ -36,10 +36,6 @@ const AllUsers = () => {
             header: "Name",
             cell: (info) => info.getValue(),
         }),
-        columnRole.accessor("email", {
-            header: "Email",
-            cell: (info) => info.getValue(),
-        }),
         columnRole.accessor("image", {
             header: "Profile Picture",
             cell: (info) => (
@@ -50,6 +46,11 @@ const AllUsers = () => {
                 />
             ),
         }),
+        columnRole.accessor("email", {
+            header: "Email",
+            cell: (info) => info.getValue(),
+        }),
+
         columnRole.accessor("role", {
             header: "Role",
             cell: (info) => info.getValue(),

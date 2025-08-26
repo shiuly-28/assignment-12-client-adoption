@@ -13,29 +13,29 @@ import banner3 from "../assets/banner3.png";
 const slides = [
     {
         image: banner1,
-        title: "Adopt a Pet, Save a Life",
-        description: "Discover loving pets waiting for you",
+        title: " Life is Better with a Dog by Your Side",
+        description: "Dogs bring joy to the simplest moments of our lives. Their loyalty, playful spirit, and unconditional love remind us what true companionship feels like.",
     },
     {
         image: banner2,
         title: "Find Your New Best Friend",
-        description: "Browse our available pets and find your perfect match",
+        description: "A true best friend doesn’t always come in human form—sometimes they arrive with four paws and a wagging tail. Dogs have a special way of filling our lives with love, laughter, and companionship.",
     },
     {
         image: banner3,
-        title: "Give a Pet a Second Chance",
-        description: "Your new companion is waiting for you",
+        title: "Every Dog Deserves a Happy Home",
+        description: "Every dog is worthy of love, care, and a safe shelter. They are not just pets, but loyal companions and family members who bring joy, comfort, and unconditional love into our lives.",
     },
 ];
 const Banner = () => {
     return (
-        <section className="w-full mt-5">
+        <section className="w-full  mt-5">
             <Swiper
                 modules={[Autoplay, Pagination]}
                 autoplay={{ delay: 3000 }}
                 pagination={{ clickable: true }}
                 loop={true}
-                className="w-full h-[400px] md:h-[500px]"
+                className="w-full h-[700px] md:h-[800px]"
             >
                 {slides.map((slide, i) => (
                     <SwiperSlide key={i}>
@@ -48,7 +48,7 @@ const Banner = () => {
                                     {slide.title}
                                 </h2>
                                 <p className="mb-4 text-sm md:text-lg">
-                                    Adoption is a compassionate and life-changing process where a person or family legally takes responsibility for raising a child or pet that is not biologically their own.
+                                    {slide.description}
                                 </p>
 
                             </div>

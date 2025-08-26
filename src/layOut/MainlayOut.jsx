@@ -7,9 +7,9 @@ import Footer from '../Shared/Footer';
 const MainlayOut = () => {
     return (
         <div className=''>
-            <header className=''>
-                <Navbar></Navbar>
-            </header>
+
+            <Navbar></Navbar>
+
             <main className='w-11/12 mx-auto'>
 
                 <Outlet></Outlet>
