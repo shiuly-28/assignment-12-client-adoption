@@ -8,6 +8,7 @@ import Testimonials from './Testimonials';
 import SalesPromution from './SalesPromution';
 import Reviews from './review';
 import Newsletter from './NewsLetter';
+import PetCardSection from './PetCardSection';
 
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
         <div className=''>
             <Banner></Banner>
             <PetsCategory></PetsCategory>
+            <PetCardSection></PetCardSection>
             <CallToAction></CallToAction>
             <SalesPromution></SalesPromution>
             <HowItWorks></HowItWorks>
