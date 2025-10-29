@@ -6,7 +6,7 @@ import HowItWorks from './HowItWorks';
 import WhyAdopt from './WhyAdopt';
 import Testimonials from './Testimonials';
 import SalesPromution from './SalesPromution';
-import Reviews from './review';
+
 import Newsletter from './NewsLetter';
 import PetCardSection from './PetCardSection';
 
@@ -21,7 +21,7 @@ const Home = () => {
             <SalesPromution></SalesPromution>
             <HowItWorks></HowItWorks>
             <WhyAdopt></WhyAdopt>
-            {/* <Reviews></Reviews> */}
+            
             <Testimonials></Testimonials>
             <Newsletter></Newsletter>
         </div>
