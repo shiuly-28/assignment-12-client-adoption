@@ -76,7 +76,7 @@ const DonationDetails = () => {
                                 petName}</h4>
                             <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📋Max Donation Amount:</strong> {campaign.maxAmount}$</p>
                             <p className="p-1"><strong className={`${darkMode ? "text-white " : "text-gray-500 "}`}>📍Donation Raised:</strong> {campaign.totalDonated || 0}$</p>
-                            <Button className={`${darkMode ? "text-white " : "text-black bg-amber-500"} w-full mt-2`} asChild>
+                            <Button className={`${darkMode ? "text-white " : "text-white bg-amber-500"} w-full mt-2`} asChild>
                                 <a href={`/donationDetails/${item._id}`}>View Details</a>
                             </Button>
                         </div>

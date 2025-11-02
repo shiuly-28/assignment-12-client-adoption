@@ -159,7 +159,7 @@ const DonationCampaigns = () => {
 
                         <p className="text-gray-700"><strong>📋 Max Donation Amount:</strong> {item.maxAmount}$</p>
                         <p className="text-gray-700"><strong>📍 Donation Raised:</strong> {item.totalDonated}$</p>
-                        <Button asChild className={`${darkMode ? "text-white " : "text-black bg-amber-500 "} w-full mt-4`}>
+                        <Button asChild className={`${darkMode ? "text-white " : "text-white bg-amber-500 "} w-full mt-4`}>
                             <Link to={`/donationDetails/${item._id}`}>
                                 View Details
                             </Link>

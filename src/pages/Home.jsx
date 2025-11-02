@@ -13,8 +13,8 @@ import PetCardSection from './PetCardSection';
 
 const Home = () => {
     return (
-        <div className=''>
-            <Banner></Banner>
+        <div>
+            <Banner clssName="w-full"></Banner>
             <PetsCategory></PetsCategory>
             <PetCardSection></PetCardSection>
             <CallToAction></CallToAction>
