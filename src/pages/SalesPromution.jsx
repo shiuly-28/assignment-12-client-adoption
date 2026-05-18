@@ -61,7 +61,7 @@ const SalesPromotion = () => {
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.4, ease: "easeInOut" }}
                         >
-                            <Card className="rounded-xl shadow-lg overflow-hidden hover:shadow-[0_0_20px_3px_lime] transition duration-300">
+                            <Card className="rounded-xl shadow-lg overflow-hidden hover:shadow-[[#00684D]] transition duration-300">
                                 {/* Image hover effect */}
                                 <motion.img
                                     src={item.img}

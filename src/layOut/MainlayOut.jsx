@@ -10,7 +10,7 @@ const MainlayOut = () => {
 
             <Navbar></Navbar>
 
-            <main className='w-11/12 mx-auto'>
+            <main className='max-w-11/12 mx-auto'>
 
                 <Outlet></Outlet>
 
